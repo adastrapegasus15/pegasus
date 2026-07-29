@@ -8,7 +8,7 @@
 <meta property="og:title" content="Ad Astra Pegasus · Stagione 2025-2026">
 <meta property="og:description" content="19 vittorie su 21 partite. Campioni PGS Invernale Open.">
 <meta property="og:type" content="website">
-<link rel="icon" href="logo%201.png">
+<link rel="icon" id="favicon" href="logo%201.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 /* ============================================================
@@ -122,6 +122,10 @@
 .peg-nav{width:38px;height:38px;flex:0 0 38px;border-radius:11px}
 .peg-hero{width:clamp(112px,17vw,196px);height:clamp(112px,17vw,196px);
   border-radius:var(--r-lg);box-shadow:0 14px 42px rgba(0,0,0,.5)}
+/* il logo del tema giorno è trasparente: niente riquadro, l'ombra segue la sagoma */
+:root[data-theme="light"] .peg{box-shadow:none;border-radius:0;background:transparent}
+:root[data-theme="light"] .peg-hero{filter:drop-shadow(0 12px 26px rgba(23,37,84,.30))}
+:root[data-theme="light"] .peg-nav{filter:drop-shadow(0 3px 8px rgba(23,37,84,.28))}
 /* se il file non si trova, JS aggiunge .no-peg e il logo sparisce senza lasciare buchi */
 .no-peg .peg{display:none}
 *,*::before,*::after{box-sizing:border-box}
@@ -569,7 +573,8 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 
 <header class="nav">
   <div class="nav-in">
-    <a class="brand" href="#bacheca"><img class="peg peg-nav" src="logo%201.png" alt="" aria-hidden="true">
+    <a class="brand" href="#bacheca"><img class="peg peg-nav" src="logo%201.png" alt="" aria-hidden="true"
+       onerror="document.documentElement.classList.add('no-peg')">
       <span class="txt"><span class="t1">AD ASTRA</span><span class="t2">Pegasus</span></span>
     </a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="navlinks" aria-label="Apri il menu">☰</button>
@@ -592,7 +597,8 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
   <div class="wrap">
     <div class="glass hero-card">
       <div class="hero-lock">
-        <img class="peg peg-hero" src="logo%201.png" alt="Logo Ad Astra Pegasus">
+        <img class="peg peg-hero" src="logo%201.png" alt="Logo Ad Astra Pegasus"
+             onerror="document.documentElement.classList.add('no-peg')">
         <h1 id="hero-h" class="wordmark" style="margin:0">
           <span class="w1">AD ASTRA</span>
           <span class="w2">PEGASUS</span>
@@ -3333,13 +3339,19 @@ function graficiStagione(){
    ============================================================ */
 renderMatches(); renderGazzetta(); caricaArticoli();
 
-/* verifica che il PNG del pegaso esista davvero: se manca, niente spazio vuoto */
-(function(){
-  const src = "logo 1.png";
-  const im = new Image();
-  im.onerror = ()=> document.documentElement.classList.add("no-peg");
-  im.src = src;
-})();
+/* ---------- logo, una versione per tema ----------
+   MODIFICA QUI se vuoi usare file diversi.
+   Il tema notte vuole un logo chiaro, quello giorno un logo scuro. */
+const LOGO = {
+  dark:  "logo 1.png",         /* pegaso scuro con luci, fondo nero */
+  light: "logo 1 bianco.png"   /* pegaso chiaro, fondo trasparente */
+};
+function applicaLogo(t){
+  const src = encodeURI(LOGO[t] || LOGO.dark);
+  document.documentElement.classList.remove("no-peg");   /* nuovo file, nuova possibilità */
+  $$(".peg").forEach(i=>{ i.src = src; });
+  const fav = $("#favicon"); if(fav) fav.href = src;
+}
 
 /* foto del giocatore della stagione */
 (function(){ const a=$("#mvpAvatar"), z=PBY["Nicolò Zonta"]; if(!a||!z) return;
@@ -3354,6 +3366,7 @@ function applicaTema(t, salva){
   document.documentElement.setAttribute("data-theme", t);
   tgl.textContent = t==="light" ? "☾" : "☀";
   tgl.setAttribute("aria-label", t==="light" ? "Passa al tema notte" : "Passa al tema giorno");
+  applicaLogo(t);
   if(salva){ try{ localStorage.setItem(TEMA_KEY, t); }catch(e){} }
   if(!OK) return;
   chartTheme();
