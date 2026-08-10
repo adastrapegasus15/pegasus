@@ -8,6 +8,10 @@
 <meta property="og:title" content="Ad Astra Pegasus · Stagione 2025-2026">
 <meta property="og:description" content="19 vittorie su 21 partite. Campioni PGS Invernale Open.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="logo%201.png">
+<meta property="og:locale" content="it_IT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B0D14">
 <link rel="icon" id="favicon" href="logo%201.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
@@ -20,9 +24,20 @@
   /* --- misure e tipografia, uguali nei due temi --- */
   --blur:blur(18px);
   --sat:saturate(150%);
-  --r-lg:20px; --r-md:16px; --r-sm:12px; --r-xs:9px;
+  /* tre raggi, non quattro: xs è alias di sm */
+  --r-lg:20px; --r-md:14px; --r-sm:10px; --r-xs:10px;
+  /* scala di spazio a multipli di 4 */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px; --s10:40px; --s16:64px;
   --maxw:1180px;
   --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  /* Carattere da titolo: una grottesca stretta per il marchio, i titoli e i numeri grandi.
+     Bahnschrift è installata su Windows 10+, Avenir Next Condensed e Futura su Mac.
+     Per avere lo stesso carattere ovunque, aggiungi nel <head>:
+       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+       <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&display=swap" rel="stylesheet">
+     e metti "Archivo" come primo nome qui sotto. */
+  --font-display:"Bahnschrift","Avenir Next Condensed","Futura","Roboto Condensed",
+                 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
 
   /* --- TEMA NOTTE (predefinito) --- */
   color-scheme:dark;
@@ -33,12 +48,12 @@
   --red-s:#FFB3B5;
   --blue:#4C74B0;
   --blue-l:#7FA6E0;
-  --violet:#8B5CF6;
   --ink:#EDF0F7;
   --ink-strong:#FFFFFF;
-  --ink-2:rgba(237,240,247,.62);
-  --ink-3:rgba(237,240,247,.45);
-  --ink-4:rgba(237,240,247,.30);
+  /* contrasto: ink-3 e ink-4 alzati sopra la soglia di leggibilità del testo piccolo */
+  --ink-2:rgba(237,240,247,.72);
+  --ink-3:rgba(237,240,247,.58);
+  --ink-4:rgba(237,240,247,.46);
   --glass:rgba(255,255,255,.06);
   --glass-2:rgba(255,255,255,.045);
   --glass-hi:rgba(255,255,255,.10);
@@ -82,12 +97,11 @@
   --red-s:#A62A30;
   --blue:#4C74B0;
   --blue-l:#2F5896;
-  --violet:#8B5CF6;
   --ink:#141924;
   --ink-strong:#080C15;
-  --ink-2:rgba(20,25,36,.70);
-  --ink-3:rgba(20,25,36,.52);
-  --ink-4:rgba(20,25,36,.38);
+  --ink-2:rgba(20,25,36,.78);
+  --ink-3:rgba(20,25,36,.64);
+  --ink-4:rgba(20,25,36,.54);
   --glass:rgba(255,255,255,.34);
   --glass-2:rgba(255,255,255,.22);
   --glass-hi:rgba(255,255,255,.56);
@@ -134,6 +148,11 @@ body{
   margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
   font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
+/* cifre a larghezza fissa ovunque compaiano numeri incolonnati */
+table.t,.stat .v,.stat .d,.ply-stats b,.pod .vl,.ply-id .kv b,.res,.gz-score,
+.mt-sets,.art ul.referto li b,.pagella .pvt,.ply-shot .nn,.avatar span{
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;
+}
 img{max-width:100%;display:block}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 a{color:inherit}
@@ -145,7 +164,7 @@ a{color:inherit}
 #mesh .blob{transition:opacity .5s ease}
 #mesh .m1{width:52vw;height:52vw;min-width:420px;min-height:420px;background:var(--red);opacity:var(--op1);top:-14vw;left:-10vw;animation:drift1 34s ease-in-out infinite}
 #mesh .m2{width:56vw;height:56vw;min-width:460px;min-height:460px;background:var(--blue);opacity:var(--op2);bottom:-20vw;right:-12vw;animation:drift2 42s ease-in-out infinite}
-#mesh .m3{width:38vw;height:38vw;min-width:300px;min-height:300px;background:var(--violet);opacity:var(--op3);top:38%;left:42%;animation:drift3 50s ease-in-out infinite}
+#mesh .m3{width:38vw;height:38vw;min-width:300px;min-height:300px;background:var(--blue);opacity:var(--op3);top:38%;left:42%;animation:drift3 50s ease-in-out infinite}
 #mesh .m4{width:34vw;height:34vw;min-width:260px;min-height:260px;background:var(--red);opacity:var(--op4);bottom:12%;left:-6vw;animation:drift1 46s ease-in-out infinite reverse}
 @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(9vw,7vh) scale(1.12)}66%{transform:translate(-5vw,12vh) scale(.94)}}
 @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-11vw,-9vh) scale(1.14)}}
@@ -167,7 +186,6 @@ a{color:inherit}
 @keyframes modalOut{to{opacity:0;transform:translateY(14px) scale(.97)}}
 @keyframes bdIn{from{opacity:0}to{opacity:1}}
 @keyframes bdOut{to{opacity:0}}
-@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 /* ingresso della pagina */
 .hero-card{animation:riseIn .7s var(--ease-out) both}
@@ -176,6 +194,8 @@ header.nav{animation:fadeIn .5s ease both}
 /* cambio scheda */
 .tabpane:not([hidden]){animation:paneIn .45s var(--ease) both}
 .tabpane:not([hidden]) .sec-head{animation:riseIn .5s var(--ease-out) both}
+/* la cascata delle card si vede solo la prima volta che si apre una scheda */
+.tabpane.seen .anim>*{animation:none}
 
 /* ingresso a cascata delle griglie */
 .anim>*{animation:cardIn .55s var(--ease) both}
@@ -208,9 +228,6 @@ table.t tbody tr{transition:background .18s var(--ease)}
 .to-top{transition:opacity .35s var(--ease),transform .35s var(--ease),background .25s}
 .to-top:hover{background:rgba(231,76,80,.24)}
 
-/* barre della scheda giocatore */
-.track .fill{transform-origin:left center;animation:growX .8s var(--ease-out) both;animation-delay:.15s}
-
 /* modale */
 dialog.modal[open]{animation:modalIn .42s var(--ease-out) both}
 dialog.modal[open]::backdrop{animation:bdIn .32s ease both}
@@ -226,6 +243,16 @@ dialog.modal.closing::backdrop{animation:bdOut .2s ease both}
 .chart-box{opacity:0;transition:opacity .5s var(--ease)}
 .chart-box.ready{opacity:1}
 
+/* su schermi piccoli la sfocatura su ogni card costa troppo:
+   si compensa alzando l'opacità del fondo */
+@media(max-width:900px){
+  .glass{-webkit-backdrop-filter:none;backdrop-filter:none}
+  :root{--glass:rgba(255,255,255,.09);--glass-2:rgba(255,255,255,.07)}
+  :root[data-theme="light"]{--glass:rgba(255,255,255,.62);--glass-2:rgba(255,255,255,.48)}
+  #grain{display:none}
+  .fgroup,.search{-webkit-backdrop-filter:none;backdrop-filter:none}
+}
+
 @media (prefers-reduced-motion:reduce){
   #mesh .blob{animation:none!important}
   html{scroll-behavior:auto}
@@ -236,10 +263,16 @@ dialog.modal.closing::backdrop{animation:bdOut .2s ease both}
 /* ---------- Layout ---------- */
 .shell{position:relative;z-index:2}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
-section{padding:60px 0;scroll-margin-top:78px}
+section{padding:var(--s16) 0;scroll-margin-top:78px}
 .sec-head{margin:0 0 26px}
 .eyebrow{display:block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px;font-weight:600}
-h2.sec-title{margin:0;font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.025em;line-height:1.08}
+h2.sec-title{margin:0;font-family:var(--font-display);font-size:clamp(28px,4.3vw,42px);
+  font-weight:700;letter-spacing:.005em;line-height:1.06}
+/* il carattere da titolo governa marchio, titoli e tutti i numeri in evidenza */
+.wordmark .w1,.wordmark .w2,.stat .v,.ply-id .nm,.ply-stats b,.pod .vl,.ply-id .kv b,
+.res,.gz-score,.modal-head h3,.ply-shot .nn,.avatar span,.ev.wide .ev-title,.art .occhiello,
+.art ul.referto li b,.pagella .pvt,.pagella .pnm,.hero-sub b{font-family:var(--font-display)}
+.stat .v,.pod .vl,.ply-id .kv b,.ply-stats b{font-weight:700;letter-spacing:0}
 .sec-title em{font-style:normal;background:linear-gradient(95deg,var(--red),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sec-lead{margin:12px 0 0;max-width:64ch;color:var(--ink-2);font-size:14.5px}
 
@@ -305,7 +338,7 @@ section.tabpane{padding-top:34px}
 .hero-card{padding:clamp(26px,4.4vw,50px);text-align:center;border-radius:var(--r-lg)}
 .hero-lock{display:flex;align-items:center;justify-content:center;gap:clamp(16px,3.4vw,34px);flex-wrap:wrap}
 .wordmark{display:inline-block;position:relative;text-align:left}
-.wordmark .w1{display:block;font-size:clamp(36px,7.6vw,76px);font-weight:900;letter-spacing:.02em;line-height:.94;color:var(--ink-strong)}
+.wordmark .w1{display:block;font-size:clamp(40px,8.4vw,86px);font-weight:700;letter-spacing:.04em;line-height:.94;color:var(--ink-strong)}
 /* PEGASUS staccato da AD ASTRA con aria sopra e una linea sottile di separazione */
 .wordmark .w2{display:block;font-size:clamp(14px,2.6vw,26px);font-weight:700;letter-spacing:.44em;
   margin-top:20px;padding-top:16px;text-indent:.44em;
@@ -333,7 +366,7 @@ section.tabpane{padding-top:34px}
 .g-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
 .g-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .g-4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
-.card{padding:18px 19px;border-radius:var(--r-md)}
+.card{padding:var(--s5);border-radius:var(--r-md)}
 .card-title{margin:0 0 14px;font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
 .muted{color:var(--ink-3)}
 .tiny{font-size:11px}
@@ -364,19 +397,27 @@ section.tabpane{padding-top:34px}
 
 /* ---------- Chart box ---------- */
 .chart-box{position:relative;height:290px}
-.chart-box.tall{height:340px}
 .chart-box.sq{height:300px}
 
 /* ---------- Tabelle ---------- */
-.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+.tbl-scroll{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+/* segnale che a destra c'è altro: sfuma il bordo e sparisce a fine corsa */
+.tbl-wrap{position:relative}
+.tbl-wrap::after{content:"";position:absolute;top:0;right:0;bottom:0;width:38px;pointer-events:none;
+  opacity:0;transition:opacity .25s ease;border-radius:0 var(--r-sm) var(--r-sm) 0;
+  background:linear-gradient(to left,var(--bg),transparent)}
+.tbl-wrap.more::after{opacity:.9}
 table.t{width:100%;border-collapse:collapse;font-size:13px;min-width:520px}
 table.t th,table.t td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--stroke-2);white-space:nowrap}
 table.t th:first-child,table.t td:first-child{text-align:left}
 table.t thead th{font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:700;
   position:sticky;top:0;background:var(--head-bg);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);z-index:2}
+/* le colonne ordinabili si annunciano da sole, non solo al passaggio del mouse */
 table.t.sortable thead th{cursor:pointer;user-select:none}
+table.t.sortable thead th::after{content:"⇅";margin-left:5px;opacity:.32;font-size:10px}
 table.t.sortable thead th:hover{color:var(--ink)}
-table.t thead th[aria-sort]::after{content:"";margin-left:5px;opacity:.55}
+table.t.sortable thead th:hover::after{opacity:.7}
+table.t thead th[aria-sort]::after{opacity:1;color:var(--red-l)}
 table.t thead th[aria-sort="descending"]::after{content:"▾"}
 table.t thead th[aria-sort="ascending"]::after{content:"▴"}
 table.t tbody tr{transition:background .18s}
@@ -425,6 +466,17 @@ table.t .lead{font-weight:700}
 .pod .vl{margin-left:auto;font-size:18px;font-weight:850;letter-spacing:-.02em}
 .pod.p1{background:linear-gradient(100deg,rgba(231,76,80,.16),rgba(76,116,176,.10));border-color:rgba(231,76,80,.34)}
 .pod.p1 .vl{color:var(--red-l)}
+
+/* ---------- Legenda dei grafici ---------- */
+.legenda{display:flex;flex-wrap:wrap;gap:var(--s4);align-items:center;margin:0 0 var(--s3);
+  padding:var(--s2) var(--s3);border-radius:var(--r-sm);
+  background:var(--glass-2);border:1px solid var(--stroke-2)}
+.legenda span{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-2)}
+.legenda i{width:13px;height:13px;border-radius:4px;flex:0 0 13px;border:1px solid}
+.legenda i.sopra{background:rgba(231,76,80,.70);border-color:#E74C50}
+.legenda i.sotto{background:rgba(76,116,176,.55);border-color:#4C74B0}
+.legenda .nota{margin-left:auto;font-size:11px;color:var(--ink-4);font-style:italic}
+@media(max-width:640px){.legenda .nota{margin-left:0;flex-basis:100%}}
 
 /* ---------- Intestazione della scheda giocatore ---------- */
 .ply-hero{display:flex;align-items:center;gap:18px;flex-wrap:wrap;
@@ -481,15 +533,15 @@ table.t .lead{font-weight:700}
 @keyframes sheetOut{to{opacity:0;transform:translateY(40px)}}
 
 /* ---------- Partite ---------- */
-.matches{display:grid;gap:11px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
-.mt{padding:15px 16px;border-radius:var(--r-md);display:flex;align-items:center;gap:13px;text-align:left;width:100%}
-.mt-body{min-width:0;flex:1}
-.mt-name{font-size:14px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
-.mt-meta{font-size:10.5px;color:var(--ink-4);margin-top:4px;letter-spacing:.02em}
-.mt-sets{font-size:10.5px;color:var(--ink-3);margin-top:5px;font-variant-numeric:tabular-nums}
 .res{flex:0 0 auto;font-size:16px;font-weight:850;padding:5px 11px;border-radius:var(--r-xs);letter-spacing:-.02em}
 .res.w{background:var(--win-bg);color:var(--win);border:1px solid var(--win-st)}
 .res.l{background:var(--loss-bg);color:var(--loss);border:1px solid var(--loss-st)}
+.res.sm{display:inline-block;font-size:13px;padding:3px 8px}
+/* righe cliccabili del tabellone */
+table.t tr.riga{cursor:pointer}
+table.t tr.riga:focus-visible{outline:2px solid var(--red-l);outline-offset:-2px}
+.chip.reset{background:var(--ctrl);border:1px solid var(--stroke-2);color:var(--ink-2);font-size:11.5px;padding:6px 12px}
+.chip.reset:hover{background:var(--ctrl-hi);color:var(--ink)}
 .pip{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:1px}
 .pip.pgs{background:var(--red)} .pip.fipav{background:var(--blue)}
 
@@ -502,6 +554,17 @@ table.t .lead{font-weight:700}
 .gz-mvp{margin-top:auto;padding-top:11px;border-top:1px solid var(--stroke-2);font-size:11.5px;color:var(--ink-3)}
 .gz-mvp b{color:var(--ink);font-weight:650}
 .gz-feature{grid-column:1/-1;background:linear-gradient(115deg,rgba(231,76,80,.13),rgba(76,116,176,.11));border-color:rgba(231,76,80,.32)}
+
+/* ---------- Articolo lungo, disteso nella pagina ---------- */
+.lettura{padding:clamp(24px,4vw,44px)}
+.lettura-head{max-width:68ch;margin:0 auto var(--s6);padding-bottom:var(--s4);border-bottom:1px solid var(--stroke-2)}
+.lettura-head h3{margin:6px 0 0;font-family:var(--font-display);font-size:clamp(26px,3.6vw,36px);
+  font-weight:700;letter-spacing:.005em;line-height:1.1}
+.lettura-head h3 em{font-style:normal;background:linear-gradient(95deg,var(--red),var(--blue));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.lettura .art{max-width:68ch;margin:0 auto}
+.lettura .art h4{margin-top:var(--s8)}
+.lettura .art .occhiello{font-size:20px}
 
 /* ---------- Modale ---------- */
 dialog.modal{
@@ -530,7 +593,9 @@ dialog.modal::backdrop{background:var(--backdrop);-webkit-backdrop-filter:blur(5
 .art h4{margin:26px 0 10px;font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--red-s);font-weight:800}
 .art h4:first-child{margin-top:0}
 .art .occhiello{font-size:17px;font-weight:750;line-height:1.35;letter-spacing:-.015em;margin:0 0 14px}
-.art p{margin:0 0 13px;font-size:14.5px;line-height:1.7;color:var(--ink-2)}
+/* righe di lettura: 68 caratteri, non 95 */
+.art .occhiello,.art p,.art .quote{max-width:68ch}
+.art p{margin:0 0 var(--s3);font-size:15px;line-height:1.72;color:var(--ink-2)}
 .art .quote{margin:18px 0;padding:14px 18px;border-left:3px solid var(--red);border-radius:0 var(--r-sm) var(--r-sm) 0;
   background:rgba(231,76,80,.09);font-size:14px;font-style:italic;color:var(--ink)}
 .art ul.referto{list-style:none;margin:0;padding:0;display:grid;gap:7px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
@@ -573,14 +638,14 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 
 <header class="nav">
   <div class="nav-in">
-    <a class="brand" href="#bacheca"><img class="peg peg-nav" src="logo%201.png" alt="" aria-hidden="true"
+    <a class="brand" href="#stagione"><img class="peg peg-nav" src="logo%201.png" alt="" aria-hidden="true"
        onerror="document.documentElement.classList.add('no-peg')">
       <span class="txt"><span class="t1">AD ASTRA</span><span class="t2">Pegasus</span></span>
     </a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="navlinks" aria-label="Apri il menu">☰</button>
     <nav class="links" id="navlinks" aria-label="Sezioni del sito" role="tablist">
-      <a href="#bacheca">Bacheca</a>
       <a href="#stagione">Stagione</a>
+      <a href="#bacheca">Bacheca</a>
       <a href="#rosa">Rosa</a>
       <a href="#classifiche">Classifiche</a>
       <a href="#partite">Partite</a>
@@ -607,16 +672,14 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       <p class="hero-sub">Stagione <b>2025 · 2026</b> — 21 partite documentate fra il Campionato PGS Invernale OPEN maschile e la 2ª Divisione Regionale FIPAV.</p>
       <div class="badges">
         <span class="badge">🏆 Campioni PGS Invernale Open</span>
-        <span class="badge b-blue">📈 19 vittorie su 21</span>
-        <span class="badge b-neutral">⭐ Giocatore della stagione: Nicolò Zonta</span>
+        <span class="badge b-blue" id="heroRecord">📈 19 vittorie su 21</span>
       </div>
-      <div class="stat-grid anim" id="heroStats"></div>
     </div>
   </div>
 </section>
 
 <!-- ============ BACHECA ============ -->
-<section id="bacheca" class="tabpane" aria-labelledby="bacheca-h">
+<section id="bacheca" class="tabpane" hidden aria-labelledby="bacheca-h">
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Vita di squadra</span>
@@ -628,7 +691,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 </section>
 
 <!-- ============ STAGIONE ============ -->
-<section id="stagione" class="tabpane" hidden aria-labelledby="stagione-h">
+<section id="stagione" class="tabpane" aria-labelledby="stagione-h">
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Il quadro d'insieme</span>
@@ -636,19 +699,27 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       <p class="sec-lead">Nel PGS il Pegasus ha vinto lottando: partite lunghe, muri a raffica, cinquanta palloni attaccati per set. Nel FIPAV ha vinto controllando: match corti, selezione chirurgica, pochissimi errori. Stessi giocatori, stesso allenatore, due identità.</p>
     </div>
 
-    <div class="grid g-2" style="margin-bottom:13px">
+    <div class="stat-grid anim" id="seasonStats" style="margin-bottom:var(--s3);margin-top:0"></div>
+
+    <div class="grid g-2" style="margin-bottom:var(--s3)">
       <div class="glass card" id="cardPGS"></div>
       <div class="glass card" id="cardFIPAV"></div>
     </div>
 
-    <div class="grid g-2" style="margin-bottom:13px">
+    <div class="glass card" style="margin-bottom:var(--s3)">
+      <p class="card-title">Punti di squadra per set giocato</p>
+      <p class="tiny muted" style="margin:-8px 0 14px">Rapportati al set, non alla partita: altrimenti un tie-break sembrerebbe sempre la prestazione migliore.</p>
+      <div class="chart-box"><canvas id="chSeason"></canvas></div>
+    </div>
+
+    <div class="grid g-2" style="margin-bottom:var(--s3)">
       <div class="glass card">
-        <p class="card-title">Punti di squadra per partita</p>
-        <div class="chart-box"><canvas id="chSeason"></canvas></div>
+        <p class="card-title">Confronto · le percentuali</p>
+        <div class="chart-box"><canvas id="chRates"></canvas></div>
       </div>
       <div class="glass card">
-        <p class="card-title">Il confronto diretto</p>
-        <div class="chart-box"><canvas id="chCompare"></canvas></div>
+        <p class="card-title">Confronto · i volumi a partita</p>
+        <div class="chart-box"><canvas id="chVolumes"></canvas></div>
       </div>
     </div>
 
@@ -674,6 +745,43 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       </div>
       <p class="tiny muted" style="margin:14px 0 0">Il muro racconta la differenza meglio di tutto: <b style="color:var(--ink)">2,08 punti diretti per set nel PGS contro 1,47 nel FIPAV</b>. Un fondamentale che si nutre di scambi lunghi e ricezioni avversarie imperfette — cioè esattamente di quello che il PGS offriva e il FIPAV no.</p>
     </div>
+
+    <!-- Il Bilancio vive qui, disteso e leggibile, non più dentro una finestrella -->
+    <article class="glass card lettura" id="bilancio" style="margin-top:var(--s6)">
+      <div class="lettura-head">
+        <span class="eyebrow">📕 Lo speciale della Gazzetta</span>
+        <h3>Bilancio Stagionale <em>2025-2026</em></h3>
+      </div>
+      <div class="art">
+        <div class="note" style="margin-bottom:var(--s5)">Questo bilancio si basa sui 21 match report disponibili: 10 partite del campionato PGS e 11 del campionato FIPAV. Le altre 12 gare del calendario stagionale non hanno referto e restano quindi fuori da ogni conteggio.</div>
+
+        <p class="occhiello">Due campionati, due squadre diverse</p>
+        <p>Il dato più interessante della stagione non è il bilancio complessivo — 19 vittorie e 2 sconfitte, numeri da squadra forte — ma il fatto che il Pegasus abbia giocato due pallavolo completamente diverse nei due campionati.</p>
+        <p>Nel PGS ha vinto lottando: partite lunghe, muri a raffica, cinquanta palloni attaccati per set. Nel FIPAV ha vinto controllando: match corti, selezione chirurgica, pochissimi errori. Stessi giocatori, stesso allenatore, due identità.</p>
+
+        <h4>🏐 Campionato PGS · 9 vittorie – 1 sconfitta</h4>
+        <p>Il PGS è stato il campionato della fatica e del muro. Tre partite su dieci sono finite al quinto set, quattro al quarto: 3,9 set di media, con un volume offensivo enorme — 143 attacchi a partita, con il picco assurdo dei 215 contro la Martesana.</p>
+        <p>La conversione si è fermata al 31,9%, il valore più basso delle due competizioni, e gli errori hanno pesato: uno ogni sette palloni attaccati. Ma dove il Pegasus ha vinto il campionato è sopra la rete: 81 muri punto in dieci partite, con tre gare da almeno dieci — 10 contro l'ACLI, 15 contro i Black Bulls, 15 contro il Melzo.</p>
+        <p>L'unica sconfitta arriva l'11 gennaio contro la Martesana, al tie-break in casa. È una partita che riassume tutti i limiti: 215 attacchi per soli 62 punti, 32 errori sotto rete, 15 battute sbagliate contro 6 ace, e per la prima volta un break point in rosso. Curiosamente, quella stessa sera la ricezione fu la migliore di tutta la stagione: 87% di positività su 101 palloni.</p>
+
+        <h4>🏐 Campionato FIPAV · 10 vittorie – 1 sconfitta</h4>
+        <p>Il FIPAV è stato il campionato del controllo. 3,3 set di media, sette 3-0 su undici partite, e soprattutto una selezione del pallone di un altro livello: 36,9% di conversione in attacco con appena l'11,1% di errori.</p>
+        <p>I due estremi della stagione stanno entrambi qui. Il 7 febbraio a Quarto Oggiaro il Pegasus chiude con 3 attacchi sbagliati su 70 tentativi — uno ogni ventitré — e concede 25 punti in tre set. L'8 aprile contro la Speranza registra il saldo di squadra più alto dell'anno, +39, con 8 errori in tutta la partita.</p>
+        <p>L'unica sconfitta è l'8 maggio a Rho, 0-3 contro il Lucernate, ed è la più istruttiva della stagione. Il Pegasus attacca al 40% di conversione con soli 13 errori — uno dei suoi dati offensivi migliori — e riceve all'80%. Ma segna un solo ace su 66 battute, il minimo assoluto dell'anno. Senza pressione al servizio, il Lucernate riceve comodo e produce 41 punti in break point contro 25. Si perde senza sbagliare quasi nulla.</p>
+
+        <h4>⭐ Il giocatore della stagione</h4>
+        <p><b>Nicolò Zonta (Centrale).</b> Moscatelli ha segnato di più e Sciarrone ha murato di più, ma il premio va a Zonta per una ragione che i numeri assoluti non catturano: in 19 presenze non ha mai chiuso una partita con un rendimento negativo in attacco. Mai. 182 punti, 30 muri, 13 ace, e una serie di partite — Gate Lime 30/01 con saldo +11, Lucernate 27/02 con +12 e 4 ace, Bresso 15/04 con +10 e il 100% di efficienza — in cui è stato semplicemente il migliore in campo. In una squadra che ha oscillato molto, lui è stato la costante.</p>
+
+        <h4>🔍 I tre temi della stagione</h4>
+        <p><b>1. Il gioco troppo sbilanciato su posto 4.</b> La distribuzione ha sistematicamente premiato la banda: 45% contro la Martesana, 47% contro la Martesana di novembre, fino al 50,7% contro il Lucernate il 27 febbraio, con il centro sceso al 17,6%. Funziona quando la banda è in giornata — quel giorno Panzani chiuse al 90% di efficienza — ma è un gioco leggibile. Le partite migliori dell'anno sono state quelle con la distribuzione più equilibrata: contro il Bresso a gennaio e contro l'ACLI a dicembre, con posto 3 al 29% e dieci muri punto come conseguenza diretta.</p>
+        <p><b>2. La rotazione P1 e il buco in cambio palla.</b> Per gran parte della stagione la rotazione d'apertura è stata sterile in break point: 2% contro l'ACLI, 2% contro il Gate, 0% contro il Bresso, 5% contro la Martesana. Si è sbloccata solo dal 30 gennaio in avanti. Sul fronte opposto, il cambio palla ha avuto buchi ricorrenti in P5 — 40% dei punti concessi contro l'ACLI a ottobre, 42% contro il Bresso a gennaio — e in P6, fino al 50% contro il Gate a dicembre.</p>
+        <p><b>3. Il servizio come interruttore.</b> È il fondamentale che ha deciso le due sconfitte e le vittorie più larghe. Contro la Martesana: 15 errori e 6 ace, sconfitta. A Rho: 1 ace in tutta la partita, sconfitta. A Quarto Oggiaro: 9 ace e break point a 0,8 punti per battuta, 25 punti concessi in tre set. Contro la Speranza: 8 ace e 5 errori, saldo +39. Quando il Pegasus ha servito con aggressività e giudizio insieme, non ha mai perso.</p>
+
+        <h4>📈 In sintesi</h4>
+        <p>Una stagione da 19 vittorie su 21 partite documentate, con 59 set vinti e 16 persi. Due sconfitte, entrambe spiegabili con la stessa causa: il servizio che smette di fare male. Due campionati affrontati con due identità diverse e vinti entrambi con ampio margine.</p>
+        <p>Il margine di crescita è tutto in una riga: nel PGS la squadra ha sbagliato un attacco ogni sette palloni, nel FIPAV uno ogni nove. Quando ha giocato come a Quarto Oggiaro — uno ogni ventitré — non c'è stata partita.</p>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -689,6 +797,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       <div class="fgroup" role="group" aria-label="Filtra per ruolo" id="fRuolo"></div>
       <div class="fgroup" role="group" aria-label="Filtra per campionato" id="fCamp"></div>
       <input class="search" id="fSearch" type="search" placeholder="Cerca un giocatore…" aria-label="Cerca un giocatore">
+      <button class="chip reset" id="fReset" hidden>Azzera</button>
       <span class="count" id="rosterCount"></span>
     </div>
     <div class="roster anim" id="roster"></div>
@@ -751,17 +860,37 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 <section id="partite" class="tabpane" hidden aria-labelledby="pt-h">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">L'archivio</span>
+      <span class="eyebrow">L'archivio dei risultati</span>
       <h2 class="sec-title" id="pt-h">Tutte le <em>21 partite</em></h2>
-      <p class="sec-lead">Clicca una partita per il referto completo con le statistiche di ogni giocatore.</p>
+      <p class="sec-lead">Il tabellone della stagione, ordinabile per qualsiasi colonna. Clicca una riga per il referto statistico completo. Per il racconto e le pagelle vai alla <a href="#gazzetta" style="color:var(--red-l);text-decoration:none;border-bottom:1px solid currentColor">Gazzetta</a>.</p>
     </div>
     <div class="filters">
       <div class="fgroup" role="group" aria-label="Filtra per campionato" id="mCamp"></div>
       <div class="fgroup" role="group" aria-label="Filtra per campo" id="mCampo"></div>
       <div class="fgroup" role="group" aria-label="Filtra per esito" id="mEsito"></div>
+      <input class="search" id="mSearch" type="search" placeholder="Cerca un avversario…" aria-label="Cerca un avversario">
+      <button class="chip reset" id="mReset" hidden>Azzera</button>
       <span class="count" id="matchCount"></span>
     </div>
-    <div class="matches anim" id="matches"></div>
+    <div class="glass card">
+      <div class="tbl-wrap"><div class="tbl-scroll">
+        <table class="t sortable" id="tblMatches">
+          <thead><tr>
+            <th data-k="ord" aria-sort="descending">Data</th>
+            <th data-k="opp" data-type="s">Avversario</th>
+            <th data-k="camp" data-type="s">Camp.</th>
+            <th data-k="dove" data-type="s">Campo</th>
+            <th data-k="mySets">Set</th>
+            <th data-k="parziali" data-type="s">Parziali</th>
+            <th data-k="punti">Punti</th>
+            <th data-k="attPtPct">Att. %</th>
+            <th data-k="muri">Muri</th>
+            <th data-k="ace">Ace</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div></div>
+    </div>
   </div>
 </section>
 
@@ -772,6 +901,12 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       <span class="eyebrow">🦅 Il racconto della stagione</span>
       <h2 class="sec-title" id="gz-h">La Gazzetta del <em>Pegasus</em></h2>
       <p class="sec-lead">Cronaca, referto, top performer e pagelle di ogni partita. Scout: Fabi e Max · Analisi: Max Grillo®</p>
+    </div>
+    <div class="filters">
+      <div class="fgroup" role="group" aria-label="Filtra per campionato" id="gCamp"></div>
+      <input class="search" id="gSearch" type="search" placeholder="Cerca avversario o giocatore…" aria-label="Cerca negli articoli">
+      <button class="chip reset" id="gReset" hidden>Azzera</button>
+      <span class="count" id="gzCount"></span>
     </div>
     <div class="gz anim" id="gzGrid"></div>
   </div>
@@ -784,7 +919,8 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
     <div class="ft-mark">✦ Ad Astra ✦</div>
     <p class="ft-sub">
       Ad Astra Pegasus · Stagione 2025-2026<br>
-      Statistiche su 21 partite con referto · Scout: Fabi, Max · Analisi: Max Grillo®
+      Statistiche su 21 partite con referto · Scout: Fabi, Max · Analisi: Max Grillo®<br>
+      <span id="aggiornato" class="tiny"></span>
     </p>
   </div>
 </footer>
@@ -2805,15 +2941,26 @@ const PBY = {}; PLAYERS.forEach(p=>PBY[p.nome]=p);
    3 · TOTALI DI SQUADRA
    ============================================================ */
 function totali(rows){
-  const t={punti:0,ace:0,muri:0,attTot:0,attPt:0,attErr:0,servTot:0,servErr:0,ricTot:0,ricPosN:0,difTot:0};
+  const t={punti:0,ace:0,muri:0,attTot:0,attPt:0,attErr:0,attEffN:0,servTot:0,servErr:0,
+           ricTot:0,ricPosN:0,difTot:0,difPosN:0,righe:rows.length};
   rows.forEach(r=>{ t.punti+=r.punti; t.ace+=r.ace; t.muri+=r.muri; t.attTot+=r.attTot; t.attPt+=r.attPt;
-    t.attErr+=r.attErr; t.servTot+=r.servTot; t.servErr+=r.servErr; t.ricTot+=r.ricTot;
-    t.ricPosN+=r.ricTot*r.ricPos/100; t.difTot+=r.difTot; });
+    t.attErr+=r.attErr; t.attEffN+=r.attTot*r.attEff/100; t.servTot+=r.servTot; t.servErr+=r.servErr;
+    t.ricTot+=r.ricTot; t.ricPosN+=r.ricTot*r.ricPos/100; t.difTot+=r.difTot; t.difPosN+=r.difTot*r.difPos/100; });
   return t;
 }
 const TOT   = totali(ROWS);
 const TPGS  = totali(ROWS.filter(r=>r.camp==="PGS"));
 const TFIP  = totali(ROWS.filter(r=>r.camp==="FIPAV"));
+/* medie di squadra: il metro con cui si confronta il singolo giocatore */
+const MEDIA = {
+  ppg:        TOT.righe  ? TOT.punti/TOT.righe        : 0,
+  muriPg:     TOT.righe  ? TOT.muri/TOT.righe         : 0,
+  attPtPct:   TOT.attTot ? TOT.attPt/TOT.attTot*100   : 0,
+  attEffPct:  TOT.attTot ? TOT.attEffN/TOT.attTot*100 : 0,
+  acePct:     TOT.servTot? TOT.ace/TOT.servTot*100    : 0,
+  ricPosPct:  TOT.ricTot ? TOT.ricPosN/TOT.ricTot*100 : 0,
+  difPosPct:  TOT.difTot ? TOT.difPosN/TOT.difTot*100 : 0
+};
 const bilancio = camp => {
   const ms = MATCHES.filter(m=>!camp||m.camp===camp);
   let v=0,s=0,sv=0,sp=0;
@@ -2832,7 +2979,9 @@ MATCHES.forEach(m=>{ const [a,b]=m.score.split("-").map(Number);
 /* ============================================================
    4 · HERO
    ============================================================ */
-$("#heroStats").innerHTML = [
+$("#heroRecord").textContent = "📈 "+BTOT.v+" vittorie su "+BTOT.n;
+/* i numeri della stagione vivono nella sezione Stagione, non ripetuti anche qui */
+$("#seasonStats").innerHTML = [
   ["Bilancio", BTOT.v+'<span class="sep">–</span>'+BTOT.s, Math.round(BTOT.v/BTOT.n*100)+"% di vittorie", ""],
   ["Set",      BTOT.sv+'<span class="sep">–</span>'+BTOT.sp, dec((BTOT.sv+BTOT.sp)/BTOT.n,1)+" set a partita", "c-blue"],
   ["Punti realizzati", it(TOT.punti), it(TOT.attPt)+" attacchi vincenti", ""],
@@ -2907,6 +3056,7 @@ function renderRoster(){
     if(fQ && p.nome.toLowerCase().indexOf(fQ)<0) return false;
     return true;
   });
+  $("#fReset").hidden = !(fRuolo!=="all"||fCamp!=="all"||fQ);
   $("#rosterCount").textContent = list.length+(list.length===1?" giocatore":" giocatori");
   $("#roster").innerHTML = list.length ? list.map(p=>`
     <button class="glass link ply" data-ply="${esc(p.nome)}" aria-label="Scheda di ${esc(p.nome)}">
@@ -2931,6 +3081,11 @@ chips($("#fRuolo"), [["all","Tutti"]].concat(RUOLI_ORD.filter(r=>PLAYERS.some(p=
   ()=>fRuolo, v=>{fRuolo=v; renderRoster();});
 chips($("#fCamp"), [["all","Entrambi"],["PGS","PGS"],["FIPAV","FIPAV"]], ()=>fCamp, v=>{fCamp=v; renderRoster();});
 $("#fSearch").addEventListener("input", e=>{ fQ=e.target.value.trim().toLowerCase(); renderRoster(); });
+$("#fReset").addEventListener("click", ()=>{
+  fRuolo=fCamp="all"; fQ=""; $("#fSearch").value="";
+  ["#fRuolo","#fCamp"].forEach(sel=> $$(".chip",$(sel)).forEach(c=>c.setAttribute("aria-pressed", c.dataset.v==="all")));
+  renderRoster();
+});
 renderRoster();
 
 /* ============================================================
@@ -2967,6 +3122,7 @@ function renderTable(){
       <td>${p.difTot||"—"}</td></tr>`).join("");
   $$("#tblAll thead th").forEach(th=> th.dataset.k===sortK
     ? th.setAttribute("aria-sort", sortDir<0?"descending":"ascending") : th.removeAttribute("aria-sort"));
+  segnalaScorrimento();
 }
 $("#tblAll thead").addEventListener("click", e=>{
   const th=e.target.closest("th"); if(!th||!th.dataset.k) return;
@@ -2978,32 +3134,74 @@ renderTable();
 /* ============================================================
    9 · PARTITE
    ============================================================ */
-let mCamp="all", mCampo="all", mEsito="all";
+let mCamp="all", mCampo="all", mEsito="all", mQ="";
+let mSortK="ord", mSortDir=-1;
+
+/* dati derivati per riga di tabella, calcolati una volta sola */
+MATCHES.forEach(m=>{
+  const t = totali(ROWS.filter(r=>r.data===m.d));
+  m.ord = sortKey(m.d);
+  m.dove = m.casa ? "Casa" : "Trasferta";
+  m.punti = t.punti; m.muri = t.muri; m.ace = t.ace;
+  m.attPtPct = t.attTot ? t.attPt/t.attTot*100 : 0;
+  m.parziali = "";     /* riempito dagli articoli, se presenti */
+});
+
 function renderMatches(){
+  MATCHES.forEach(m=>{ const a=GZ[m.d]; if(a&&a.sets) m.parziali = a.sets; });
   const list = MATCHES.filter(m=>{
     if(mCamp!=="all"&&m.camp!==mCamp) return false;
     if(mCampo==="casa"&&!m.casa) return false;
     if(mCampo==="fuori"&&m.casa) return false;
     if(mEsito==="w"&&!m.win) return false;
     if(mEsito==="l"&&m.win) return false;
+    if(mQ && m.opp.toLowerCase().indexOf(mQ)<0) return false;
     return true;
+  }).sort((a,b)=>{
+    const A=a[mSortK], B=b[mSortK];
+    if(typeof A==="string") return mSortDir*String(A).localeCompare(String(B));
+    return mSortDir*(A-B);
   });
+
+  const attivo = mCamp!=="all"||mCampo!=="all"||mEsito!=="all"||mQ;
+  $("#mReset").hidden = !attivo;
   $("#matchCount").textContent = list.length+(list.length===1?" partita":" partite");
-  $("#matches").innerHTML = list.length ? list.map(m=>{
-    const gz = GZ[m.d];
-    return `<button class="glass link mt" data-match="${esc(m.d)}">
-      <div class="mt-body">
-        <div class="mt-name">${esc(m.label)}</div>
-        <div class="mt-meta"><span class="pip ${m.camp.toLowerCase()}"></span>${esc(m.camp)} · ${dataEstesa(m.d)} · ${m.casa?"in casa":"in trasferta"}${m.luogo?" · "+esc(m.luogo):""}</div>
-        ${gz&&gz.sets?`<div class="mt-sets">${esc(gz.sets)}</div>`:""}
-      </div>
-      <span class="res ${m.win?"w":"l"}">${m.display}</span>
-    </button>`;
-  }).join("") : `<div class="glass empty" style="grid-column:1/-1">Nessuna partita corrisponde ai filtri.</div>`;
+  $("#tblMatches tbody").innerHTML = list.length ? list.map(m=>`
+    <tr class="riga" data-match="${esc(m.d)}" tabindex="0" role="button" aria-label="Referto di ${esc(m.label)}">
+      <td class="lead">${m.d}</td>
+      <td class="lead">${esc(m.opp)}</td>
+      <td><span class="pip ${m.camp.toLowerCase()}"></span>${esc(m.camp)}</td>
+      <td>${esc(m.dove)}</td>
+      <td><span class="res sm ${m.win?"w":"l"}">${m.display}</span></td>
+      <td class="tiny muted" style="text-align:left">${esc(m.parziali||"—")}</td>
+      <td>${m.punti||"—"}</td>
+      <td>${m.attPtPct?Math.round(m.attPtPct)+"%":"—"}</td>
+      <td>${m.muri||"—"}</td>
+      <td>${m.ace||"—"}</td>
+    </tr>`).join("")
+    : `<tr><td colspan="10" class="empty">Nessuna partita corrisponde ai filtri.</td></tr>`;
+  $$("#tblMatches thead th").forEach(th=> th.dataset.k===mSortK
+    ? th.setAttribute("aria-sort", mSortDir<0?"descending":"ascending") : th.removeAttribute("aria-sort"));
+  segnalaScorrimento();
 }
+$("#tblMatches thead").addEventListener("click", e=>{
+  const th=e.target.closest("th"); if(!th||!th.dataset.k) return;
+  if(mSortK===th.dataset.k) mSortDir*=-1; else { mSortK=th.dataset.k; mSortDir = th.dataset.type==="s"?1:-1; }
+  renderMatches();
+});
+$("#tblMatches tbody").addEventListener("keydown", e=>{
+  if(e.key==="Enter"||e.key===" "){ const r=e.target.closest("[data-match]"); if(r){ e.preventDefault(); r.click(); } }
+});
 chips($("#mCamp"), [["all","Tutti"],["PGS","PGS"],["FIPAV","FIPAV"]], ()=>mCamp, v=>{mCamp=v;renderMatches();});
 chips($("#mCampo"),[["all","Ovunque"],["casa","In casa"],["fuori","Trasferta"]], ()=>mCampo, v=>{mCampo=v;renderMatches();});
 chips($("#mEsito"),[["all","Tutte"],["w","Vittorie"],["l","Sconfitte"]], ()=>mEsito, v=>{mEsito=v;renderMatches();});
+$("#mSearch").addEventListener("input", e=>{ mQ=e.target.value.trim().toLowerCase(); renderMatches(); });
+$("#mReset").addEventListener("click", ()=>{
+  mCamp=mCampo=mEsito="all"; mQ=""; $("#mSearch").value="";
+  [["#mCamp","all"],["#mCampo","all"],["#mEsito","all"]].forEach(([sel,v])=>
+    $$(".chip",$(sel)).forEach(c=>c.setAttribute("aria-pressed", c.dataset.v===v)));
+  renderMatches();
+});
 
 /* ============================================================
    10 · GAZZETTA — parsing degli articoli embeddati
@@ -3129,8 +3327,21 @@ function tabellaPartita(d){
     `</tbody></table></div>`;
 }
 
+let gCamp="all", gQ="";
 function renderGazzetta(){
-  const cards = MATCHES.map(m=>{
+  const list = MATCHES.filter(m=>{
+    if(gCamp!=="all" && m.camp!==gCamp) return false;
+    if(gQ){
+      const a = GZ[m.d];
+      /* la ricerca guarda avversario, occhiello e nomi nelle pagelle */
+      const testo = (m.opp+" "+(a?a.occhiello+" "+a.pagelle.map(p=>p.nome).join(" "):"")).toLowerCase();
+      if(testo.indexOf(gQ)<0) return false;
+    }
+    return true;
+  });
+  $("#gReset").hidden = !(gCamp!=="all"||gQ);
+  $("#gzCount").textContent = list.length+(list.length===1?" articolo":" articoli");
+  const cards = list.map(m=>{
     const a = GZ[m.d];
     const mvp = a && a.pagelle.length ? (a.pagelle.find(p=>p.mvp)||a.pagelle[0]) : null;
     return `<button class="glass link gz-card" data-match="${esc(m.d)}">
@@ -3142,13 +3353,20 @@ function renderGazzetta(){
     </button>`;
   }).join("");
   $("#gzGrid").innerHTML = `
-    <button class="glass link gz-card gz-feature" data-bilancio="1">
-      <span class="gz-kicker">📕 Speciale</span>
+    <a class="glass link gz-card gz-feature" href="#stagione" data-vai-bilancio="1" style="text-decoration:none">
+      <span class="gz-kicker">📕 Speciale · nella sezione Stagione</span>
       <span class="gz-score">Bilancio Stagionale 2025-2026</span>
       <span class="gz-title">Due campionati, due squadre diverse: il racconto completo della stagione, i numeri, i protagonisti e i tre temi dell'anno.</span>
-      <span class="gz-mvp">⭐ Giocatore della stagione: <b>Nicolò Zonta</b></span>
-    </button>` + cards;
+      <span class="gz-mvp">⭐ Giocatore della stagione: <b>Nicolò Zonta</b> →</span>
+    </a>` + (cards || `<div class="glass empty" style="grid-column:1/-1">Nessun articolo corrisponde ai filtri.</div>`);
 }
+chips($("#gCamp"), [["all","Tutti"],["PGS","PGS"],["FIPAV","FIPAV"]], ()=>gCamp, v=>{gCamp=v;renderGazzetta();});
+$("#gSearch").addEventListener("input", e=>{ gQ=e.target.value.trim().toLowerCase(); renderGazzetta(); });
+$("#gReset").addEventListener("click", ()=>{
+  gCamp="all"; gQ=""; $("#gSearch").value="";
+  $$(".chip",$("#gCamp")).forEach(c=>c.setAttribute("aria-pressed", c.dataset.v==="all"));
+  renderGazzetta();
+});
 
 /* ============================================================
    11 · MODALE
@@ -3157,6 +3375,7 @@ const modal=$("#modal"), mBody=$("#modalBody"), mTitle=$("#modalTitle"), mSub=$(
 function openModal(title, sub, html){
   modal.classList.remove("closing");
   mTitle.textContent=title; mSub.textContent=sub||""; mBody.innerHTML=html; mBody.scrollTop=0;
+  segnalaScorrimento(mBody);
   if(typeof modal.showModal==="function"){ if(!modal.open) modal.showModal(); }
   else modal.setAttribute("open","");
 }
@@ -3188,8 +3407,13 @@ document.addEventListener("click", e=>{
   if(mb){ apertoOra=null; const m=MBY[mb.dataset.match];
     openModal(m.label+"  "+m.display, m.camp+" · "+dataEstesa(m.d)+(m.luogo?" · "+m.luogo:""), renderArticolo(m.d));
     setTimeout(()=>{},0); return; }
-  const bb = e.target.closest("[data-bilancio]");
-  if(bb){ openModal("Bilancio Stagionale 2025-2026","La Gazzetta del Pegasus · 21 partite con referto", $("#bilancioTpl").innerHTML); return; }
+  /* il Bilancio non è più una finestra: si va alla sezione Stagione e lo si raggiunge */
+  const bb = e.target.closest("[data-vai-bilancio]");
+  if(bb){
+    e.preventDefault(); vaiA("stagione"); apriScheda("stagione", false);
+    setTimeout(()=>{ const t=$("#bilancio"); if(t) t.scrollIntoView({behavior:"smooth",block:"start"}); }, 60);
+    return;
+  }
 });
 
 /* ---------- scheda giocatore ---------- */
@@ -3224,7 +3448,13 @@ function schedaGiocatore(p){
     ${box("Ricezione", p.ricTot?it(p.ricTot):"—", p.ricTot?Math.round(p.ricPosPct)+"% positiva · "+Math.round(p.ricPrfPct)+"% perfetta":"non riceve")}
     ${box("Difese", p.difTot?it(p.difTot):"—", p.difTot?Math.round(p.difPosPct)+"% positive":"non rilevate")}
   </div>`;
-  h += `<h4 style="margin:0 0 10px;font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--red-s);font-weight:800">Il profilo</h4>
+  h += `<h4 style="margin:0 0 4px;font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--red-s);font-weight:800">Il profilo</h4>
+    <p class="tiny muted" style="margin:0 0 12px">Quanto ${esc(p.nome.split(" ")[0])} si discosta dalla media di squadra, fondamentale per fondamentale. Passa sopra una barra per vedere i valori reali.</p>
+    <div class="legenda">
+      <span><i class="sopra"></i>Sopra la media</span>
+      <span><i class="sotto"></i>Sotto la media</span>
+      <span class="nota">Sotto la media non vuol dire male: un libero non attacca.</span>
+    </div>
     <div class="chart-box sq" style="margin-bottom:22px"><canvas id="chPly"></canvas></div>`;
   h += `<h4 style="margin:0 0 10px;font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--red-s);font-weight:800">Punti partita per partita</h4>
     <div class="chart-box" style="margin-bottom:22px"><canvas id="chPlyTrend"></canvas></div>`;
@@ -3268,24 +3498,64 @@ const axes = (extra)=> Object.assign({
   x:{grid:{color:GRID,drawTicks:false},border:{display:false},ticks:{maxRotation:0,autoSkip:true}},
   y:{grid:{color:GRID,drawTicks:false},border:{display:false},beginAtZero:true}
 }, extra||{});
+/* ---------- segnale di scorrimento orizzontale sulle tabelle ---------- */
+function segnalaScorrimento(radice){
+  $$(".tbl-scroll", radice||document).forEach(sc=>{
+    let wrap = sc.parentElement;
+    if(!wrap || !wrap.classList.contains("tbl-wrap")){
+      wrap = document.createElement("div"); wrap.className="tbl-wrap";
+      sc.parentNode.insertBefore(wrap, sc); wrap.appendChild(sc);
+    }
+    const agg = ()=> wrap.classList.toggle("more", sc.scrollWidth - sc.clientWidth - sc.scrollLeft > 8);
+    if(!sc.dataset.spia){ sc.dataset.spia="1"; sc.addEventListener("scroll", agg, {passive:true}); addEventListener("resize", agg); }
+    agg();
+  });
+}
+
 /* svela il riquadro solo quando il grafico è stato disegnato: evita il "lampo" del canvas vuoto */
 function pronto(cv){ const b = cv && cv.closest(".chart-box"); if(b) requestAnimationFrame(()=>b.classList.add("ready")); }
 let plyCharts=[];
 function chartsGiocatore(p){
   if(!OK) return;
   plyCharts.forEach(c=>{try{c.destroy()}catch(e){}}); plyCharts=[];
-  const cv=$("#chPly"); if(cv) pronto(cv), plyCharts.push(new Chart(cv,{
-    type:"radar",
-    data:{labels:["Attacco %","Efficienza att.","Ace / battute","Ricez. positiva","Ricez. perfetta","Difesa positiva"],
-      datasets:[{label:p.nome,
-        data:[Math.round(p.attPtPct),Math.round(p.attEffPct),Math.min(100,Math.round(p.acePct*5)),
-              Math.round(p.ricPosPct),Math.round(p.ricPrfPct),Math.round(p.difPosPct)],
-        backgroundColor:"rgba(231,76,80,.22)",borderColor:"#E74C50",borderWidth:2,
-        pointBackgroundColor:"#E74C50",pointRadius:3}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-      scales:{r:{min:0,max:100,grid:{color:GRID},angleLines:{color:GRID},
-        pointLabels:{color:TICK,font:{size:10.5}},ticks:{display:false}}}}
-  }));
+  /* Barre di scarto rispetto alla media di squadra.
+     Il radar precedente metteva sullo stesso cerchio grandezze non confrontabili
+     e scalava gli ace di un fattore arbitrario: la forma non voleva dire nulla. */
+  const cv=$("#chPly");
+  if(cv){
+    /* si mostrano solo i fondamentali che il giocatore ha davvero praticato:
+       a un libero non ha senso misurare l'attacco */
+    const voci = [
+      {k:"Punti a partita",   v:p.ppg,        m:MEDIA.ppg,       d:1, u:"", ok:true},
+      {k:"Attacchi a punto",  v:p.attPtPct,   m:MEDIA.attPtPct,  d:0, u:"%", ok:p.attTot>=10},
+      {k:"Efficienza attacco",v:p.attEffPct,  m:MEDIA.attEffPct, d:0, u:"%", ok:p.attTot>=10},
+      {k:"Ace ogni 100 batt.",v:p.acePct,     m:MEDIA.acePct,    d:1, u:"", ok:p.servTot>=15},
+      {k:"Muri a partita",    v:p.pres?p.muri/p.pres:0, m:MEDIA.muriPg, d:1, u:"", ok:true},
+      {k:"Ricezione positiva",v:p.ricPosPct,  m:MEDIA.ricPosPct, d:0, u:"%", ok:p.ricTot>=10},
+      {k:"Difesa positiva",   v:p.difPosPct,  m:MEDIA.difPosPct, d:0, u:"%", ok:p.difTot>=10}
+    ].filter(x=> x.ok && x.m>0);
+    /* scarto percentuale sulla media, limitato a ±100 per non far esplodere la scala */
+    const scarti = voci.map(x=> Math.max(-100, Math.min(100, x.m ? (x.v-x.m)/x.m*100 : 0)));
+    pronto(cv);
+    plyCharts.push(new Chart(cv,{
+      type:"bar",
+      data:{labels:voci.map(x=>x.k),
+        datasets:[{label:"Scarto sulla media",data:scarti,borderRadius:4,borderWidth:1,
+          backgroundColor:scarti.map(s=> s>=0 ? "rgba(231,76,80,.70)" : "rgba(76,116,176,.55)"),
+          borderColor:scarti.map(s=> s>=0 ? "#E74C50" : "#4C74B0")}]},
+      options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},
+          tooltip:{callbacks:{
+            title:ctx=>voci[ctx[0].dataIndex].k,
+            label:ctx=>{const x=voci[ctx.dataIndex];
+              return dec(x.v,x.d)+x.u+"  ·  media squadra "+dec(x.m,x.d)+x.u;},
+            afterLabel:ctx=>(scarti[ctx.dataIndex]>=0?"+":"")+Math.round(scarti[ctx.dataIndex])+"% sulla media"}}},
+        scales:{
+          x:{grid:{color:GRID,drawTicks:false},border:{display:false},min:-100,max:100,
+             ticks:{callback:v=>(v>0?"+":"")+v+"%",font:{size:9.5}}},
+          y:{grid:{display:false},border:{display:false},ticks:{font:{size:10.5},autoSkip:false}}}}
+    }));
+  }
   const cv2=$("#chPlyTrend"); if(cv2) pronto(cv2), plyCharts.push(new Chart(cv2,{
     type:"bar",
     data:{labels:p.match.map(r=>{const m=MBY[r.data];return m?m.opp:r.data;}),
@@ -3298,15 +3568,25 @@ function chartsGiocatore(p){
   }));
 }
 let seasonCharts=[];
+const legenda = {position:"top",labels:{boxWidth:10,boxHeight:10,usePointStyle:true,pointStyle:"circle",padding:14}};
+const barPGS  = {backgroundColor:"rgba(231,76,80,.72)",borderColor:"#E74C50",borderWidth:1,borderRadius:5};
+const barFIP  = {backgroundColor:"rgba(76,116,176,.78)",borderColor:"#4C74B0",borderWidth:1,borderRadius:5};
+
 function graficiStagione(){
   if(!OK) return;
   seasonCharts.forEach(c=>{try{c.destroy()}catch(e){}}); seasonCharts=[];
-  pronto($("#chSeason")); pronto($("#chCompare"));
+  ["#chSeason","#chRates","#chVolumes"].forEach(s=>pronto($(s)));
+
+  /* --- punti per SET: rende comparabili partite da 3 e da 5 set --- */
+  const perSet = MATCHES_CRONO.map(m=>{
+    const t = totali(ROWS.filter(r=>r.data===m.d));
+    const set = m.mySets + m.hisSets;
+    return set ? t.punti/set : 0;
+  });
   seasonCharts.push(new Chart($("#chSeason"),{
     type:"line",
     data:{labels:MATCHES_CRONO.map(m=>m.opp),
-      datasets:[{label:"Punti di squadra",
-        data:MATCHES_CRONO.map(m=>totali(ROWS.filter(r=>r.data===m.d)).punti),
+      datasets:[{label:"Punti per set",data:perSet,
         borderColor:"#E74C50",borderWidth:2.5,tension:.35,fill:true,
         backgroundColor:(c)=>{const {ctx,chartArea}=c.chart; if(!chartArea) return "rgba(231,76,80,.15)";
           const g=ctx.createLinearGradient(0,chartArea.top,0,chartArea.bottom);
@@ -3315,22 +3595,39 @@ function graficiStagione(){
         pointBackgroundColor:MATCHES_CRONO.map(m=>m.win?"#E74C50":cvar("--bg")),
         pointBorderColor:"#E74C50",pointBorderWidth:2}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
-      tooltip:{callbacks:{title:ctx=>{const m=MATCHES_CRONO[ctx[0].dataIndex];return m.label+"  "+m.display;},
-        afterLabel:ctx=>{const m=MATCHES_CRONO[ctx.dataIndex];return m.camp+" · "+dataEstesa(m.d)+(m.win?"":" · sconfitta");}}}},
+      tooltip:{callbacks:{
+        title:ctx=>{const m=MATCHES_CRONO[ctx[0].dataIndex];return m.label+"  "+m.display;},
+        label:ctx=>dec(ctx.raw,1)+" punti per set",
+        afterLabel:ctx=>{const m=MATCHES_CRONO[ctx.dataIndex];
+          return m.camp+" · "+dataEstesa(m.d)+" · "+(m.mySets+m.hisSets)+" set"+(m.win?"":" · sconfitta");}}}},
       scales:axes({x:{grid:{display:false},border:{display:false},ticks:{maxRotation:60,font:{size:9.5}}}})}
   }));
-  seasonCharts.push(new Chart($("#chCompare"),{
+
+  /* --- percentuali e volumi separati: sullo stesso asse non erano leggibili --- */
+  seasonCharts.push(new Chart($("#chRates"),{
     type:"bar",
-    data:{labels:["Attacchi\na partita","Conversione\nattacco %","Errori\nattacco %","Muri\na partita","Ace\na partita","Ricez.\npositività %"],
+    data:{labels:["Conversione\nattacco","Errori\nattacco","Ricezione\npositiva"],
       datasets:[
-        {label:"PGS",data:[TPGS.attTot/BPGS.n, TPGS.attPt/TPGS.attTot*100, TPGS.attErr/TPGS.attTot*100, TPGS.muri/BPGS.n, TPGS.ace/BPGS.n, TPGS.ricPosN/TPGS.ricTot*100],
-         backgroundColor:"rgba(231,76,80,.72)",borderColor:"#E74C50",borderWidth:1,borderRadius:5},
-        {label:"FIPAV",data:[TFIP.attTot/BFIP.n, TFIP.attPt/TFIP.attTot*100, TFIP.attErr/TFIP.attTot*100, TFIP.muri/BFIP.n, TFIP.ace/BFIP.n, TFIP.ricPosN/TFIP.ricTot*100],
-         backgroundColor:"rgba(76,116,176,.78)",borderColor:"#4C74B0",borderWidth:1,borderRadius:5}]},
+        Object.assign({label:"PGS", data:[TPGS.attPt/TPGS.attTot*100, TPGS.attErr/TPGS.attTot*100, TPGS.ricPosN/TPGS.ricTot*100]}, barPGS),
+        Object.assign({label:"FIPAV",data:[TFIP.attPt/TFIP.attTot*100, TFIP.attErr/TFIP.attTot*100, TFIP.ricPosN/TFIP.ricTot*100]}, barFIP)]},
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:"top",labels:{boxWidth:10,boxHeight:10,usePointStyle:true,pointStyle:"circle",padding:14}},
-        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+": "+dec(ctx.raw,1)}}},
-      scales:axes({x:{grid:{display:false},border:{display:false},ticks:{font:{size:9.5}}}})}
+      plugins:{legend:legenda,tooltip:{callbacks:{label:ctx=>ctx.dataset.label+": "+dec(ctx.raw,1)+"%"}}},
+      scales:axes({x:{grid:{display:false},border:{display:false},ticks:{font:{size:9.5}}},
+        y:{grid:{color:GRID,drawTicks:false},border:{display:false},beginAtZero:true,max:100,
+           ticks:{callback:v=>v+"%"}}})}
+  }));
+  seasonCharts.push(new Chart($("#chVolumes"),{
+    type:"bar",
+    data:{labels:["Attacchi","Muri punto","Ace"],
+      datasets:[
+        Object.assign({label:"PGS", data:[TPGS.attTot/BPGS.n, TPGS.muri/BPGS.n, TPGS.ace/BPGS.n]}, barPGS),
+        Object.assign({label:"FIPAV",data:[TFIP.attTot/BFIP.n, TFIP.muri/BFIP.n, TFIP.ace/BFIP.n]}, barFIP)]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:legenda,tooltip:{callbacks:{label:ctx=>ctx.dataset.label+": "+dec(ctx.raw,1)+" a partita"}}},
+      scales:{x:{grid:{display:false},border:{display:false},ticks:{font:{size:9.5}}},
+        /* asse logaritmico: 143 attacchi e 5 ace stanno insieme senza schiacciarsi */
+        y:{type:"logarithmic",grid:{color:GRID,drawTicks:false},border:{display:false},
+           ticks:{callback:v=>[1,3,10,30,100].includes(v)?v:""}}}}
   }));
 }
 
@@ -3367,6 +3664,7 @@ function applicaTema(t, salva){
   tgl.textContent = t==="light" ? "☾" : "☀";
   tgl.setAttribute("aria-label", t==="light" ? "Passa al tema notte" : "Passa al tema giorno");
   applicaLogo(t);
+  const tc=$('meta[name="theme-color"]'); if(tc) tc.content = t==="light" ? "#F2F5FC" : "#0B0D14";
   if(salva){ try{ localStorage.setItem(TEMA_KEY, t); }catch(e){} }
   if(!OK) return;
   chartTheme();
@@ -3393,15 +3691,23 @@ burger.addEventListener("click",()=>{
   burger.setAttribute("aria-label", o ? "Chiudi il menu" : "Apri il menu");
 });
 
-const PANES = ["bacheca","stagione","rosa","classifiche","partite","gazzetta"];
+/* Stagione è la porta d'ingresso: la Bacheca può essere vuota o vecchia,
+   chi arriva la prima volta vuole sapere com'è andata. */
+const PANES = ["stagione","bacheca","rosa","classifiche","partite","gazzetta"];
+const TITOLI = {stagione:"La stagione",bacheca:"Bacheca",rosa:"La rosa",
+                classifiche:"Classifiche",partite:"Le partite",gazzetta:"La Gazzetta"};
 const navA  = $$("nav.links a");
 function apriScheda(id, animato){
   if(PANES.indexOf(id)<0) id = PANES[0];
   PANES.forEach(p=>{ const el=document.getElementById(p); if(el) el.hidden = (p!==id); });
   navA.forEach(a=>{ const on = a.getAttribute("href")==="#"+id;
     a.classList.toggle("on", on); a.setAttribute("aria-selected", on); });
+  document.title = TITOLI[id]+" · Ad Astra Pegasus 2025-2026";
   /* i grafici vanno creati solo quando il canvas è visibile, altrimenti nasce a dimensione zero */
   if(id==="stagione" && !fatto.stagione){ fatto.stagione = true; graficiStagione(); }
+  const el = document.getElementById(id);
+  if(el){ if(fatto[id]) el.classList.add("seen"); fatto[id] = true; }
+  segnalaScorrimento();
   if(animato) window.scrollTo({top:0,behavior:"smooth"});
 }
 navA.forEach(a=> a.setAttribute("role","tab"));
@@ -3425,43 +3731,21 @@ addEventListener("hashchange", ()=> apriScheda(location.hash.slice(1), false));
 addEventListener("popstate", ()=> apriScheda(location.hash.slice(1), false));
 apriScheda(location.hash.slice(1), false);
 
+/* ultima partita presente nei dati: dice al visitatore quanto è aggiornato il sito */
+(function(){
+  const el=$("#aggiornato"); if(!el||!MATCHES.length) return;
+  const ultima = MATCHES.slice().sort((a,b)=>sortKey(b.d).localeCompare(sortKey(a.d)))[0];
+  el.textContent = "Dati aggiornati all'ultima partita disputata: "+dataEstesa(ultima.d);
+})();
+
 const tt=$("#toTop");
 tt.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 addEventListener("scroll",()=>tt.classList.toggle("show", scrollY>700), {passive:true});
 })();
 </script>
 
-<template id="bilancioTpl">
-<div class="art">
-<div class="note" style="margin-bottom:18px">Questo bilancio si basa sui 21 match report disponibili: 10 partite del campionato PGS e 11 del campionato FIPAV. Le altre 12 gare del calendario stagionale non hanno referto e restano quindi fuori da ogni conteggio.</div>
-
-<p class="occhiello">Due campionati, due squadre diverse</p>
-<p>Il dato più interessante della stagione non è il bilancio complessivo — 19 vittorie e 2 sconfitte, numeri da squadra forte — ma il fatto che il Pegasus abbia giocato due pallavoli completamente diverse nei due campionati.</p>
-<p>Nel PGS ha vinto lottando: partite lunghe, muri a raffica, cinquanta palloni attaccati per set. Nel FIPAV ha vinto controllando: match corti, selezione chirurgica, pochissimi errori. Stessi giocatori, stesso allenatore, due identità.</p>
-
-<h4>🏐 Campionato PGS · 9 vittorie – 1 sconfitta</h4>
-<p>Il PGS è stato il campionato della fatica e del muro. Tre partite su dieci sono finite al quinto set, quattro al quarto: 3,9 set di media, con un volume offensivo enorme — 143 attacchi a partita, con il picco assurdo dei 215 contro la Martesana.</p>
-<p>La conversione si è fermata al 31,9%, il valore più basso delle due competizioni, e gli errori hanno pesato: uno ogni sette palloni attaccati. Ma dove il Pegasus ha vinto il campionato è sopra la rete: 81 muri punto in dieci partite, con tre gare da almeno dieci — 10 contro l'ACLI, 15 contro i Black Bulls, 15 contro il Melzo.</p>
-<p>L'unica sconfitta arriva l'11 gennaio contro la Martesana, al tie-break in casa. È una partita che riassume tutti i limiti: 215 attacchi per soli 62 punti, 32 errori sotto rete, 15 battute sbagliate contro 6 ace, e per la prima volta un break point in rosso. Curiosamente, quella stessa sera la ricezione fu la migliore di tutta la stagione: 87% di positività su 101 palloni.</p>
-
-<h4>🏐 Campionato FIPAV · 10 vittorie – 1 sconfitta</h4>
-<p>Il FIPAV è stato il campionato del controllo. 3,3 set di media, sette 3-0 su undici partite, e soprattutto una selezione del pallone di un altro livello: 36,9% di conversione in attacco con appena l'11,1% di errori.</p>
-<p>I due estremi della stagione stanno entrambi qui. Il 7 febbraio a Quarto Oggiaro il Pegasus chiude con 3 attacchi sbagliati su 70 tentativi — uno ogni ventitré — e concede 25 punti in tre set. L'8 aprile contro la Speranza registra il saldo di squadra più alto dell'anno, +39, con 8 errori in tutta la partita.</p>
-<p>L'unica sconfitta è l'8 maggio a Rho, 0-3 contro il Lucernate, ed è la più istruttiva della stagione. Il Pegasus attacca al 40% di conversione con soli 13 errori — uno dei suoi dati offensivi migliori — e riceve all'80%. Ma segna un solo ace su 66 battute, il minimo assoluto dell'anno. Senza pressione al servizio, il Lucernate riceve comodo e produce 41 punti in break point contro 25. Si perde senza sbagliare quasi nulla.</p>
-
-<h4>⭐ Il giocatore della stagione</h4>
-<p><b>Nicolò Zonta (Centrale).</b> Moscatelli ha segnato di più e Sciarrone ha murato di più, ma il premio va a Zonta per una ragione che i numeri assoluti non catturano: in 19 presenze non ha mai chiuso una partita con un rendimento negativo in attacco. Mai. 182 punti, 30 muri, 13 ace, e una serie di partite — Gate Lime 30/01 con saldo +11, Lucernate 27/02 con +12 e 4 ace, Bresso 15/04 con +10 e il 100% di efficienza — in cui è stato semplicemente il migliore in campo. In una squadra che ha oscillato molto, lui è stato la costante.</p>
-
-<h4>🔍 I tre temi della stagione</h4>
-<p><b>1. Il gioco troppo sbilanciato su posto 4.</b> La distribuzione ha sistematicamente premiato la banda: 45% contro la Martesana, 47% contro la Martesana di novembre, fino al 50,7% contro il Lucernate il 27 febbraio, con il centro sceso al 17,6%. Funziona quando la banda è in giornata — quel giorno Panzani chiuse al 90% di efficienza — ma è un gioco leggibile. Le partite migliori dell'anno sono state quelle con la distribuzione più equilibrata: contro il Bresso a gennaio e contro l'ACLI a dicembre, con posto 3 al 29% e dieci muri punto come conseguenza diretta.</p>
-<p><b>2. La rotazione P1 e il buco in cambio palla.</b> Per gran parte della stagione la rotazione d'apertura è stata sterile in break point: 2% contro l'ACLI, 2% contro il Gate, 0% contro il Bresso, 5% contro la Martesana. Si è sbloccata solo dal 30 gennaio in avanti. Sul fronte opposto, il cambio palla ha avuto buchi ricorrenti in P5 — 40% dei punti concessi contro l'ACLI a ottobre, 42% contro il Bresso a gennaio — e in P6, fino al 50% contro il Gate a dicembre.</p>
-<p><b>3. Il servizio come interruttore.</b> È il fondamentale che ha deciso le due sconfitte e le vittorie più larghe. Contro la Martesana: 15 errori e 6 ace, sconfitta. A Rho: 1 ace in tutta la partita, sconfitta. A Quarto Oggiaro: 9 ace e break point a 0,8 punti per battuta, 25 punti concessi in tre set. Contro la Speranza: 8 ace e 5 errori, saldo +39. Quando il Pegasus ha servito con aggressività e giudizio insieme, non ha mai perso.</p>
-
-<h4>📈 In sintesi</h4>
-<p>Una stagione da 19 vittorie su 21 partite documentate, con 59 set vinti e 16 persi. Due sconfitte, entrambe spiegabili con la stessa causa: il servizio che smette di fare male. Due campionati affrontati con due identità diverse e vinti entrambi con ampio margine.</p>
-<p>Il margine di crescita è tutto in una riga: nel PGS la squadra ha sbagliato un attacco ogni sette palloni, nel FIPAV uno ogni nove. Quando ha giocato come a Quarto Oggiaro — uno ogni ventitré — non c'è stata partita.</p>
-</div>
-</template>
+<!-- Il Bilancio Stagionale non è più qui: sta disteso nella sezione Stagione,
+     dentro <article id="bilancio">, non più in una finestra modale. -->
 
 </body>
 </html>
