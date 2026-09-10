@@ -157,6 +157,11 @@ img{max-width:100%;display:block}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 a{color:inherit}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* link di salto: primo elemento raggiungibile con Tab */
+.skip{position:absolute;left:12px;top:-60px;z-index:200;padding:10px 16px;border-radius:var(--r-sm);
+  background:var(--red);color:#fff;font-weight:700;font-size:13px;text-decoration:none;transition:top .2s}
+.skip:focus{top:12px}
+:focus-visible{outline:2px solid var(--red-l);outline-offset:2px}
 
 /* ---------- Fondale mesh ---------- */
 #mesh{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -616,6 +621,8 @@ dialog.modal::backdrop{background:var(--backdrop);-webkit-backdrop-filter:blur(5
 footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36px;text-align:center}
 .ft-mark{font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
 .ft-sub{margin-top:10px;font-size:11.5px;color:var(--ink-4);line-height:1.7}
+.ft-link{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--stroke);padding-bottom:1px}
+.ft-link:hover{color:var(--ink);border-color:var(--red)}
 
 .empty{padding:34px 20px;text-align:center;color:var(--ink-3);font-size:13.5px}
 .note{padding:13px 16px;border-radius:var(--r-sm);background:rgba(76,116,176,.10);border:1px solid rgba(76,116,176,.28);
@@ -636,6 +643,8 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 
 <div class="shell">
 
+<a class="skip" href="#contenuto">Salta al contenuto</a>
+
 <header class="nav">
   <div class="nav-in">
     <a class="brand" href="#stagione"><img class="peg peg-nav" src="logo%201.png" alt="" aria-hidden="true"
@@ -655,7 +664,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
   </div>
 </header>
 
-<main id="top">
+<main id="top" tabindex="-1">
 
 <!-- ============ HERO ============ -->
 <section class="hero" aria-labelledby="hero-h">
@@ -709,17 +718,20 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
     <div class="glass card" style="margin-bottom:var(--s3)">
       <p class="card-title">Punti di squadra per set giocato</p>
       <p class="tiny muted" style="margin:-8px 0 14px">Rapportati al set, non alla partita: altrimenti un tie-break sembrerebbe sempre la prestazione migliore.</p>
-      <div class="chart-box"><canvas id="chSeason"></canvas></div>
+      <div class="chart-box"><canvas id="chSeason" role="img"
+        aria-label="Grafico a linea dei punti realizzati per set in ciascuna delle 21 partite. I valori numerici completi sono nella tabella delle partite."></canvas></div>
     </div>
 
     <div class="grid g-2" style="margin-bottom:var(--s3)">
       <div class="glass card">
         <p class="card-title">Confronto · le percentuali</p>
-        <div class="chart-box"><canvas id="chRates"></canvas></div>
+        <div class="chart-box"><canvas id="chRates" role="img"
+          aria-label="Confronto fra PGS e FIPAV su conversione in attacco, errori in attacco e ricezione positiva. Gli stessi valori sono elencati nella tabella qui sotto."></canvas></div>
       </div>
       <div class="glass card">
         <p class="card-title">Confronto · i volumi a partita</p>
-        <div class="chart-box"><canvas id="chVolumes"></canvas></div>
+        <div class="chart-box"><canvas id="chVolumes" role="img"
+          aria-label="Confronto fra PGS e FIPAV su attacchi, muri punto e ace per partita, in scala logaritmica. Gli stessi valori sono elencati nella tabella qui sotto."></canvas></div>
       </div>
     </div>
 
@@ -816,7 +828,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
     <div class="glass card" style="margin-bottom:13px;background:linear-gradient(115deg,rgba(231,76,80,.13),rgba(76,116,176,.10));border-color:rgba(231,76,80,.32)">
       <p class="card-title">⭐ Il giocatore della stagione</p>
       <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
-        <div class="avatar" id="mvpAvatar" style="width:64px;height:64px;flex:0 0 64px;border-radius:16px"><span>16</span></div>
+        <div class="avatar" id="mvpAvatar" style="width:64px;height:64px;flex:0 0 64px;border-radius:16px"><span aria-hidden="true">16</span></div>
         <div style="flex:1;min-width:240px">
           <div style="font-size:21px;font-weight:800;letter-spacing:-.02em">Nicolò Zonta</div>
           <div class="tiny muted" style="margin-top:3px">Centrale · 19 presenze · 182 punti · 30 muri · 13 ace</div>
@@ -912,6 +924,51 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
   </div>
 </section>
 
+<!-- ============ NOTE E PRIVACY ============ -->
+<section id="note" class="tabpane" hidden aria-labelledby="note-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Trasparenza</span>
+      <h2 class="sec-title" id="note-h">Note legali e <em>privacy</em></h2>
+      <p class="sec-lead">Questo sito è una pagina statica senza account, senza carrello e senza pubblicità. Qui sotto c'è esattamente cosa succede quando lo visiti.</p>
+    </div>
+
+    <article class="glass card lettura">
+      <div class="art">
+        <div class="note" style="margin-bottom:var(--s5)">
+          <b>DA COMPLETARE PRIMA DI PUBBLICARE.</b> Le voci fra parentesi quadre vanno sostituite con i dati reali della società. Finché restano così, questa pagina non è valida.
+        </div>
+
+        <h4>Chi gestisce il sito</h4>
+        <p>[Denominazione completa della società, es. A.S.D. Ad Astra] — [indirizzo della sede] — codice fiscale / partita IVA [numero]. Contatto per qualsiasi richiesta relativa a questo sito: <b>[indirizzo email]</b>.</p>
+        <p>Il sito raccoglie e racconta le statistiche della squadra maschile nella stagione 2025-2026. Non vende nulla, non offre servizi a pagamento e non accetta iscrizioni.</p>
+
+        <h4>Dati personali</h4>
+        <p>Il sito <b>non ha moduli</b>: non esistono campi in cui puoi inserire nome, email o altro. I due campi di ricerca presenti filtrano contenuti già caricati nella pagina e non inviano nulla a nessuno.</p>
+        <p>Non c'è alcuna forma di statistica di visita, nessun pixel pubblicitario, nessun profilo utente.</p>
+
+        <h4>Cookie e memoria del browser</h4>
+        <p>Il sito <b>non usa cookie</b>. Usa una sola voce di memoria locale del browser, chiamata <code>pegasus-tema</code>, che ricorda se hai scelto il tema chiaro o scuro. Resta sul tuo dispositivo, non viene letta da nessuno e sparisce se cancelli i dati del sito. Trattandosi di una preferenza di visualizzazione impostata da te, non richiede un banner di consenso.</p>
+
+        <h4>Servizi di terze parti</h4>
+        <p>Per disegnare i grafici la pagina carica la libreria <b>Chart.js</b> da <b>jsDelivr</b>, una rete di distribuzione pubblica. Per farlo il tuo browser contatta i loro server, che vedono il tuo indirizzo IP e il tipo di browser, come accade per qualunque risorsa esterna. Non riceve altro e non ci sono cookie coinvolti.</p>
+        <p>Il sito è ospitato su <b>GitHub Pages</b>, che mantiene registri tecnici di accesso secondo le proprie condizioni.</p>
+        <p>Non ci sono altri contenuti incorporati: nessun video, nessuna mappa, nessun bottone social.</p>
+
+        <h4>Immagini e diritti</h4>
+        <p>Le fotografie dei giocatori e della squadra sono di proprietà della società e pubblicate con il consenso delle persone ritratte. Se sei ritratto in una foto e vuoi che venga rimossa, scrivi a <b>[indirizzo email]</b>: sarà tolta senza necessità di motivazione.</p>
+        <p>Il logo e le grafiche sono della società. I testi della Gazzetta del Pegasus sono opera della redazione interna e contengono valutazioni tecniche di natura giornalistica.</p>
+
+        <h4>I dati statistici</h4>
+        <p>Le statistiche coprono le <b>21 partite di cui esiste un referto di scout</b>. Le altre gare disputate nella stagione non hanno rilevazione e restano fuori da ogni conteggio: i totali riportati non sono quindi il rendimento assoluto della stagione, ma quello delle partite documentate. I dati sono raccolti a mano e possono contenere errori.</p>
+
+        <h4>Responsabilità</h4>
+        <p>I contenuti sono forniti a scopo informativo e sportivo. La società non garantisce che siano privi di errori e non risponde di decisioni prese sulla base di questi dati.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
 </main>
 
 <footer class="ft">
@@ -922,12 +979,17 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       Statistiche su 21 partite con referto · Scout: Fabi, Max · Analisi: Max Grillo®<br>
       <span id="aggiornato" class="tiny"></span>
     </p>
+    <p class="ft-sub" style="margin-top:var(--s4)">
+      <a href="#note" class="ft-link">Note legali e privacy</a>
+      <span aria-hidden="true" style="opacity:.4;margin:0 8px">·</span>
+      <span>[A.S.D. Ad Astra] · [indirizzo] · [email]</span>
+    </p>
   </div>
 </footer>
 
 <button class="to-top" id="toTop" aria-label="Torna su">↑</button>
 
-<dialog class="modal" id="modal">
+<dialog class="modal" id="modal" aria-labelledby="modalTitle">
   <div class="modal-head">
     <div style="min-width:0">
       <h3 id="modalTitle"></h3>
@@ -2763,7 +2825,8 @@ const EVENTI = [
     testo: "Nove vittorie su dieci e 29 set vinti: il Pegasus chiude in testa il Campionato PGS Invernale OPEN maschile e il Girone Finale.",
     icona: "🏆", tag: "Titolo", pin: true,
     foto: "foto/squadra-campioni-pgs.jpg",
-    didascalia: "La squadra con la coppa al termine del Girone Finale."
+    didascalia: "La squadra con la coppa al termine del Girone Finale.",
+    alt: "La squadra dell'Ad Astra Pegasus in posa al centro del campo con la coppa e le medaglie al collo, al termine del Girone Finale PGS."
   },
   {
     data: "21 maggio 2026",
@@ -2858,6 +2921,36 @@ const dec = (n,d)=> Number(n).toLocaleString("it-IT",{minimumFractionDigits:d,ma
 const MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
 function dataEstesa(d){ const p=d.split("/"); return parseInt(p[0],10)+" "+MESI[parseInt(p[1],10)-1]+" "+p[2]; }
 function sortKey(d){ const p=d.split("/"); return p[2]+p[1]+p[0]; }
+
+/* ============================================================
+   0 · ACCESSIBILITÀ TRASVERSALE
+   ============================================================ */
+/* Le intestazioni ordinabili sono <th> con un gestore di click: senza questo
+   erano azionabili solo col mouse. Le rendiamo focalizzabili e attivabili
+   con Invio e Barra spaziatrice, e ne annunciamo la funzione. */
+function intestazioniOrdinabili(tabella){
+  $$("thead th[data-k]", tabella).forEach(th=>{
+    th.tabIndex = 0;
+    th.setAttribute("role","columnheader");
+    if(!th.dataset.etichetta) th.dataset.etichetta = th.textContent.trim();
+    th.setAttribute("aria-label", "Ordina per "+th.dataset.etichetta);
+    th.addEventListener("keydown", e=>{
+      if(e.key==="Enter"||e.key===" "){ e.preventDefault(); th.click(); }
+    });
+  });
+}
+/* Collega ogni scheda al suo pulsante di navigazione secondo lo schema tab/tabpanel */
+function collegaSchede(){
+  $$("nav.links a").forEach(a=>{
+    const id = a.getAttribute("href").slice(1);
+    a.id = "tab-"+id;
+    a.setAttribute("aria-controls", id);
+    const pane = document.getElementById(id);
+    if(pane){ pane.setAttribute("role","tabpanel"); pane.setAttribute("aria-labelledby","tab-"+id); pane.tabIndex = -1; }
+  });
+}
+/* i conteggi dei filtri vanno annunciati, altrimenti chi non vede non sa che è cambiato */
+$$(".count").forEach(c=>{ c.setAttribute("role","status"); c.setAttribute("aria-live","polite"); });
 
 /* ============================================================
    1 · PARSING DEL CSV
@@ -2994,7 +3087,7 @@ $("#seasonStats").innerHTML = [
 $("#board").innerHTML = EVENTI.length ? EVENTI.map(e=>`
   <article class="glass ev ${e.pin?"pinned":""} ${e.foto&&e.pin?"wide":""}">
     <div class="ev-media">
-      ${e.foto ? `<img src="${esc(e.foto)}" alt="${esc(e.titolo)}" loading="lazy" onerror="this.remove()">` : ""}
+      ${e.foto ? `<img src="${esc(e.foto)}" alt="${esc(e.alt || e.didascalia || e.titolo)}" loading="lazy" onerror="this.remove()">` : ""}
       ${e.foto ? "" : `<span aria-hidden="true">${esc(e.icona||"🏐")}</span>`}
       ${e.tag ? `<span class="ev-tag">${esc(e.tag)}</span>` : ""}
     </div>
@@ -3045,8 +3138,9 @@ function avatar(p,size){
   const s = size||52;
   const style = size?`width:${s}px;height:${s}px;flex:0 0 ${s}px;border-radius:${Math.round(s*0.27)}px`:"";
   const f = fotoDi(p);
-  /* se la foto manca o non si carica, resta il badge con il numero sotto */
-  return `<div class="avatar" style="${style}"><span>${p.numero}</span>${
+  /* alt vuoto di proposito: il nome del giocatore è già nel testo accanto,
+     ripeterlo farebbe leggere due volte la stessa cosa allo screen reader */
+  return `<div class="avatar" style="${style}"><span aria-hidden="true">${p.numero}</span>${
     f?`<img src="${esc(f)}" alt="" loading="lazy" onerror="this.remove()">`:""}</div>`;
 }
 function renderRoster(){
@@ -3129,6 +3223,7 @@ $("#tblAll thead").addEventListener("click", e=>{
   if(sortK===th.dataset.k) sortDir*=-1; else { sortK=th.dataset.k; sortDir = th.dataset.type==="s"?1:-1; }
   renderTable();
 });
+intestazioniOrdinabili($("#tblAll"));
 renderTable();
 
 /* ============================================================
@@ -3192,6 +3287,7 @@ $("#tblMatches thead").addEventListener("click", e=>{
 $("#tblMatches tbody").addEventListener("keydown", e=>{
   if(e.key==="Enter"||e.key===" "){ const r=e.target.closest("[data-match]"); if(r){ e.preventDefault(); r.click(); } }
 });
+intestazioniOrdinabili($("#tblMatches"));
 chips($("#mCamp"), [["all","Tutti"],["PGS","PGS"],["FIPAV","FIPAV"]], ()=>mCamp, v=>{mCamp=v;renderMatches();});
 chips($("#mCampo"),[["all","Ovunque"],["casa","In casa"],["fuori","Trasferta"]], ()=>mCampo, v=>{mCampo=v;renderMatches();});
 chips($("#mEsito"),[["all","Tutte"],["w","Vittorie"],["l","Sconfitte"]], ()=>mEsito, v=>{mEsito=v;renderMatches();});
@@ -3425,9 +3521,9 @@ function schedaGiocatore(p){
   const f = fotoDi(p);
   let h = `<div class="ply-hero">
     <div class="ply-shot">
-      <span class="nn">${p.numero}</span>
-      ${f?`<img src="${esc(f)}" alt="Foto di ${esc(p.nome)}" onerror="this.remove()">
-           <span class="tag">#${p.numero}</span>`:""}
+      <span class="nn" aria-hidden="true">${p.numero}</span>
+      ${f?`<img src="${esc(f)}" alt="Ritratto di ${esc(p.nome)}, ${esc(p.ruoloLabel.toLowerCase())} dell'Ad Astra Pegasus" onerror="this.remove()">
+           <span class="tag" aria-hidden="true">#${p.numero}</span>`:""}
     </div>
     <div class="ply-id">
       <div class="nm">${esc(p.nome)}</div>
@@ -3455,9 +3551,11 @@ function schedaGiocatore(p){
       <span><i class="sotto"></i>Sotto la media</span>
       <span class="nota">Sotto la media non vuol dire male: un libero non attacca.</span>
     </div>
-    <div class="chart-box sq" style="margin-bottom:22px"><canvas id="chPly"></canvas></div>`;
+    <div class="chart-box sq" style="margin-bottom:22px"><canvas id="chPly" role="img"
+      aria-label="Barre orizzontali dello scarto di ${esc(p.nome)} rispetto alla media di squadra. I valori esatti sono nella tabella delle partite qui sotto."></canvas></div>`;
   h += `<h4 style="margin:0 0 10px;font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--red-s);font-weight:800">Punti partita per partita</h4>
-    <div class="chart-box" style="margin-bottom:22px"><canvas id="chPlyTrend"></canvas></div>`;
+    <div class="chart-box" style="margin-bottom:22px"><canvas id="chPlyTrend" role="img"
+      aria-label="Istogramma dei punti realizzati da ${esc(p.nome)} in ogni partita. Gli stessi dati sono nella tabella qui sotto."></canvas></div>`;
   h += `<h4 style="margin:0 0 10px;font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--red-s);font-weight:800">Tutte le partite</h4>`;
   h += `<div class="tbl-scroll"><table class="t"><thead><tr>
     <th>Partita</th><th>Pt</th><th>Saldo</th><th>Att.</th><th>Att. %</th><th>Ace</th><th>Muri</th><th>Ric. pos.</th><th>Dif.</th>
@@ -3653,7 +3751,7 @@ function applicaLogo(t){
 /* foto del giocatore della stagione */
 (function(){ const a=$("#mvpAvatar"), z=PBY["Nicolò Zonta"]; if(!a||!z) return;
   const f=fotoDi(z); if(f) a.insertAdjacentHTML("beforeend",
-    `<img src="${esc(f)}" alt="" loading="lazy" onerror="this.remove()">`); })();
+    `<img src="${esc(f)}" alt="Ritratto di Nicolò Zonta" loading="lazy" onerror="this.remove()">`); })();
 
 /* ---------- tema giorno / notte ---------- */
 const fatto = {};        /* schede i cui grafici sono già stati costruiti */
@@ -3693,9 +3791,11 @@ burger.addEventListener("click",()=>{
 
 /* Stagione è la porta d'ingresso: la Bacheca può essere vuota o vecchia,
    chi arriva la prima volta vuole sapere com'è andata. */
-const PANES = ["stagione","bacheca","rosa","classifiche","partite","gazzetta"];
+/* "note" è raggiungibile dal footer e dall'indirizzo, ma non occupa spazio nella barra */
+const PANES = ["stagione","bacheca","rosa","classifiche","partite","gazzetta","note"];
 const TITOLI = {stagione:"La stagione",bacheca:"Bacheca",rosa:"La rosa",
-                classifiche:"Classifiche",partite:"Le partite",gazzetta:"La Gazzetta"};
+                classifiche:"Classifiche",partite:"Le partite",gazzetta:"La Gazzetta",
+                note:"Note legali e privacy"};
 const navA  = $$("nav.links a");
 function apriScheda(id, animato){
   if(PANES.indexOf(id)<0) id = PANES[0];
@@ -3711,6 +3811,7 @@ function apriScheda(id, animato){
   if(animato) window.scrollTo({top:0,behavior:"smooth"});
 }
 navA.forEach(a=> a.setAttribute("role","tab"));
+collegaSchede();
 /* su file:// alcuni browser rifiutano pushState: in quel caso si ripiega su location.hash */
 function vaiA(id){
   try{ if(location.hash !== "#"+id) history.pushState(null, "", "#"+id); }
@@ -3728,6 +3829,14 @@ $(".brand").addEventListener("click", e=>{
   e.preventDefault(); vaiA(PANES[0]); apriScheda(PANES[0], true);
 });
 addEventListener("hashchange", ()=> apriScheda(location.hash.slice(1), false));
+/* qualsiasi link interno a una scheda (footer, rimandi nel testo) apre la scheda giusta */
+document.addEventListener("click", e=>{
+  const a = e.target.closest('a[href^="#"]');
+  if(!a || a.closest("nav.links") || a.classList.contains("brand") || a.hasAttribute("data-vai-bilancio")) return;
+  const id = a.getAttribute("href").slice(1);
+  if(PANES.indexOf(id)<0) return;
+  e.preventDefault(); vaiA(id); apriScheda(id, true);
+});
 addEventListener("popstate", ()=> apriScheda(location.hash.slice(1), false));
 apriScheda(location.hash.slice(1), false);
 
