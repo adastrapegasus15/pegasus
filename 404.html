@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Pagina non trovata · Ad Astra Pegasus</title>
+<meta name="theme-color" content="#0B0D14">
+<style>
+/* Stessi colori e caratteri del sito principale (index.html) */
+:root{
+  color-scheme:dark;
+  --bg:#0B0D14; --red:#E74C50; --red-btn:#C4373C; --blue:#4C74B0; --red-l:#FF8A8D;
+  --ink:#EDF0F7; --ink-2:rgba(237,240,247,.72); --ink-3:rgba(237,240,247,.58);
+  --glass:rgba(255,255,255,.06); --stroke:rgba(255,255,255,.13); --edge:rgba(255,255,255,.10);
+  --ctrl:rgba(255,255,255,.07); --ctrl-hi:rgba(255,255,255,.12);
+  --op1:.30; --op2:.32;
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-display:"Bahnschrift","Avenir Next Condensed","Futura","Roboto Condensed",ui-sans-serif,system-ui,sans-serif;
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F2F5FC; --red-l:#C4373C;
+  --ink:#141924; --ink-2:rgba(20,25,36,.78); --ink-3:rgba(20,25,36,.64);
+  --glass:rgba(255,255,255,.55); --stroke:rgba(255,255,255,.8); --edge:rgba(255,255,255,.75);
+  --ctrl:rgba(255,255,255,.5); --ctrl-hi:rgba(255,255,255,.8);
+  --op1:.30; --op2:.34;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;
+  background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden}
+/* fondale fermo: le stesse due macchie del sito, senza animazione */
+body::before,body::after{content:"";position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+body::before{width:52vw;height:52vw;min-width:360px;min-height:360px;background:var(--red);opacity:var(--op1);top:-16vw;left:-12vw}
+body::after{width:56vw;height:56vw;min-width:380px;min-height:380px;background:var(--blue);opacity:var(--op2);bottom:-22vw;right:-14vw}
+main{position:relative;z-index:1;width:min(520px,100%);padding:clamp(28px,6vw,44px);text-align:center;
+  background:var(--glass);border:1px solid var(--stroke);border-radius:20px;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:0 8px 32px rgba(0,0,0,.30),inset 0 1px 0 var(--edge)}
+.peg{width:88px;height:88px;margin:0 auto 22px;display:block;object-fit:contain;border-radius:14px}
+:root[data-theme="light"] .peg{border-radius:0}
+.code{font-family:var(--font-display);font-size:clamp(56px,14vw,84px);font-weight:700;line-height:.9;letter-spacing:.02em;margin:0}
+h1{font-family:var(--font-display);font-size:clamp(22px,5vw,28px);font-weight:700;margin:14px 0 0;line-height:1.15}
+p{margin:12px auto 0;max-width:40ch;color:var(--ink-2)}
+.home{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-top:26px;padding:0 22px;
+  border-radius:99px;background:var(--red-btn);color:#fff;font-weight:700;text-decoration:none;
+  transition:transform .2s cubic-bezier(.22,.85,.28,1),background .2s}
+.home:hover{background:#B02F34}
+.home:active{transform:scale(.97)}
+nav{margin-top:22px;display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:99px;
+  color:var(--ink-2);text-decoration:none;font-size:14px;font-weight:600;background:var(--ctrl);border:1px solid var(--stroke)}
+nav a:hover{color:var(--ink);background:var(--ctrl-hi)}
+:focus-visible{outline:2px solid var(--red-l);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.home{transition:none}}
+</style>
+<script>
+/* stesso tema scelto sul sito (la preferenza è salvata con la stessa chiave) */
+try{
+  var t = localStorage.getItem("pegasus-tema") ||
+          (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+  document.documentElement.setAttribute("data-theme", t);
+}catch(e){}
+</script>
+</head>
+<body>
+<main>
+  <p class="code" aria-hidden="true">404</p>
+  <h1>Questa pagina non esiste</h1>
+  <p>L'indirizzo potrebbe essere scritto male, oppure la pagina è stata spostata. Il sito della stagione è tutto in un'unica pagina.</p>
+  <a class="home" id="home" href="/">Torna al sito</a>
+  <nav aria-label="Sezioni del sito">
+    <a data-sez="rosa" href="/#rosa">Rosa</a>
+    <a data-sez="partite" href="/#partite">Partite</a>
+    <a data-sez="gazzetta" href="/#gazzetta">Gazzetta</a>
+  </nav>
+</main>
+<script>
+/* GitHub Pages mostra questa pagina a qualunque profondità dell'indirizzo, quindi
+   i percorsi relativi non funzionano. Si cerca la cartella del sito: se il primo
+   pezzo dell'indirizzo contiene index.html è quella (sito di progetto,
+   utente.github.io/nome-repo/), altrimenti è la radice del dominio. */
+(function(){
+  var seg = location.pathname.split("/")[1];
+  function usa(base){
+    document.getElementById("home").href = base;
+    var links = document.querySelectorAll("nav a[data-sez]");
+    for (var i=0;i<links.length;i++) links[i].href = base + "#" + links[i].getAttribute("data-sez");
+    var chiaro = document.documentElement.getAttribute("data-theme") === "light";
+    /* il logo entra nella pagina solo se il file esiste */
+    var logo = new Image();
+    logo.className = "peg"; logo.alt = "";
+    logo.onload = function(){ var m = document.querySelector("main"); m.insertBefore(logo, m.firstChild); };
+    logo.src = base + encodeURI(chiaro ? "logo 1 bianco.png" : "logo 1.png");
+  }
+  if (!seg || !window.fetch) { usa("/"); return; }
+  fetch("/" + seg + "/index.html", {method:"HEAD"})
+    .then(function(r){ usa(r.ok ? "/" + seg + "/" : "/"); })
+    .catch(function(){ usa("/"); });
+})();
+</script>
+</body>
+</html>
