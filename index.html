@@ -1048,36 +1048,37 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
   <div class="wrap">
     <div class="sec-head">
       <h2 class="sec-title" id="note-h">Note legali e <em>privacy</em></h2>
-      <p class="sec-lead">Questo sito è una pagina statica senza account, senza carrello e senza pubblicità. Qui sotto c'è esattamente cosa succede quando lo visiti.</p>
+      <p class="sec-lead">Il sito non richiede registrazione, non vende nulla e non ospita pubblicità. Di seguito le informazioni su come funziona e su quali dati entrano in gioco durante la visita.</p>
     </div>
 
     <article class="glass card lettura">
       <div class="art">
         <h3>Chi gestisce il sito</h3>
-        <p>Il sito è curato dallo staff della squadra: scout di Fabi e Max, analisi di Max Grillo. Per qualsiasi richiesta relativa ai contenuti puoi rivolgerti direttamente a loro.</p>
-        <p>Il sito raccoglie e racconta le statistiche della squadra maschile nella stagione 2025-2026. Non vende nulla, non offre servizi a pagamento e non accetta iscrizioni.</p>
+        <p>Il sito è curato dallo staff della squadra: scout di Fabi e Max, analisi di Max Grillo. Per qualsiasi richiesta relativa ai contenuti è possibile rivolgersi direttamente allo staff.</p>
+        <p>Il sito raccoglie e racconta, stagione per stagione, le statistiche della squadra maschile. Non vende prodotti, non offre servizi a pagamento e non prevede iscrizioni.</p>
 
         <h3>Dati personali</h3>
-        <p>Il sito <b>non ha moduli</b>: non esistono campi in cui puoi inserire nome, email o altro. I tre campi di ricerca presenti filtrano contenuti già caricati nella pagina e non inviano nulla a nessuno.</p>
-        <p>Non c'è alcuna forma di statistica di visita, nessun pixel pubblicitario, nessun profilo utente.</p>
+        <p>Il sito <b>non contiene moduli e non raccoglie dati personali</b>: non è possibile inserire nome, indirizzo email o altre informazioni. I campi di ricerca e il menu delle stagioni servono solo a filtrare i contenuti già presenti nella pagina e non trasmettono nulla all'esterno.</p>
+        <p>Non sono attivi strumenti di statistica delle visite, pixel pubblicitari o sistemi di profilazione.</p>
 
         <h3>Cookie e memoria del browser</h3>
-        <p>Il sito <b>non usa cookie</b>. Usa una sola voce di memoria locale del browser, chiamata <code>pegasus-tema</code>, che ricorda se hai scelto il tema chiaro o scuro. Resta sul tuo dispositivo, non viene letta da nessuno e sparisce se cancelli i dati del sito. Trattandosi di una preferenza di visualizzazione impostata da te, non richiede un banner di consenso.</p>
+        <p>Il sito <b>non utilizza cookie</b>. Salva nel browser un'unica informazione tecnica, la scelta fra tema chiaro e tema scuro, per riproporla alla visita successiva. Il dato resta sul dispositivo di chi visita, non viene trasmesso a nessuno e si cancella eliminando i dati di navigazione del sito.</p>
 
         <h3>Servizi di terze parti</h3>
-        <p>Per disegnare i grafici la pagina carica la libreria <b>Chart.js</b> da <b>jsDelivr</b>, una rete di distribuzione pubblica. Per farlo il tuo browser contatta i loro server, che vedono il tuo indirizzo IP e il tipo di browser, come accade per qualunque risorsa esterna. Non riceve altro e non ci sono cookie coinvolti.</p>
-        <p>Il sito è ospitato su <b>GitHub Pages</b>, che mantiene registri tecnici di accesso secondo le proprie condizioni.</p>
-        <p>Non ci sono altri contenuti incorporati: nessun video, nessuna mappa, nessun bottone social.</p>
+        <p>Per disegnare i grafici la pagina carica la libreria <b>Chart.js</b> dalla rete di distribuzione pubblica <b>jsDelivr</b>. Durante il caricamento il browser contatta i server di jsDelivr, che ricevono l'indirizzo IP e il tipo di browser, come accade per qualunque risorsa esterna. Non vengono usati cookie.</p>
+        <p>Il sito è ospitato su <b>GitHub Pages</b>, che conserva registri tecnici di accesso secondo le proprie condizioni di servizio.</p>
+        <p>Non sono presenti altri contenuti esterni incorporati: né video, né mappe, né pulsanti dei social network.</p>
 
         <h3>Immagini e diritti</h3>
-        <p>Le fotografie dei giocatori e della squadra sono di proprietà della società e pubblicate con il consenso delle persone ritratte. Se sei ritratto in una foto e vuoi che venga rimossa, chiedilo allo staff: sarà tolta senza necessità di motivazione.</p>
-        <p>Il logo e le grafiche sono della società. I testi della Gazzetta del Pegasus sono opera della redazione interna e contengono valutazioni tecniche di natura giornalistica.</p>
+        <p>Le fotografie dei giocatori e della squadra appartengono alla società e sono pubblicate con il consenso delle persone ritratte. Chi è ritratto in una foto e ne desidera la rimozione può chiederla allo staff: la foto verrà tolta senza necessità di motivazione.</p>
+        <p>Il logo e le grafiche appartengono alla società. I testi della Gazzetta del Pegasus sono scritti dalla redazione interna e contengono valutazioni tecniche di natura giornalistica.</p>
 
         <h3>I dati statistici</h3>
-        <p>Le statistiche coprono le <b>21 partite di cui esiste un referto di scout</b>. Le altre gare disputate nella stagione non hanno rilevazione e restano fuori da ogni conteggio: i totali riportati non sono quindi il rendimento assoluto della stagione, ma quello delle partite documentate. I dati sono raccolti a mano e possono contenere errori.</p>
+        <p>Per ogni stagione le statistiche riguardano soltanto le <b>partite per cui esiste un referto di scout</b>. Le gare senza rilevazione restano escluse dai conteggi: i totali descrivono quindi il rendimento nelle partite documentate, non quello dell'intera stagione. I dati sono raccolti manualmente e possono contenere errori.</p>
+        <p id="noteConteggio" hidden></p>
 
         <h3>Responsabilità</h3>
-        <p>I contenuti sono forniti a scopo informativo e sportivo. La società non garantisce che siano privi di errori e non risponde di decisioni prese sulla base di questi dati.</p>
+        <p>I contenuti hanno finalità informative e sportive. La società non garantisce l'assenza di errori e non risponde di decisioni prese sulla base di questi dati.</p>
       </div>
     </article>
   </div>
@@ -4223,6 +4224,7 @@ apriScheda(location.hash.slice(1), false);
 /* ultima partita presente nei dati: dice al visitatore quanto è aggiornato il sito */
 (function(){
   $("#ftStagione").textContent = S.id;
+  if(BTOT.n){ $("#noteConteggio").textContent = "Stagione "+S.id+": "+nPartite(BTOT.n)+(BTOT.n===1?" documentata.":" documentate."); $("#noteConteggio").hidden = false; }
   $("#ftPartite").textContent = BTOT.n ? "Statistiche su "+nPartite(BTOT.n)+" con referto · " : "";
   const el=$("#aggiornato"); if(!el||!MATCHES.length) return;
   const ultima = MATCHES.slice().sort((a,b)=>sortKey(b.d).localeCompare(sortKey(a.d)))[0];
