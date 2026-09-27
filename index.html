@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ad Astra Pegasus · Stagione 2025-2026</title>
-<meta name="description" content="Il sito della stagione 2025-2026 dell'Ad Astra Pegasus: statistiche, rosa, archivio partite e La Gazzetta del Pegasus.">
-<meta property="og:title" content="Ad Astra Pegasus · Stagione 2025-2026">
-<meta property="og:description" content="19 vittorie su 21 partite. Campioni PGS Invernale Open.">
+<title>Ad Astra Pegasus</title>
+<meta name="description" content="Il sito dell'Ad Astra Pegasus, stagione per stagione: statistiche, rosa, archivio partite e La Gazzetta del Pegasus.">
+<meta property="og:title" content="Ad Astra Pegasus">
+<meta property="og:description" content="Statistiche, rosa, partite e La Gazzetta del Pegasus, stagione per stagione.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="logo%201.png">
 <meta property="og:locale" content="it_IT">
@@ -334,6 +334,8 @@ nav.links a:hover{color:var(--ink);background:var(--ctrl)}
 nav.links a.on{color:#fff;background:var(--red-btn)}
 nav.links a:focus-visible{outline:2px solid var(--red-l);outline-offset:2px}
 .tabpane[hidden]{display:none}
+/* qualunque elemento nascosto resta nascosto, anche se il suo stile dice flex o grid */
+[hidden]{display:none!important}
 section.tabpane{padding-top:34px}
 .burger{display:none;margin-left:auto;padding:8px 10px;border-radius:10px;background:var(--ctrl);border:1px solid var(--stroke-2)}
 /* interruttore giorno / notte */
@@ -353,12 +355,46 @@ section.tabpane{padding-top:34px}
     padding:8px;border-radius:var(--r-md);
     background:var(--ctrl);border:1px solid var(--stroke-2);
   }
-  .brand{order:1} .tgl{order:2;margin-left:auto} .burger{order:3;margin-left:0} nav.links{order:4}
+  .brand{order:1} .stag-wrap{order:2;margin-left:auto} .tgl{order:2} .burger{order:3;margin-left:0} nav.links{order:4}
   nav.links.open{display:flex;animation:paneIn .3s var(--ease) both}
   nav.links a{padding:13px 15px;border-radius:var(--r-sm);font-size:14.5px;text-align:left}
   nav.links a.on{box-shadow:none}
   .burger{font-size:15px;line-height:1;padding:10px 13px;border-radius:11px}
 }
+/* telefoni stretti: se il logo c'è, il nome in testo lascia spazio al selettore (resta per gli screen reader) */
+@media(max-width:400px){
+  html:not(.no-peg) .brand .txt{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  .stag{padding:0 26px 0 11px;font-size:12px}
+}
+@media(max-width:340px){.nav-in{gap:6px;padding:12px 10px}}
+
+/* ---------- Scelta della stagione ---------- */
+.stag-wrap{flex:0 0 auto;display:flex}
+.stag{-webkit-appearance:none;appearance:none;field-sizing:content;font:inherit;font-size:12.5px;font-weight:650;color:var(--ink);
+  height:36px;padding:0 30px 0 13px;border-radius:99px;cursor:pointer;
+  background-color:var(--ctrl);border:1px solid var(--stroke-2);
+  /* freccia disegnata con due gradienti, così prende il colore del tema */
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+  background-position:calc(100% - 16px) 52%,calc(100% - 11px) 52%;background-size:5px 5px;background-repeat:no-repeat;
+  transition:background-color .2s var(--ease),border-color .2s var(--ease)}
+.stag:hover{background-color:var(--ctrl-hi)}
+.stag:focus-visible{outline:2px solid var(--red-l);outline-offset:2px}
+.stag option{color:#141924;background:#fff}
+.archivio{margin:16px 0 0;padding:10px 14px;border-radius:var(--r-sm);background:var(--tint);border:1px solid var(--tint-st);
+  font-size:13.5px;color:var(--ink-2)}
+.archivio a,.vai-stagione{color:var(--red-l);text-decoration:none;border-bottom:1px solid currentColor}
+.archivio a{margin-left:4px}
+/* calendario */
+.cal{list-style:none;margin:0;padding:0}
+.cal li{display:grid;grid-template-columns:minmax(140px,1fr) 2fr minmax(120px,1fr);gap:4px 14px;align-items:baseline;
+  padding:11px 0;border-top:1px solid var(--stroke-2)}
+.cal li:first-child{border-top:0;padding-top:2px}
+.cal-d{font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.cal-m{font-weight:700}
+.cal-x{font-size:12.5px;color:var(--ink-3);text-align:right}
+@media(max-width:640px){.cal li{grid-template-columns:1fr}.cal-x{text-align:left}}
+/* la riga della stagione aperta nel confronto fra stagioni */
+table.t tr.qui td{background:var(--tint)}
 
 /* ---------- Hero ---------- */
 .hero{padding:56px 0 34px}
@@ -606,7 +642,8 @@ table.t tr.riga:focus-visible{outline:2px solid var(--red-l);outline-offset:-2px
 .chip.reset{background:var(--ctrl);border:1px solid var(--stroke-2);color:var(--ink-2);font-size:11.5px;padding:6px 12px}
 .chip.reset:hover{background:var(--ctrl-hi);color:var(--ink)}
 .pip{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:1px}
-.pip.pgs{background:var(--red)} .pip.fipav{background:var(--blue)}
+/* colore del campionato: primo rosso, secondo blu, gli altri grigi */
+.pip.k0{background:var(--red)} .pip.k1{background:var(--blue)} .pip.k2{background:var(--ink-3)}
 
 /* ---------- Gazzetta ---------- */
 .gz{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
@@ -693,6 +730,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
   .chip{min-height:44px;display:inline-flex;align-items:center}
   .chip[hidden]{display:none}   /* "Azzera" deve restare nascosto finché non serve */
   .tgl,.x{width:44px;height:44px;flex-basis:44px}
+  .stag{height:44px}
   .burger{min-width:44px;min-height:44px}
   .brand{min-height:44px}
   .to-top{width:44px;height:44px}
@@ -730,9 +768,13 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       <a href="#partite">Partite</a>
       <a href="#gazzetta">Gazzetta</a>
     </nav>
+    <label class="stag-wrap"><span class="sr-only">Stagione</span>
+      <select class="stag" id="selStagione"></select></label>
     <button class="tgl" id="tglTheme" aria-label="Cambia tema" title="Giorno / notte">☀</button>
   </div>
 </header>
+
+<div class="wrap" id="avvisoArchivio" hidden></div>
 
 <main id="top" tabindex="-1">
 
@@ -748,11 +790,8 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
           <span class="w2">PEGASUS</span>
         </h1>
       </div>
-      <p class="hero-sub">Stagione <b>2025-2026</b>: 21 partite documentate fra il Campionato PGS Invernale OPEN maschile e la 2ª Divisione Regionale FIPAV.</p>
-      <div class="badges">
-        <span class="badge">Campioni PGS Invernale Open</span>
-        <span class="badge b-neutral" id="heroRecord">19 vittorie su 21</span>
-      </div>
+      <p class="hero-sub" id="heroSub"></p>
+      <div class="badges" id="heroBadges"></div>
     </div>
   </div>
 </section>
@@ -772,24 +811,29 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 <section id="stagione" class="tabpane" aria-labelledby="stagione-h">
   <div class="wrap">
     <div class="sec-head">
-      <h2 class="sec-title" id="stagione-h">Due campionati, <em>due squadre diverse</em></h2>
-      <p class="sec-lead">Nel PGS il Pegasus ha vinto lottando: partite lunghe, muri a raffica, cinquanta palloni attaccati per set. Nel FIPAV ha vinto controllando: match corti, selezione chirurgica, pochissimi errori. Stessi giocatori, stesso allenatore, due identità.</p>
+      <h2 class="sec-title" id="stagione-h"></h2>
+      <p class="sec-lead" id="stagioneLead"></p>
     </div>
 
+    <!-- stagione non ancora iniziata: calendario al posto dei numeri -->
+    <div id="stagioneVuota" hidden></div>
+
+    <div id="stagioneDati">
     <div class="stat-grid anim" id="seasonStats" style="margin-bottom:var(--s3);margin-top:0"></div>
 
-    <div class="grid g-2" style="margin-bottom:var(--s3)">
-      <div class="glass card" id="cardPGS"></div>
-      <div class="glass card" id="cardFIPAV"></div>
-    </div>
+    <div class="grid g-2" id="campCards" style="margin-bottom:var(--s3)"></div>
+
+    <!-- confronto con la stagione precedente (compare solo se esiste) -->
+    <div class="glass card" id="vsPrec" style="margin-bottom:var(--s3)" hidden></div>
 
     <div class="glass card" style="margin-bottom:var(--s3)">
       <p class="card-title">Punti di squadra per set giocato</p>
       <p class="tiny muted" style="margin:-8px 0 14px">Rapportati al set, non alla partita: altrimenti un tie-break sembrerebbe sempre la prestazione migliore.</p>
       <div class="chart-box"><canvas id="chSeason" role="img"
-        aria-label="Grafico a linea dei punti realizzati per set in ciascuna delle 21 partite. I valori numerici completi sono nella tabella delle partite."></canvas></div>
+        aria-label="Grafico a linea dei punti realizzati per set in ciascuna partita. I valori numerici completi sono nella tabella delle partite."></canvas></div>
     </div>
 
+    <div id="confronto">
     <div class="grid g-2" style="margin-bottom:var(--s3)">
       <div class="glass card">
         <p class="card-title">Confronto: le percentuali</p>
@@ -804,8 +848,8 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
     </div>
 
     <div class="glass card">
-      <p class="card-title">PGS contro FIPAV, tutti i numeri</p>
-      <div class="tbl-scroll">
+      <p class="card-title" id="cmpTitolo">I campionati a confronto</p>
+      <div class="tbl-scroll" data-stagione="2025-2026">
         <table class="t cmp-tbl">
           <thead><tr><th>Indicatore</th><th>PGS</th><th>FIPAV</th></tr></thead>
           <tbody>
@@ -823,11 +867,15 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
           </tbody>
         </table>
       </div>
-      <p class="tiny muted" style="margin:14px 0 0">Il muro racconta la differenza meglio di tutto: <b class="nota-forte">2,08 punti diretti per set nel PGS contro 1,47 nel FIPAV</b>. Un fondamentale che si nutre di scambi lunghi e ricezioni avversarie imperfette — cioè esattamente di quello che il PGS offriva e il FIPAV no.</p>
+      <div class="tbl-scroll" id="cmpAuto" hidden></div>
+      <p data-stagione="2025-2026" class="tiny muted" style="margin:14px 0 0">Il muro racconta la differenza meglio di tutto: <b class="nota-forte">2,08 punti diretti per set nel PGS contro 1,47 nel FIPAV</b>. Un fondamentale che si nutre di scambi lunghi e ricezioni avversarie imperfette — cioè esattamente di quello che il PGS offriva e il FIPAV no.</p>
     </div>
 
+    </div><!-- /confronto -->
+    </div><!-- /stagioneDati -->
+
     <!-- Il Bilancio vive qui, disteso e leggibile, non più dentro una finestrella -->
-    <article class="glass card lettura" id="bilancio" style="margin-top:var(--s6)">
+    <article class="glass card lettura" id="bilancio" data-stagione="2025-2026" style="margin-top:var(--s6)">
       <div class="lettura-head">
         <span class="eyebrow">Lo speciale della Gazzetta</span>
         <h3>Bilancio Stagionale <em>2025-2026</em></h3>
@@ -888,10 +936,12 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
   <div class="wrap">
     <div class="sec-head">
       <h2 class="sec-title" id="cl-h">Chi ha <em>fatto la differenza</em></h2>
-      <p class="sec-lead">Classifiche calcolate sulle 21 partite con referto disponibile.</p>
+      <p class="sec-lead" id="clLead"></p>
     </div>
 
-    <div class="glass card mvp-card">
+    <div class="glass empty" id="clVuoto" hidden></div>
+    <div id="clDati">
+    <div class="glass card mvp-card" data-stagione="2025-2026">
       <p class="card-title">Il giocatore della stagione</p>
       <div class="mvp-row">
         <div class="avatar" id="mvpAvatar"><span aria-hidden="true">16</span></div>
@@ -931,6 +981,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
         </table>
       </div>
     </div>
+    </div><!-- /clDati -->
   </div>
 </section>
 
@@ -938,9 +989,12 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 <section id="partite" class="tabpane" hidden aria-labelledby="pt-h">
   <div class="wrap">
     <div class="sec-head">
-      <h2 class="sec-title" id="pt-h">Tutte le <em>21 partite</em></h2>
+      <h2 class="sec-title" id="pt-h">Le <em>partite</em></h2>
       <p class="sec-lead">Il tabellone della stagione, ordinabile per qualsiasi colonna. Clicca una riga per il referto statistico completo. Per il racconto e le pagelle vai alla <a href="#gazzetta" style="color:var(--red-l);text-decoration:none;border-bottom:1px solid currentColor">Gazzetta</a>.</p>
     </div>
+    <div class="glass card" id="calendario" style="margin-bottom:var(--s3)" hidden></div>
+    <div class="glass empty" id="ptVuoto" hidden></div>
+    <div id="ptDati">
     <div class="filters">
       <div class="fgroup" role="group" aria-label="Filtra per campionato" id="mCamp"></div>
       <div class="fgroup" role="group" aria-label="Filtra per campo" id="mCampo"></div>
@@ -968,6 +1022,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
         </table>
       </div></div>
     </div>
+    </div><!-- /ptDati -->
   </div>
 </section>
 
@@ -1034,8 +1089,8 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
   <div class="wrap">
     <div class="ft-mark">✦ Ad Astra ✦</div>
     <p class="ft-sub">
-      Ad Astra Pegasus · Stagione 2025-2026<br>
-      Statistiche su 21 partite con referto · Scout: Fabi, Max · Analisi: Max Grillo®<br>
+      Ad Astra Pegasus · Stagione <span id="ftStagione"></span><br>
+      <span id="ftPartite"></span>Scout: Fabi, Max · Analisi: Max Grillo®<br>
       <span id="aggiornato" class="tiny"></span>
     </p>
     <p class="ft-sub" style="margin-top:var(--s4)">
@@ -1063,7 +1118,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
      DATI
      ============================================================ -->
 
-<script id="csvStats" type="text/plain">
+<script type="text/plain" data-csv="2025-2026">
 Data;Partita;Numero;Ruolo;Giocatore;Punti_Tot;Punti_V-P;Serv_Tot;Serv_Err;Serv_Pt;Ric_Tot;Ric_Err;Ric_Pos%;Ric_Prf%;Ric_Eff%;Att_Tot;Att_Err;Att_Pt;Att_Pt%;Att_Eff%;Dif_Tot;Dif_Pos%;Muro_Pt
 24/10/2025;ACLI vs ADA;1;A;Marco Farano;1;-2;2;1;-;-;-;-;-;-;1;-;1;100%;100%;;;-
 24/10/2025;ACLI vs ADA;4;S;Andrea Panzani;4;2;7;-;1;8;-;63%;50%;25%;11;2;3;27%;64%;;;-
@@ -1303,7 +1358,7 @@ Data;Partita;Numero;Ruolo;Giocatore;Punti_Tot;Punti_V-P;Serv_Tot;Serv_Err;Serv_P
 
 <!-- ARTICOLI DELLA GAZZETTA — un blocco per partita, data-gz = data nel formato gg/mm/aaaa -->
 
-<script data-gz="24/10/2025" type="text/plain">
+<script data-stagione="2025-2026" data-gz="24/10/2025" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Invernale · OPEN maschile
 ━━━━━━━━━━━━━━━━━━━
@@ -1379,7 +1434,7 @@ Attacco fortemente sbilanciato sulla banda: il 39% dei palloni passa da posto 4,
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="17/11/2025" type="text/plain">
+<script data-stagione="2025-2026" data-gz="17/11/2025" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Invernale · OPEN maschile
 ━━━━━━━━━━━━━━━━━━━
@@ -1455,7 +1510,7 @@ La distribuzione si sbilancia ancora di più sulla banda: il 47% degli attacchi 
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="04/12/2025" type="text/plain">
+<script data-stagione="2025-2026" data-gz="04/12/2025" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Invernale · OPEN maschile
 ━━━━━━━━━━━━━━━━━━━
@@ -1528,7 +1583,7 @@ La distribuzione resta orientata a posto 4 (39%) ma posto 2 sale al 31%, segno d
 Scout: Max · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="14/12/2025" type="text/plain">
+<script data-stagione="2025-2026" data-gz="14/12/2025" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Invernale · OPEN maschile
 ━━━━━━━━━━━━━━━━━━━
@@ -1598,7 +1653,7 @@ La distribuzione premia posto 4 (40%) ma posto 3 sale al 29%, il valore più alt
 Scout: Max · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="20/12/2025" type="text/plain">
+<script data-stagione="2025-2026" data-gz="20/12/2025" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Invernale · OPEN maschile
 ━━━━━━━━━━━━━━━━━━━
@@ -1665,7 +1720,7 @@ La distribuzione torna a caricare posto 4 (42%), con posto 2 al 28% e posto 3 al
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="11/01/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="11/01/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Invernale · OPEN maschile
 ━━━━━━━━━━━━━━━━━━━
@@ -1738,7 +1793,7 @@ Il break point è il capitolo che decide la partita: 0,4 punti fatti per battuta
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="23/01/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="23/01/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -1821,7 +1876,7 @@ La distribuzione è la più equilibrata della stagione: 32,9% da posto 4, 28,9% 
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="30/01/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="30/01/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Girone Finale
 ━━━━━━━━━━━━━━━━━━━
@@ -1898,7 +1953,7 @@ In break point il bilancio è in parità — 0,5 punti fatti per battuta contro 
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="07/02/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="07/02/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -1972,7 +2027,7 @@ Il break point è il capolavoro della partita: 0,8 punti fatti per battuta contr
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="09/02/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="09/02/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Girone Finale
 ━━━━━━━━━━━━━━━━━━━
@@ -2046,7 +2101,7 @@ Partita di equilibrio in fase break: 0,5 punti fatti per battuta contro 0,5 subi
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="22/02/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="22/02/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -2123,7 +2178,7 @@ Il break point è il punto debole della serata: 0,4 punti fatti per battuta cont
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="23/02/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="23/02/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Girone Finale
 ━━━━━━━━━━━━━━━━━━━
@@ -2203,7 +2258,7 @@ Partita di equilibrio assoluto in fase break: 0,5 punti fatti per battuta contro
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="27/02/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="27/02/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -2277,7 +2332,7 @@ Il break point torna in attivo: 0,6 punti fatti per battuta contro 0,4 subiti su
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="04/03/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="04/03/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Girone Finale
 ━━━━━━━━━━━━━━━━━━━
@@ -2351,7 +2406,7 @@ Il break point è il capitolo critico: 0,4 punti fatti per battuta contro 0,6 su
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="06/03/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="06/03/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -2419,7 +2474,7 @@ La partita si vince tutta in fase break: 0,7 punti fatti per battuta contro 0,3 
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="03/04/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="03/04/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -2493,7 +2548,7 @@ Break point in perfetta parità: 0,5 punti fatti per battuta contro 0,5 subiti s
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="08/04/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="08/04/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -2567,7 +2622,7 @@ Break point in netto attivo: 0,6 punti fatti per battuta contro 0,4 subiti su 74
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="15/04/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="15/04/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -2641,7 +2696,7 @@ Break point in equilibrio: 0,5 punti fatti per battuta contro 0,5 subiti su 73 b
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="08/05/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="08/05/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -2718,7 +2773,7 @@ La partita si perde tutta in fase break: 0,4 punti fatti per battuta contro 0,6 
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="13/05/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="13/05/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -2792,7 +2847,7 @@ Il cambio palla è la chiave della serata: 1,0 punti fatti per ricezione contro 
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
-<script data-gz="21/05/2026" type="text/plain">
+<script data-stagione="2025-2026" data-gz="21/05/2026" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Regionale · FIPAV 2ª Divisione
 ━━━━━━━━━━━━━━━━━━━
@@ -2868,71 +2923,166 @@ Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 
 <script>
 /* ============================================================
-   BACHECA — MODIFICA QUI
-   Aggiungi un oggetto a questo array per pubblicare un evento.
-   Campi: data (stringa libera), titolo, testo, icona (emoji),
-          tag (etichetta piccola, opzionale), foto (url o percorso,
-          opzionale), pin (true = card evidenziata in rosso).
-   Il più recente va in cima.
-   ============================================================ */
-const EVENTI = [
-  {
-    data: "Maggio 2026",
-    titolo: "Campioni PGS Invernale Open",
-    testo: "Nove vittorie su dieci e 29 set vinti: il Pegasus chiude in testa il Campionato PGS Invernale OPEN maschile e il Girone Finale.",
-    icona: "🏆", tag: "Titolo", pin: true,
-    foto: "foto/squadra-campioni-pgs.jpg",
-    didascalia: "La squadra con la coppa al termine del Girone Finale.",
-    alt: "La squadra dell'Ad Astra Pegasus in posa al centro del campo con la coppa e le medaglie al collo, al termine del Girone Finale PGS."
-  },
-  {
-    data: "21 maggio 2026",
-    titolo: "Chiusura di stagione con un 3-0",
-    testo: "Ultima giornata FIPAV contro il Geco: 25-21, 25-22, 25-15. Settima vittoria per 3-0 in undici partite di campionato.",
-    icona: "🏐", tag: "Partita"
-  },
-  {
-    data: "8 aprile 2026",
-    titolo: "Il record della stagione",
-    testo: "Contro la Speranza arriva il saldo di squadra più alto dell'anno: +39, con appena 8 errori in tutta la partita.",
-    icona: "📊", tag: "Record"
-  }
-  /* ESEMPIO con foto:
-  ,{
-    data: "Giugno 2026",
-    titolo: "Cena di fine stagione",
-    testo: "Tutti insieme per chiudere l'annata.",
-    icona: "🍕", tag: "Squadra",
-    foto: "foto/cena-2026.jpg"
-  }
-  */
-];
+   STAGIONI — MODIFICA QUI
+   Una voce per stagione, dalla più recente alla più vecchia.
+   Il sito apre la più recente che ha almeno una partita, giocata
+   o in calendario; le altre si scelgono dal menu in alto.
 
-/* ============================================================
-   PARTITE — chiave = data in formato gg/mm/aaaa (come nel CSV)
+   Per ogni stagione:
+   · id          "2026-2027": compare anche nell'indirizzo (?stagione=2026-2027)
+   · etichetta   "2026-27": quella mostrata nel menu
+   · campionati  nell'ordine in cui vanno mostrati. Il primo è rosso,
+                 il secondo blu, gli altri grigi.
+                   {k:"PGS", nome:"Campionato PGS", sotto:"Invernale OPEN maschile"}
+                 "k" è la sigla usata in partite e calendario.
+   · rosa        facoltativa: i giocatori da mostrare già prima della prima
+                 partita. Chi ha statistiche compare comunque da solo.
+                   {nome:"Nome Cognome", numero:15, ruolo:"O"}
+                 ruoli: A alzatore, S schiacciatore, C centrale, O opposto, L libero
+   · partite     le partite giocate con referto (stesso formato del 2025-26)
+   · calendario  le partite da giocare. Quando la stessa data entra in
+                 "partite", sparisce da sola dal calendario.
+                   {d:"gg/mm/aaaa", ora:"21:00", opp:"Avversario", camp:"PGS", casa:true, luogo:"Pero"}
+   · eventi      la bacheca della stagione. Campi: data, titolo, testo,
+                 icona (emoji), tag, foto (percorso), didascalia, alt, pin (true = in evidenza)
+   · gazzetta    cartella degli articoli e nome del file per ogni data
+   · racconto    facoltativo, i testi di fine stagione. Senza racconto il
+                 sito scrive da solo presentazione e titoli a partire dai numeri.
+
+   Le statistiche vanno nel blocco  <script type="text/plain" data-csv="ID">
+   Gli articoli incorporati in      <script type="text/plain" data-stagione="ID" data-gz="gg/mm/aaaa">
+   I testi lunghi di una stagione (il Bilancio, il giocatore della stagione)
+   stanno nella pagina, marcati con data-stagione="ID".
    ============================================================ */
-const MATCHES = [
-  {d:"24/10/2025", key:"ACLI vs ADA",        camp:"PGS",   casa:false, opp:"ACLI",            score:"0-3", sets:"", luogo:"Milano"},
-  {d:"17/11/2025", key:"Martesana vs ADA",   camp:"PGS",   casa:true,  opp:"Martesana",       score:"3-0", sets:"", luogo:"Pero"},
-  {d:"04/12/2025", key:"GATE vs ADA",        camp:"PGS",   casa:false, opp:"Gate Orange",     score:"0-3", sets:"", luogo:"Milano"},
-  {d:"14/12/2025", key:"ADA vs ACLI",        camp:"PGS",   casa:true,  opp:"ACLI",            score:"3-1", sets:"", luogo:"Pero"},
-  {d:"20/12/2025", key:"BB vs ADA",          camp:"PGS",   casa:false, opp:"Black Bulls",     score:"2-3", sets:"", luogo:"Milano"},
-  {d:"11/01/2026", key:"ADA vs Martesana",   camp:"PGS",   casa:true,  opp:"Martesana",       score:"2-3", sets:"", luogo:"Pero"},
-  {d:"23/01/2026", key:"ADA vs Bresso",      camp:"FIPAV", casa:true,  opp:"PCG Bresso",      score:"3-0", sets:"", luogo:"Pero"},
-  {d:"30/01/2026", key:"ADA vs Gate",        camp:"PGS",   casa:true,  opp:"Gate Lime",       score:"3-0", sets:"", luogo:"Pero"},
-  {d:"07/02/2026", key:"Quarto84 vs ADA",    camp:"FIPAV", casa:false, opp:"Quarto84",        score:"0-3", sets:"", luogo:"Quarto Oggiaro"},
-  {d:"09/02/2026", key:"Gate vs ADA",        camp:"PGS",   casa:false, opp:"Gate Lime",       score:"1-3", sets:"", luogo:"Milano"},
-  {d:"22/02/2026", key:"Billa vs ADA",       camp:"FIPAV", casa:false, opp:"Billa",           score:"1-3", sets:"", luogo:"Milano"},
-  {d:"23/02/2026", key:"Canegrate vs ADA",   camp:"PGS",   casa:false, opp:"Canegrate",       score:"1-3", sets:"", luogo:"Canegrate"},
-  {d:"27/02/2026", key:"ADA vs Lucernate",   camp:"FIPAV", casa:true,  opp:"Lucernate",       score:"3-1", sets:"", luogo:"Pero"},
-  {d:"04/03/2026", key:"ADA vs Melzo",       camp:"PGS",   casa:true,  opp:"Melzo",           score:"3-2", sets:"", luogo:"Pero"},
-  {d:"06/03/2026", key:"S.Michele vs ADA",   camp:"FIPAV", casa:false, opp:"San Michele",     score:"1-3", sets:"", luogo:"Milano"},
-  {d:"03/04/2026", key:"ADA vs Billa",       camp:"FIPAV", casa:true,  opp:"Billa",           score:"3-0", sets:"", luogo:"Pero"},
-  {d:"08/04/2026", key:"ADA vs Speranza",    camp:"FIPAV", casa:true,  opp:"Speranza",        score:"3-0", sets:"", luogo:"Pero"},
-  {d:"15/04/2026", key:"Bresso vs ADA",      camp:"FIPAV", casa:false, opp:"PCG Bresso",      score:"0-3", sets:"", luogo:"Bresso"},
-  {d:"08/05/2026", key:"Lucernate vs ADA",   camp:"FIPAV", casa:false, opp:"Lucernate",       score:"3-0", sets:"", luogo:"Rho"},
-  {d:"13/05/2026", key:"ADA vs S.Michele",   camp:"FIPAV", casa:true,  opp:"San Michele",     score:"3-0", sets:"", luogo:"Pero"},
-  {d:"21/05/2026", key:"Geco vs ADA",        camp:"FIPAV", casa:true,  opp:"Geco",            score:"3-0", sets:"", luogo:"Pero"}
+const STAGIONI = [
+  {
+    id: "2026-2027",
+    etichetta: "2026-27",
+    campionati: [
+      {k:"PGS",   nome:"Campionato PGS",   sotto:"Invernale OPEN maschile"},
+      {k:"FIPAV", nome:"Campionato FIPAV", sotto:"2ª Divisione Regionale"}
+    ],
+    /* la rosa del 2025-26 (foglio presenze): aggiungi qui i nuovi arrivi */
+    rosa: [
+      {nome:"Marco Farano",          numero:1,  ruolo:"A"},
+      {nome:"Antonio Zarzana",       numero:13, ruolo:"A"},
+      {nome:"Andrea Panzani",        numero:4,  ruolo:"S"},
+      {nome:"Giuseppe Di Bella",     numero:6,  ruolo:"S"},
+      {nome:"Michele Muggia",        numero:17, ruolo:"S"},
+      {nome:"Diego Leonardi",        numero:49, ruolo:"S"},
+      {nome:"Federico Pizzamiglio",  numero:58, ruolo:"S"},
+      {nome:"Kevin Ambrogioni",      numero:12, ruolo:"C"},
+      {nome:"Lorenzo Sciarrone",     numero:11, ruolo:"C"},
+      {nome:"Nicolò Zonta",          numero:16, ruolo:"C"},
+      {nome:"Mirko Rodriguez Disla", numero:45, ruolo:"C"},
+      {nome:"Stefano Birolini",      numero:18, ruolo:"O"},
+      {nome:"Tommaso Moscatelli",    numero:15, ruolo:"O"},
+      {nome:"Lorenzo Longo",         numero:9,  ruolo:"L"},
+      {nome:"Mattia Paola",          numero:19, ruolo:"L"}
+    ],
+    partite: [],
+    calendario: [],
+    eventi: [],
+    gazzetta: { cartella: "Gazzetta/2026-2027/", file: {} }
+  },
+  {
+    id: "2025-2026",
+    etichetta: "2025-26",
+    campionati: [
+      {k:"PGS",   nome:"Campionato PGS",   sotto:"Invernale OPEN maschile + Girone Finale"},
+      {k:"FIPAV", nome:"Campionato FIPAV", sotto:"2ª Divisione Regionale"}
+    ],
+    partite: [
+      {d:"24/10/2025", key:"ACLI vs ADA",        camp:"PGS",   casa:false, opp:"ACLI",            score:"0-3", sets:"", luogo:"Milano"},
+      {d:"17/11/2025", key:"Martesana vs ADA",   camp:"PGS",   casa:true,  opp:"Martesana",       score:"3-0", sets:"", luogo:"Pero"},
+      {d:"04/12/2025", key:"GATE vs ADA",        camp:"PGS",   casa:false, opp:"Gate Orange",     score:"0-3", sets:"", luogo:"Milano"},
+      {d:"14/12/2025", key:"ADA vs ACLI",        camp:"PGS",   casa:true,  opp:"ACLI",            score:"3-1", sets:"", luogo:"Pero"},
+      {d:"20/12/2025", key:"BB vs ADA",          camp:"PGS",   casa:false, opp:"Black Bulls",     score:"2-3", sets:"", luogo:"Milano"},
+      {d:"11/01/2026", key:"ADA vs Martesana",   camp:"PGS",   casa:true,  opp:"Martesana",       score:"2-3", sets:"", luogo:"Pero"},
+      {d:"23/01/2026", key:"ADA vs Bresso",      camp:"FIPAV", casa:true,  opp:"PCG Bresso",      score:"3-0", sets:"", luogo:"Pero"},
+      {d:"30/01/2026", key:"ADA vs Gate",        camp:"PGS",   casa:true,  opp:"Gate Lime",       score:"3-0", sets:"", luogo:"Pero"},
+      {d:"07/02/2026", key:"Quarto84 vs ADA",    camp:"FIPAV", casa:false, opp:"Quarto84",        score:"0-3", sets:"", luogo:"Quarto Oggiaro"},
+      {d:"09/02/2026", key:"Gate vs ADA",        camp:"PGS",   casa:false, opp:"Gate Lime",       score:"1-3", sets:"", luogo:"Milano"},
+      {d:"22/02/2026", key:"Billa vs ADA",       camp:"FIPAV", casa:false, opp:"Billa",           score:"1-3", sets:"", luogo:"Milano"},
+      {d:"23/02/2026", key:"Canegrate vs ADA",   camp:"PGS",   casa:false, opp:"Canegrate",       score:"1-3", sets:"", luogo:"Canegrate"},
+      {d:"27/02/2026", key:"ADA vs Lucernate",   camp:"FIPAV", casa:true,  opp:"Lucernate",       score:"3-1", sets:"", luogo:"Pero"},
+      {d:"04/03/2026", key:"ADA vs Melzo",       camp:"PGS",   casa:true,  opp:"Melzo",           score:"3-2", sets:"", luogo:"Pero"},
+      {d:"06/03/2026", key:"S.Michele vs ADA",   camp:"FIPAV", casa:false, opp:"San Michele",     score:"1-3", sets:"", luogo:"Milano"},
+      {d:"03/04/2026", key:"ADA vs Billa",       camp:"FIPAV", casa:true,  opp:"Billa",           score:"3-0", sets:"", luogo:"Pero"},
+      {d:"08/04/2026", key:"ADA vs Speranza",    camp:"FIPAV", casa:true,  opp:"Speranza",        score:"3-0", sets:"", luogo:"Pero"},
+      {d:"15/04/2026", key:"Bresso vs ADA",      camp:"FIPAV", casa:false, opp:"PCG Bresso",      score:"0-3", sets:"", luogo:"Bresso"},
+      {d:"08/05/2026", key:"Lucernate vs ADA",   camp:"FIPAV", casa:false, opp:"Lucernate",       score:"3-0", sets:"", luogo:"Rho"},
+      {d:"13/05/2026", key:"ADA vs S.Michele",   camp:"FIPAV", casa:true,  opp:"San Michele",     score:"3-0", sets:"", luogo:"Pero"},
+      {d:"21/05/2026", key:"Geco vs ADA",        camp:"FIPAV", casa:true,  opp:"Geco",            score:"3-0", sets:"", luogo:"Pero"}
+    ],
+    calendario: [],
+    eventi: [
+      {
+      data: "Maggio 2026",
+      titolo: "Campioni PGS Invernale Open",
+      testo: "Nove vittorie su dieci e 29 set vinti: il Pegasus chiude in testa il Campionato PGS Invernale OPEN maschile e il Girone Finale.",
+      icona: "🏆", tag: "Titolo", pin: true,
+      foto: "foto/squadra-campioni-pgs.jpg",
+      didascalia: "La squadra con la coppa al termine del Girone Finale.",
+      alt: "La squadra dell'Ad Astra Pegasus in posa al centro del campo con la coppa e le medaglie al collo, al termine del Girone Finale PGS."
+      },
+      {
+      data: "21 maggio 2026",
+      titolo: "Chiusura di stagione con un 3-0",
+      testo: "Ultima giornata FIPAV contro il Geco: 25-21, 25-22, 25-15. Settima vittoria per 3-0 in undici partite di campionato.",
+      icona: "🏐", tag: "Partita"
+      },
+      {
+      data: "8 aprile 2026",
+      titolo: "Il record della stagione",
+      testo: "Contro la Speranza arriva il saldo di squadra più alto dell'anno: +39, con appena 8 errori in tutta la partita.",
+      icona: "📊", tag: "Record"
+      }
+      /* ESEMPIO con foto:
+      ,{
+      data: "Giugno 2026",
+      titolo: "Cena di fine stagione",
+      testo: "Tutti insieme per chiudere l'annata.",
+      icona: "🍕", tag: "Squadra",
+      foto: "foto/cena-2026.jpg"
+      }
+      */
+    ],
+    gazzetta: { cartella: "Gazzetta/", file: {
+      "24/10/2025":"2025-10-24 ACLI - Pegasus.md",
+      "17/11/2025":"2025-11-17 Pegasus - Martesana.md",
+      "04/12/2025":"2025-12-04 Gate - Pegasus.md",
+      "14/12/2025":"2025-12-14 Pegasus - ACLI.md",
+      "20/12/2025":"2025-12-20 Black Bulls - Pegasus.md",
+      "11/01/2026":"2026-01-11 Pegasus - Martesana.md",
+      "23/01/2026":"2026-01-23 Pegasus - PCG Bresso.md",
+      "30/01/2026":"2026-01-30 Pegasus - Gate Lime.md",
+      "07/02/2026":"2026-02-07 Quarto84 - Pegasus.md",
+      "09/02/2026":"2026-02-09 Gate Lime - Pegasus.md",
+      "22/02/2026":"2026-02-22 Billa - Pegasus.md",
+      "23/02/2026":"2026-02-23 Canegrate - Pegasus.md",
+      "27/02/2026":"2026-02-27 Pegasus - Lucernate.md",
+      "04/03/2026":"2026-03-04 Pegasus - Melzo.md",
+      "06/03/2026":"2026-03-06 San Michele - Pegasus.md",
+      "03/04/2026":"2026-04-03 Pegasus - Billa.md",
+      "08/04/2026":"2026-04-08 Pegasus - Speranza.md",
+      "15/04/2026":"2026-04-15 Bresso - Pegasus.md",
+      "08/05/2026":"2026-05-08 Lucernate - Pegasus.md",
+      "13/05/2026":"2026-05-13 Pegasus - San Michele.md",
+      "21/05/2026":"2026-05-21 Pegasus - Geco.md"
+    }},
+    racconto: {
+      presentazione: "Stagione <b>2025-2026</b>: 21 partite documentate fra il Campionato PGS Invernale OPEN maschile e la 2ª Divisione Regionale FIPAV.",
+      riconoscimenti: ["Campioni PGS Invernale Open"],
+      titolo: "Due campionati, <em>due squadre diverse</em>",
+      sintesi: "Nel PGS il Pegasus ha vinto lottando: partite lunghe, muri a raffica, cinquanta palloni attaccati per set. Nel FIPAV ha vinto controllando: match corti, selezione chirurgica, pochissimi errori. Stessi giocatori, stesso allenatore, due identità.",
+      speciale: {
+        titolo: "Bilancio Stagionale 2025-2026",
+        testo: "Due campionati, due squadre diverse: il racconto completo della stagione, i numeri, i protagonisti e i tre temi dell'anno.",
+        giocatore: "Nicolò Zonta"
+      }
+    }
+  }
 ];
 
 /* ============================================================
@@ -2999,24 +3149,46 @@ function intestazioniOrdinabili(tabella){
 /* Collega ogni scheda al suo pulsante di navigazione secondo lo schema tab/tabpanel */
 function collegaSchede(){
   $$("nav.links a").forEach(a=>{
-    const id = a.getAttribute("href").slice(1);
-    a.id = "tab-"+id;
-    a.setAttribute("aria-controls", id);
-    const pane = document.getElementById(id);
-    if(pane){ pane.setAttribute("role","tabpanel"); pane.setAttribute("aria-labelledby","tab-"+id); pane.tabIndex = -1; }
+    const pane = document.getElementById(a.getAttribute("href").slice(1));
+    if(pane) pane.tabIndex = -1;          /* raggiungibile dal link "Salta al contenuto" */
   });
 }
 /* i conteggi dei filtri vanno annunciati, altrimenti chi non vede non sa che è cambiato */
 $$(".count").forEach(c=>{ c.setAttribute("role","status"); c.setAttribute("aria-live","polite"); });
 
 /* ============================================================
-   1 · PARSING DEL CSV
+   0 · STAGIONE APERTA
+   Si sceglie dall'indirizzo (?stagione=2025-2026). Senza indicazioni si apre
+   la stagione più recente che ha almeno una partita, giocata o in calendario.
    ============================================================ */
-const raw = $("#csvStats").textContent.trim().split(/\r?\n/);
-const head = raw.shift().split(";");
-const COL = {}; head.forEach((h,i)=>COL[h.trim()]=i);
+const haDati = st => !!((st.partite&&st.partite.length) || (st.calendario&&st.calendario.length));
+const PREDEFINITA = STAGIONI.find(haDati) || STAGIONI[0];
+const S = STAGIONI.find(st=> st.id===new URLSearchParams(location.search).get("stagione")) || PREDEFINITA;
+const R = S.racconto || {};                                   /* testi di fine stagione, se ci sono */
+const CAMPI = S.campionati || [];
+const CK = CAMPI.map(c=>c.k);
+/* colore di un campionato: il primo rosso, il secondo blu, gli altri grigi */
+const campIdx = k => { const i = CK.indexOf(k); return i<0 ? 2 : Math.min(i,2); };
+const ACCENTO = ["c-red","c-blue",""];
+/* i testi scritti per un'altra stagione escono dalla pagina */
+$$("[data-stagione]").forEach(el=>{ if(el.tagName!=="SCRIPT" && el.dataset.stagione!==S.id) el.remove(); });
+/* la stagione giocata prima di questa, per i confronti */
+const PRECEDENTE = STAGIONI.slice(STAGIONI.indexOf(S)+1).find(st=>st.partite&&st.partite.length) || null;
+const nPartite = n => n+(n===1?" partita":" partite");
+const elenco = a => a.length<2 ? (a[0]||"") : a.slice(0,-1).join(", ")+" e "+a[a.length-1];
 
-const ROWS = raw.filter(l=>l.trim()).map(line=>{
+/* ============================================================
+   1 · LETTURA DEI DATI DI UNA STAGIONE
+   Tutto il calcolo sta in funzioni: le usa la stagione aperta e,
+   per i confronti, anche le altre.
+   ============================================================ */
+function leggiCSV(id){
+  const blocco = document.querySelector('script[data-csv="'+id+'"]');
+  const raw = blocco ? blocco.textContent.trim().split(/\r?\n/) : [];
+  if(raw.length<2) return [];
+  const head = raw.shift().split(";");
+  const COL = {}; head.forEach((h,i)=>COL[h.trim()]=i);
+  return raw.filter(l=>l.trim()).map(line=>{
   const c = line.split(";");
   const g = k => c[COL[k]];
   return {
@@ -3035,61 +3207,8 @@ const ROWS = raw.filter(l=>l.trim()).map(line=>{
     difTot:num(g("Dif_Tot")), difPos:num(g("Dif_Pos%")),
     muri:num(g("Muro_Pt"))
   };
-});
-
-/* indice partite per data */
-const MBY = {}; MATCHES.forEach(m=>{ MBY[m.d]=m; });
-MATCHES.sort((a,b)=> sortKey(b.d).localeCompare(sortKey(a.d)));   /* più recenti in cima */
-const MATCHES_CRONO = MATCHES.slice().reverse();
-ROWS.forEach(r=>{ const m=MBY[r.data]; r.camp = m?m.camp:"—"; });
-
-/* ============================================================
-   2 · AGGREGAZIONE PER GIOCATORE
-   ============================================================ */
-function blank(nome){
-  return {nome, numero:null, ruolo:"", numeri:{}, ruoli:{}, camp:{PGS:0,FIPAV:0},
-    pres:0, punti:0, saldo:0, servTot:0, servErr:0, ace:0,
-    ricTot:0, ricErr:0, ricPosN:0, ricPrfN:0, ricEffN:0,
-    attTot:0, attErr:0, attPt:0, attEffN:0,
-    difTot:0, difPosN:0, muri:0, match:[]};
+  });
 }
-const PMAP = {};
-ROWS.forEach(r=>{
-  const p = PMAP[r.nome] || (PMAP[r.nome]=blank(r.nome));
-  p.pres++;
-  p.numeri[r.numero]=(p.numeri[r.numero]||0)+1;
-  if(r.ruolo) p.ruoli[r.ruolo]=(p.ruoli[r.ruolo]||0)+1;
-  if(p.camp[r.camp]!==undefined) p.camp[r.camp]++;
-  p.punti+=r.punti; p.saldo+=r.saldo;
-  p.servTot+=r.servTot; p.servErr+=r.servErr; p.ace+=r.ace;
-  p.ricTot+=r.ricTot; p.ricErr+=r.ricErr;
-  p.ricPosN+=r.ricTot*r.ricPos/100; p.ricPrfN+=r.ricTot*r.ricPrf/100; p.ricEffN+=r.ricTot*r.ricEff/100;
-  p.attTot+=r.attTot; p.attErr+=r.attErr; p.attPt+=r.attPt; p.attEffN+=r.attTot*r.attEff/100;
-  p.difTot+=r.difTot; p.difPosN+=r.difTot*r.difPos/100;
-  p.muri+=r.muri;
-  p.match.push(r);
-});
-const top = o => Object.keys(o).sort((a,b)=>o[b]-o[a])[0];
-const PLAYERS = Object.values(PMAP).map(p=>{
-  p.numero = parseInt(top(p.numeri),10);
-  p.ruolo  = top(p.ruoli) || "";
-  p.ruoloLabel = RUOLI[p.ruolo] || "—";
-  p.attPtPct  = p.attTot? p.attPt/p.attTot*100 : 0;
-  p.attErrPct = p.attTot? p.attErr/p.attTot*100 : 0;
-  p.attEffPct = p.attTot? p.attEffN/p.attTot*100 : 0;
-  p.ricPosPct = p.ricTot? p.ricPosN/p.ricTot*100 : 0;
-  p.ricPrfPct = p.ricTot? p.ricPrfN/p.ricTot*100 : 0;
-  p.difPosPct = p.difTot? p.difPosN/p.difTot*100 : 0;
-  p.acePct    = p.servTot? p.ace/p.servTot*100 : 0;
-  p.ppg = p.pres? p.punti/p.pres : 0;
-  p.match.sort((a,b)=> sortKey(a.data).localeCompare(sortKey(b.data)));
-  return p;
-}).sort((a,b)=> b.punti-a.punti || a.nome.localeCompare(b.nome));
-const PBY = {}; PLAYERS.forEach(p=>PBY[p.nome]=p);
-
-/* ============================================================
-   3 · TOTALI DI SQUADRA
-   ============================================================ */
 function totali(rows){
   const t={punti:0,ace:0,muri:0,attTot:0,attPt:0,attErr:0,attEffN:0,servTot:0,servErr:0,
            ricTot:0,ricPosN:0,difTot:0,difPosN:0,righe:rows.length};
@@ -3098,40 +3217,119 @@ function totali(rows){
     t.ricTot+=r.ricTot; t.ricPosN+=r.ricTot*r.ricPos/100; t.difTot+=r.difTot; t.difPosN+=r.difTot*r.difPos/100; });
   return t;
 }
-const TOT   = totali(ROWS);
-const TPGS  = totali(ROWS.filter(r=>r.camp==="PGS"));
-const TFIP  = totali(ROWS.filter(r=>r.camp==="FIPAV"));
-/* medie di squadra: il metro con cui si confronta il singolo giocatore */
-const MEDIA = {
-  ppg:        TOT.righe  ? TOT.punti/TOT.righe        : 0,
-  muriPg:     TOT.righe  ? TOT.muri/TOT.righe         : 0,
-  attPtPct:   TOT.attTot ? TOT.attPt/TOT.attTot*100   : 0,
-  attEffPct:  TOT.attTot ? TOT.attEffN/TOT.attTot*100 : 0,
-  acePct:     TOT.servTot? TOT.ace/TOT.servTot*100    : 0,
-  ricPosPct:  TOT.ricTot ? TOT.ricPosN/TOT.ricTot*100 : 0,
-  difPosPct:  TOT.difTot ? TOT.difPosN/TOT.difTot*100 : 0
-};
-const bilancio = camp => {
-  const ms = MATCHES.filter(m=>!camp||m.camp===camp);
+function blank(nome, ck){
+  return {nome, numero:null, ruolo:"", numeri:{}, ruoli:{}, camp:Object.fromEntries(ck.map(k=>[k,0])),
+    pres:0, punti:0, saldo:0, servTot:0, servErr:0, ace:0,
+    ricTot:0, ricErr:0, ricPosN:0, ricPrfN:0, ricEffN:0,
+    attTot:0, attErr:0, attPt:0, attEffN:0,
+    difTot:0, difPosN:0, muri:0, match:[]};
+}
+const top = o => Object.keys(o).sort((a,b)=>o[b]-o[a])[0];
+/* vinte, perse e set di un insieme di partite (di un solo campionato, se indicato) */
+function bilancio(matches, camp){
+  const ms = matches.filter(m=>!camp||m.camp===camp);
   let v=0,s=0,sv=0,sp=0;
   ms.forEach(m=>{ const [a,b]=m.score.split("-").map(Number);
     const mine = m.casa?a:b, his = m.casa?b:a;
     if(mine>his) v++; else s++; sv+=mine; sp+=his; });
   return {n:ms.length, v, s, sv, sp};
-};
-const BTOT=bilancio(), BPGS=bilancio("PGS"), BFIP=bilancio("FIPAV");
-MATCHES.forEach(m=>{ const [a,b]=m.score.split("-").map(Number);
-  m.mySets = m.casa?a:b; m.hisSets = m.casa?b:a; m.win = m.mySets>m.hisSets;
-  m.label = m.casa ? ("Pegasus – "+m.opp) : (m.opp+" – Pegasus");
-  m.display = m.mySets+"–"+m.hisSets;
-});
+}
+function calcola(st){
+  const ck = (st.campionati||[]).map(c=>c.k);
+  const ROWS = leggiCSV(st.id);
+  /* indice partite per data */
+  const MATCHES = (st.partite||[]).map(m=>Object.assign({},m));
+  const MBY = {}; MATCHES.forEach(m=>{ MBY[m.d]=m; });
+  MATCHES.sort((a,b)=> sortKey(b.d).localeCompare(sortKey(a.d)));   /* più recenti in cima */
+  const MATCHES_CRONO = MATCHES.slice().reverse();
+  ROWS.forEach(r=>{ const m=MBY[r.data]; r.camp = m?m.camp:"—"; });
+
+  /* aggregazione per giocatore */
+  const PMAP = {};
+  ROWS.forEach(r=>{
+    const p = PMAP[r.nome] || (PMAP[r.nome]=blank(r.nome, ck));
+    p.pres++;
+    p.numeri[r.numero]=(p.numeri[r.numero]||0)+1;
+    if(r.ruolo) p.ruoli[r.ruolo]=(p.ruoli[r.ruolo]||0)+1;
+    if(p.camp[r.camp]!==undefined) p.camp[r.camp]++;
+    p.punti+=r.punti; p.saldo+=r.saldo;
+    p.servTot+=r.servTot; p.servErr+=r.servErr; p.ace+=r.ace;
+    p.ricTot+=r.ricTot; p.ricErr+=r.ricErr;
+    p.ricPosN+=r.ricTot*r.ricPos/100; p.ricPrfN+=r.ricTot*r.ricPrf/100; p.ricEffN+=r.ricTot*r.ricEff/100;
+    p.attTot+=r.attTot; p.attErr+=r.attErr; p.attPt+=r.attPt; p.attEffN+=r.attTot*r.attEff/100;
+    p.difTot+=r.difTot; p.difPosN+=r.difTot*r.difPos/100;
+    p.muri+=r.muri;
+    p.match.push(r);
+  });
+  /* chi è in rosa ma non ha ancora giocato compare lo stesso, a zero */
+  (st.rosa||[]).forEach(g=>{
+    if(!g || !g.nome || PMAP[g.nome]) return;
+    const p = PMAP[g.nome] = blank(g.nome, ck);
+    if(g.numero!=null) p.numeri[g.numero]=1;
+    if(g.ruolo) p.ruoli[g.ruolo]=1;
+  });
+  const PLAYERS = Object.values(PMAP).map(p=>{
+    p.numero = Object.keys(p.numeri).length ? parseInt(top(p.numeri),10) : "";
+    p.ruolo  = top(p.ruoli) || "";
+    p.ruoloLabel = RUOLI[p.ruolo] || "—";
+    p.attPtPct  = p.attTot? p.attPt/p.attTot*100 : 0;
+    p.attErrPct = p.attTot? p.attErr/p.attTot*100 : 0;
+    p.attEffPct = p.attTot? p.attEffN/p.attTot*100 : 0;
+    p.ricPosPct = p.ricTot? p.ricPosN/p.ricTot*100 : 0;
+    p.ricPrfPct = p.ricTot? p.ricPrfN/p.ricTot*100 : 0;
+    p.difPosPct = p.difTot? p.difPosN/p.difTot*100 : 0;
+    p.acePct    = p.servTot? p.ace/p.servTot*100 : 0;
+    p.ppg = p.pres? p.punti/p.pres : 0;
+    p.match.sort((a,b)=> sortKey(a.data).localeCompare(sortKey(b.data)));
+    return p;
+  }).sort((a,b)=> b.punti-a.punti || a.nome.localeCompare(b.nome));
+  const PBY = {}; PLAYERS.forEach(p=>PBY[p.nome]=p);
+
+  /* totali e medie di squadra: il metro con cui si confronta il singolo giocatore */
+  const TOT = totali(ROWS);
+  const MEDIA = {
+    ppg:        TOT.righe  ? TOT.punti/TOT.righe        : 0,
+    muriPg:     TOT.righe  ? TOT.muri/TOT.righe         : 0,
+    attPtPct:   TOT.attTot ? TOT.attPt/TOT.attTot*100   : 0,
+    attEffPct:  TOT.attTot ? TOT.attEffN/TOT.attTot*100 : 0,
+    acePct:     TOT.servTot? TOT.ace/TOT.servTot*100    : 0,
+    ricPosPct:  TOT.ricTot ? TOT.ricPosN/TOT.ricTot*100 : 0,
+    difPosPct:  TOT.difTot ? TOT.difPosN/TOT.difTot*100 : 0
+  };
+  MATCHES.forEach(m=>{ const [a,b]=m.score.split("-").map(Number);
+    m.mySets = m.casa?a:b; m.hisSets = m.casa?b:a; m.win = m.mySets>m.hisSets;
+    m.label = m.casa ? ("Pegasus – "+m.opp) : (m.opp+" – Pegasus");
+    m.display = m.mySets+"–"+m.hisSets;
+  });
+  return {ROWS, MATCHES, MBY, MATCHES_CRONO, PLAYERS, PBY, TOT, MEDIA};
+}
+
+/* la stagione aperta */
+const D = calcola(S);
+const {ROWS, MATCHES, MBY, MATCHES_CRONO, PLAYERS, PBY, TOT, MEDIA} = D;
+const BTOT = bilancio(MATCHES);
+/* totali e bilancio di ogni campionato */
+const CB = {}, CT = {};
+CK.forEach(k=>{ CB[k] = bilancio(MATCHES,k); CT[k] = totali(ROWS.filter(r=>r.camp===k)); });
+const CATTIVI = CAMPI.filter(c=>CB[c.k].n>0);          /* campionati con almeno una partita */
+/* le altre stagioni si calcolano solo quando servono a un confronto */
+const CACHE = {[S.id]:D};
+const datiDi = st => CACHE[st.id] || (CACHE[st.id] = calcola(st));
+/* partite in calendario non ancora giocate, dalla più vicina */
+const PROSSIME = (S.calendario||[]).filter(c=>c && c.d && !MBY[c.d])
+  .sort((a,b)=> sortKey(a.d).localeCompare(sortKey(b.d)));
 
 /* ============================================================
    4 · HERO
    ============================================================ */
-$("#heroRecord").textContent = BTOT.v+" vittorie su "+BTOT.n;
+$("#heroSub").innerHTML = R.presentazione ||
+  ("Stagione <b>"+esc(S.id)+"</b>: "+(BTOT.n
+    ? nPartite(BTOT.n)+(BTOT.n===1?" documentata":" documentate")+(CATTIVI.length?" fra "+esc(elenco(CATTIVI.map(c=>c.nome))):"")
+    : "la stagione sta per iniziare")+".");
+$("#heroBadges").innerHTML = (R.riconoscimenti||[]).map(t=>`<span class="badge">${esc(t)}</span>`).join("")
+  + (BTOT.n ? `<span class="badge b-neutral" id="heroRecord">${BTOT.v} ${BTOT.v===1?"vittoria":"vittorie"} su ${BTOT.n}</span>` : "");
 /* i numeri della stagione vivono nella sezione Stagione, non ripetuti anche qui */
-$("#seasonStats").innerHTML = [
+if(BTOT.n) $("#seasonStats").innerHTML = [
   ["Bilancio", BTOT.v+'<span class="sep">–</span>'+BTOT.s, Math.round(BTOT.v/BTOT.n*100)+"% di vittorie", ""],
   ["Set",      BTOT.sv+'<span class="sep">–</span>'+BTOT.sp, dec((BTOT.sv+BTOT.sp)/BTOT.n,1)+" set a partita", ""],
   ["Punti realizzati", it(TOT.punti), it(TOT.attPt)+" attacchi vincenti", ""],
@@ -3141,6 +3339,7 @@ $("#seasonStats").innerHTML = [
 /* ============================================================
    5 · BACHECA
    ============================================================ */
+const EVENTI = S.eventi || [];
 $("#board").innerHTML = EVENTI.length ? EVENTI.map(e=>`
   <article class="glass ev ${e.pin?"pinned":""} ${e.foto&&e.pin?"wide":""}">
     <div class="ev-media">
@@ -3155,7 +3354,7 @@ $("#board").innerHTML = EVENTI.length ? EVENTI.map(e=>`
       ${e.didascalia?`<p class="ev-cap">${esc(e.didascalia)}</p>`:""}
     </div>
   </article>`).join("")
-  : `<div class="glass empty" style="grid-column:1/-1">La bacheca è vuota. Aggiungi un evento nell'array <code>EVENTI</code> dentro il file.</div>`;
+  : `<div class="glass empty" style="grid-column:1/-1">Nessun evento in bacheca per questa stagione, per ora.</div>`;
 
 /* ============================================================
    6 · STAGIONE
@@ -3176,8 +3375,87 @@ function campCard(el, titolo, sub, B, T, accent){
         .map(x=>`<div class="kv-cell"><div class="kk">${x[0]}</div><div class="vv">${x[1]}</div></div>`).join("")}
     </div>`;
 }
-campCard($("#cardPGS"),  '<span class="pip pgs"></span>Campionato PGS', "Invernale OPEN maschile + Girone Finale", BPGS, TPGS, "c-red");
-campCard($("#cardFIPAV"),'<span class="pip fipav"></span>Campionato FIPAV', "2ª Divisione Regionale", BFIP, TFIP, "c-blue");
+$("#stagione-h").innerHTML = R.titolo || ("La stagione <em>"+esc(S.etichetta)+"</em>");
+$("#stagioneLead").innerHTML = R.sintesi || (BTOT.n
+  ? esc(nPartite(BTOT.n)+" con referto finora: "+BTOT.v+(BTOT.v===1?" vinta":" vinte")+" e "+BTOT.s+(BTOT.s===1?" persa.":" perse."))
+  : "La stagione non è ancora iniziata. I numeri compariranno qui dopo la prima partita con referto.");
+$("#stagioneDati").hidden = !BTOT.n;
+
+/* una card per campionato giocato */
+$("#campCards").innerHTML = CATTIVI.map(c=>`<div class="glass card" id="card${esc(c.k)}"></div>`).join("");
+CATTIVI.forEach(c=> campCard(document.getElementById("card"+c.k), `<span class="pip k${campIdx(c.k)}"></span>${esc(c.nome)}`,
+  esc(c.sotto||""), CB[c.k], CT[c.k], ACCENTO[campIdx(c.k)]));
+
+/* confronto fra campionati: solo se ce ne sono almeno due.
+   Una stagione può avere la sua tabella scritta a mano (data-stagione); altrimenti la si calcola. */
+$("#confronto").hidden = CATTIVI.length<2;
+$("#cmpTitolo").textContent = CATTIVI.length===2 ? CATTIVI[0].k+" contro "+CATTIVI[1].k+", tutti i numeri" : "I campionati a confronto";
+if(CATTIVI.length>=2 && !$("#confronto .cmp-tbl")){
+  const ks = CATTIVI.map(c=>c.k);
+  const q = (a,b)=> b ? a/b : 0;
+  /* [indicatore, valore, verso del meglio (1 alto, -1 basso, 0 nessuno), come si scrive] */
+  const righe = [
+    ["Partite",               k=>CB[k].n, 0, v=>v],
+    ["Bilancio",              k=>q(CB[k].v,CB[k].n), 1, (v,k)=>CB[k].v+"–"+CB[k].s],
+    ["Set",                   k=>q(CB[k].sv,CB[k].sv+CB[k].sp), 1, (v,k)=>CB[k].sv+"–"+CB[k].sp],
+    ["Set per partita",       k=>q(CB[k].sv+CB[k].sp,CB[k].n), 0, v=>dec(v,1)],
+    ["Attacchi per partita",  k=>q(CT[k].attTot,CB[k].n), 1, v=>it(Math.round(v))],
+    ["Conversione attacco",   k=>q(CT[k].attPt,CT[k].attTot)*100, 1, v=>dec(v,1)+"%"],
+    ["Errori in attacco",     k=>q(CT[k].attErr,CT[k].attTot)*100, -1, v=>dec(v,1)+"%"],
+    ["Muri per partita",      k=>q(CT[k].muri,CB[k].n), 1, v=>dec(v,1)],
+    ["Ace per partita",       k=>q(CT[k].ace,CB[k].n), 1, v=>dec(v,1)],
+    ["Ricezione positività",  k=>q(CT[k].ricPosN,CT[k].ricTot)*100, 1, v=>Math.round(v)+"%"]
+  ];
+  $("#cmpAuto").innerHTML = `<table class="t cmp-tbl"><thead><tr><th>Indicatore</th>${ks.map(k=>`<th>${esc(k)}</th>`).join("")}</tr></thead><tbody>`+
+    righe.map(([nome,val,verso,fmt])=>{
+      const vs = ks.map(val);
+      const meglio = verso ? (verso>0?Math.max(...vs):Math.min(...vs)) : null;
+      const unico = verso && vs.filter(v=>v===meglio).length===1;
+      return `<tr><td>${nome}</td>`+ks.map((k,i)=>`<td${unico&&vs[i]===meglio?' class="hl"':""}>${fmt(vs[i],k)}</td>`).join("")+`</tr>`;
+    }).join("")+`</tbody></table>`;
+  $("#cmpAuto").hidden = false;
+}
+
+/* confronto con la stagione precedente: numeri per partita o in percentuale,
+   così stagioni di lunghezza diversa restano confrontabili */
+function perPartita(d){
+  const B = bilancio(d.MATCHES), T = d.TOT, set = B.sv+B.sp;
+  return {n:B.n, vitt:B.n?B.v/B.n*100:0, ppset:set?T.punti/set:0, conv:T.attTot?T.attPt/T.attTot*100:0,
+    err:T.attTot?T.attErr/T.attTot*100:0, ace:B.n?T.ace/B.n:0, muri:B.n?T.muri/B.n:0, ric:T.ricTot?T.ricPosN/T.ricTot*100:0};
+}
+if(PRECEDENTE && BTOT.n){
+  const a = perPartita(D), b = perPartita(datiDi(PRECEDENTE));
+  const voci = [["Vittorie","vitt",1,v=>Math.round(v)+"%"],["Punti per set","ppset",1,v=>dec(v,1)],
+    ["Conversione attacco","conv",1,v=>dec(v,1)+"%"],["Errori in attacco","err",-1,v=>dec(v,1)+"%"],
+    ["Ace a partita","ace",1,v=>dec(v,1)],["Muri a partita","muri",1,v=>dec(v,1)],["Ricezione positiva","ric",1,v=>Math.round(v)+"%"]];
+  const el = $("#vsPrec");
+  el.innerHTML = `<p class="card-title">Rispetto alla stagione ${esc(PRECEDENTE.etichetta)}</p>
+    <p class="tiny muted" style="margin:-8px 0 14px">Valori per partita o in percentuale, così due stagioni di lunghezza diversa restano confrontabili.${a.n<5?" Con "+nPartite(a.n)+" giocate il confronto è ancora indicativo.":""}</p>
+    <div class="tbl-scroll"><table class="t"><thead><tr><th>Indicatore</th><th>${esc(S.etichetta)}</th><th>${esc(PRECEDENTE.etichetta)}</th><th>Differenza</th></tr></thead><tbody>`+
+    voci.map(([nome,k,verso,f])=>{
+      const d = a[k]-b[k], zero = Math.abs(d)<1e-9;
+      const cl = zero ? "" : ((d>0)===(verso>0) ? "c-win" : "c-red");
+      return `<tr><td>${nome}</td><td class="lead">${f(a[k])}</td><td>${f(b[k])}</td><td class="${cl}">${zero?"=":(d>0?"+":"−")+f(Math.abs(d))}</td></tr>`;
+    }).join("")+`</tbody></table></div>`;
+  el.hidden = false;
+}
+
+/* calendario delle prossime partite */
+function calendarioHTML(){
+  return `<p class="card-title">${PROSSIME.length===1?"La prossima partita":"Le prossime partite"}</p><ul class="cal">`+
+    PROSSIME.map(c=>`<li><span class="cal-d">${dataEstesa(c.d)}${c.ora?" · "+esc(c.ora):""}</span>
+      <span class="cal-m">${c.casa?"Pegasus – "+esc(c.opp):esc(c.opp)+" – Pegasus"}</span>
+      <span class="cal-x">${c.camp?`<span class="pip k${campIdx(c.camp)}"></span>${esc(c.camp)}`:""}${c.luogo?(c.camp?" · ":"")+esc(c.luogo):""}</span></li>`).join("")+`</ul>`;
+}
+if(PROSSIME.length){ $("#calendario").innerHTML = calendarioHTML(); $("#calendario").hidden = false; }
+/* stagione non ancora iniziata: al posto dei numeri, il calendario */
+if(!BTOT.n){
+  const el = $("#stagioneVuota");
+  el.innerHTML = `<div class="glass card">${PROSSIME.length ? calendarioHTML()
+      : `<p class="card-title">Calendario</p><p class="muted" style="margin:0">Il calendario della stagione non è ancora stato inserito.</p>`}
+    ${PRECEDENTE?`<p class="tiny muted" style="margin:16px 0 0">Nel frattempo puoi rivedere la <a class="vai-stagione" data-stagione-id="${esc(PRECEDENTE.id)}" href="?stagione=${encodeURIComponent(PRECEDENTE.id)}">stagione ${esc(PRECEDENTE.etichetta)}</a>.</p>`:""}</div>`;
+  el.hidden = false;
+}
 
 /* ============================================================
    7 · ROSA
@@ -3211,15 +3489,15 @@ function renderRoster(){
     <button class="glass link ply" data-ply="${esc(p.nome)}" aria-label="Scheda di ${esc(p.nome)}">
       <div class="ply-top">${avatar(p)}
         <div style="min-width:0"><div class="ply-name">${esc(p.nome)}</div>
-          <div class="ply-role">${esc(p.ruoloLabel)} · ${p.pres} ${p.pres===1?"presenza":"presenze"}</div></div>
+          <div class="ply-role">${esc(p.ruoloLabel)} · ${p.pres ? p.pres+(p.pres===1?" presenza":" presenze") : "ancora nessuna presenza"}</div></div>
       </div>
       <div class="ply-stats">
-        <div><b>${p.punti}</b><small>Punti</small></div>
-        <div><b>${p.muri}</b><small>Muri</small></div>
-        <div><b>${p.ace}</b><small>Ace</small></div>
+        <div><b>${p.pres?p.punti:"—"}</b><small>Punti</small></div>
+        <div><b>${p.pres?p.muri:"—"}</b><small>Muri</small></div>
+        <div><b>${p.pres?p.ace:"—"}</b><small>Ace</small></div>
       </div>
     </button>`).join("")
-    : `<div class="glass empty" style="grid-column:1/-1">Nessun giocatore corrisponde ai filtri.</div>`;
+    : `<div class="glass empty" style="grid-column:1/-1">${PLAYERS.length?"Nessun giocatore corrisponde ai filtri.":"La rosa di questa stagione non è ancora stata inserita."}</div>`;
 }
 function chips(el, opts, get, set){
   el.innerHTML = opts.map(o=>`<button class="chip" data-v="${esc(o[0])}" aria-pressed="${get()===o[0]}">${esc(o[1])}</button>`).join("");
@@ -3228,7 +3506,10 @@ function chips(el, opts, get, set){
 }
 chips($("#fRuolo"), [["all","Tutti"]].concat(RUOLI_ORD.filter(r=>PLAYERS.some(p=>p.ruolo===r)).map(r=>[r,RUOLI[r]])),
   ()=>fRuolo, v=>{fRuolo=v; renderRoster();});
-chips($("#fCamp"), [["all","Entrambi"],["PGS","PGS"],["FIPAV","FIPAV"]], ()=>fCamp, v=>{fCamp=v; renderRoster();});
+/* il filtro per campionato serve solo se i campionati sono almeno due */
+if(CK.length>=2) chips($("#fCamp"), [["all", CK.length===2?"Entrambi":"Tutti"]].concat(CK.map(k=>[k,k])), ()=>fCamp, v=>{fCamp=v; renderRoster();});
+else $("#fCamp").hidden = true;
+$("#rosa .filters").hidden = !PLAYERS.length;
 $("#fSearch").addEventListener("input", e=>{ fQ=e.target.value.trim().toLowerCase(); renderRoster(); });
 $("#fReset").addEventListener("click", ()=>{
   fRuolo=fCamp="all"; fQ=""; $("#fSearch").value="";
@@ -3250,6 +3531,15 @@ function podio(el, key, fmt){
       <span class="vl">${fmt?fmt(p[key]):p[key]}</span>
     </div>`).join("") : `<div class="empty tiny">Nessun dato</div>`;
 }
+/* sotto le tre partite una classifica direbbe poco */
+const SOGLIA = 3;
+const conClassifiche = BTOT.n >= SOGLIA;
+$("#clLead").textContent = conClassifiche
+  ? "Classifiche calcolate sulle "+BTOT.n+" partite con referto disponibile."
+  : "Punti, muri, ace e saldo: le classifiche compaiono dalla terza partita con referto.";
+$("#clDati").hidden = !conClassifiche;
+$("#clVuoto").hidden = conClassifiche;
+$("#clVuoto").textContent = BTOT.n ? "Per ora "+(BTOT.n===1?"c'è una sola partita":"ci sono "+BTOT.n+" partite")+" con referto." : "Nessuna partita con referto finora.";
 podio("#podPunti","punti");
 podio("#podMuri","muri");
 podio("#podAce","ace");
@@ -3257,7 +3547,7 @@ podio("#podSaldo","saldo", v=> (v>0?"+":"")+v);
 
 let sortK="punti", sortDir=-1;
 function renderTable(){
-  const list = PLAYERS.slice().sort((a,b)=>{
+  const list = PLAYERS.filter(p=>p.pres>0).sort((a,b)=>{
     const A=a[sortK], B=b[sortK];
     if(typeof A==="string") return sortDir*A.localeCompare(B);
     return sortDir*(A-B) || a.nome.localeCompare(b.nome);
@@ -3320,7 +3610,7 @@ function renderMatches(){
     <tr class="riga" data-match="${esc(m.d)}" tabindex="0" role="button" aria-label="Referto di ${esc(m.label)}">
       <td class="lead">${m.d}</td>
       <td class="lead">${esc(m.opp)}</td>
-      <td><span class="pip ${m.camp.toLowerCase()}"></span>${esc(m.camp)}</td>
+      <td><span class="pip k${campIdx(m.camp)}"></span>${esc(m.camp)}</td>
       <td>${esc(m.dove)}</td>
       <td><span class="res sm ${m.win?"w":"l"}">${m.display}</span></td>
       <td class="tiny muted" style="text-align:left">${esc(m.parziali||"—")}</td>
@@ -3343,7 +3633,12 @@ $("#tblMatches tbody").addEventListener("keydown", e=>{
   if(e.key==="Enter"||e.key===" "){ const r=e.target.closest("[data-match]"); if(r){ e.preventDefault(); r.click(); } }
 });
 intestazioniOrdinabili($("#tblMatches"));
-chips($("#mCamp"), [["all","Tutti"],["PGS","PGS"],["FIPAV","FIPAV"]], ()=>mCamp, v=>{mCamp=v;renderMatches();});
+if(CK.length>=2) chips($("#mCamp"), [["all","Tutti"]].concat(CK.map(k=>[k,k])), ()=>mCamp, v=>{mCamp=v;renderMatches();});
+else $("#mCamp").hidden = true;
+$("#pt-h").innerHTML = BTOT.n>1 ? "Tutte le <em>"+BTOT.n+" partite</em>" : BTOT.n===1 ? "La prima <em>partita</em>" : "Le <em>partite</em>";
+$("#ptDati").hidden = !MATCHES.length;
+$("#ptVuoto").hidden = !!MATCHES.length;
+$("#ptVuoto").textContent = "Nessuna partita giocata finora."+(PROSSIME.length?" Il calendario è qui sopra.":"");
 chips($("#mCampo"),[["all","Ovunque"],["casa","In casa"],["fuori","Trasferta"]], ()=>mCampo, v=>{mCampo=v;renderMatches();});
 chips($("#mEsito"),[["all","Tutte"],["w","Vittorie"],["l","Sconfitte"]], ()=>mEsito, v=>{mEsito=v;renderMatches();});
 $("#mSearch").addEventListener("input", e=>{ mQ=e.target.value.trim().toLowerCase(); renderMatches(); });
@@ -3389,41 +3684,22 @@ function parseGazzetta(testo){
   }
   return a;
 }
-$$('script[data-gz]').forEach(s=>{ GZ[s.dataset.gz] = parseGazzetta(s.textContent); });
+/* solo gli articoli di questa stagione; uno senza stagione indicata vale se la data è fra le sue partite */
+$$('script[data-gz]').forEach(s=>{
+  if((s.dataset.stagione||(MBY[s.dataset.gz]?S.id:"")) === S.id) GZ[s.dataset.gz] = parseGazzetta(s.textContent);
+});
 
 /* Caricamento automatico degli articoli non ancora incorporati.
    Funziona quando il sito è pubblicato (GitHub Pages) e la cartella
    "Gazzetta" si trova accanto a index.html. In locale (file://) il
    browser blocca la lettura e il sito mostra comunque il referto. */
-const GZ_FILES = {
-  "24/10/2025":"2025-10-24 ACLI - Pegasus.md",
-  "17/11/2025":"2025-11-17 Pegasus - Martesana.md",
-  "04/12/2025":"2025-12-04 Gate - Pegasus.md",
-  "14/12/2025":"2025-12-14 Pegasus - ACLI.md",
-  "20/12/2025":"2025-12-20 Black Bulls - Pegasus.md",
-  "11/01/2026":"2026-01-11 Pegasus - Martesana.md",
-  "23/01/2026":"2026-01-23 Pegasus - PCG Bresso.md",
-  "30/01/2026":"2026-01-30 Pegasus - Gate Lime.md",
-  "07/02/2026":"2026-02-07 Quarto84 - Pegasus.md",
-  "09/02/2026":"2026-02-09 Gate Lime - Pegasus.md",
-  "22/02/2026":"2026-02-22 Billa - Pegasus.md",
-  "23/02/2026":"2026-02-23 Canegrate - Pegasus.md",
-  "27/02/2026":"2026-02-27 Pegasus - Lucernate.md",
-  "04/03/2026":"2026-03-04 Pegasus - Melzo.md",
-  "06/03/2026":"2026-03-06 San Michele - Pegasus.md",
-  "03/04/2026":"2026-04-03 Pegasus - Billa.md",
-  "08/04/2026":"2026-04-08 Pegasus - Speranza.md",
-  "15/04/2026":"2026-04-15 Bresso - Pegasus.md",
-  "08/05/2026":"2026-05-08 Lucernate - Pegasus.md",
-  "13/05/2026":"2026-05-13 Pegasus - San Michele.md",
-  "21/05/2026":"2026-05-21 Pegasus - Geco.md"
-};
+const GZ_FILES = S.gazzetta && S.gazzetta.file ? S.gazzetta.file : {};
 function caricaArticoli(){
   if(location.protocol==="file:" || typeof fetch!=="function") return;
   const da = Object.keys(GZ_FILES).filter(d=>!GZ[d]);
   if(!da.length) return;
   Promise.all(da.map(d=>
-    fetch("Gazzetta/"+encodeURIComponent(GZ_FILES[d]))
+    fetch(((S.gazzetta&&S.gazzetta.cartella)||"Gazzetta/")+encodeURIComponent(GZ_FILES[d]))
       .then(r=> r.ok ? r.text() : null)
       .then(t=>{ if(t && t.indexOf("GAZZETTA")>-1) GZ[d]=parseGazzetta(t); })
       .catch(()=>{})
@@ -3496,22 +3772,26 @@ function renderGazzetta(){
     const a = GZ[m.d];
     const mvp = a && a.pagelle.length ? (a.pagelle.find(p=>p.mvp)||a.pagelle[0]) : null;
     return `<button class="glass link gz-card" data-match="${esc(m.d)}">
-      <span class="gz-kicker"><span class="pip ${m.camp.toLowerCase()}"></span>${esc(m.camp)} · ${dataEstesa(m.d)}</span>
+      <span class="gz-kicker"><span class="pip k${campIdx(m.camp)}"></span>${esc(m.camp)} · ${dataEstesa(m.d)}</span>
       <span class="gz-score">${esc(m.label)} <span class="${m.win?"c-win":"c-red"}">${m.display}</span></span>
       ${a&&a.occhiello?`<span class="gz-title">${esc(a.occhiello)}</span>`:`<span class="gz-title muted">Referto statistico disponibile</span>`}
       ${mvp?`<span class="gz-mvp">⭐ MVP <b>${esc(mvp.nome)}</b> · voto ${esc(mvp.voto)}</span>`
            :`<span class="gz-mvp">${a&&a.sets?esc(a.sets):"Apri il referto"}</span>`}
     </button>`;
   }).join("");
-  $("#gzGrid").innerHTML = `
+  /* lo speciale di fine stagione, se è stato scritto */
+  const sp = R.speciale;
+  $("#gzGrid").innerHTML = (sp ? `
     <a class="glass link gz-card gz-feature" href="#stagione" data-vai-bilancio="1" style="text-decoration:none">
       <span class="gz-kicker">Speciale, nella sezione Stagione</span>
-      <span class="gz-score">Bilancio Stagionale 2025-2026</span>
-      <span class="gz-title">Due campionati, due squadre diverse: il racconto completo della stagione, i numeri, i protagonisti e i tre temi dell'anno.</span>
-      <span class="gz-mvp">⭐ Giocatore della stagione: <b>Nicolò Zonta</b> →</span>
-    </a>` + (cards || `<div class="glass empty" style="grid-column:1/-1">Nessun articolo corrisponde ai filtri.</div>`);
+      <span class="gz-score">${esc(sp.titolo)}</span>
+      <span class="gz-title">${esc(sp.testo)}</span>
+      ${sp.giocatore?`<span class="gz-mvp">⭐ Giocatore della stagione: <b>${esc(sp.giocatore)}</b> →</span>`:""}
+    </a>` : "") + (cards || `<div class="glass empty" style="grid-column:1/-1">${MATCHES.length?"Nessun articolo corrisponde ai filtri.":"Nessun articolo ancora pubblicato per questa stagione."}</div>`);
 }
-chips($("#gCamp"), [["all","Tutti"],["PGS","PGS"],["FIPAV","FIPAV"]], ()=>gCamp, v=>{gCamp=v;renderGazzetta();});
+if(CK.length>=2) chips($("#gCamp"), [["all","Tutti"]].concat(CK.map(k=>[k,k])), ()=>gCamp, v=>{gCamp=v;renderGazzetta();});
+else $("#gCamp").hidden = true;
+$("#gazzetta .filters").hidden = !MATCHES.length;
 $("#gSearch").addEventListener("input", e=>{ gQ=e.target.value.trim().toLowerCase(); renderGazzetta(); });
 $("#gReset").addEventListener("click", ()=>{
   gCamp="all"; gQ=""; $("#gSearch").value="";
@@ -3553,7 +3833,7 @@ modal.addEventListener("cancel", e=>{ e.preventDefault(); chiudiModal(); });   /
 document.addEventListener("click", e=>{
   const pb = e.target.closest("[data-ply]");
   if(pb){ const p=PBY[pb.dataset.ply]; if(p){ apertoOra=p;
-    openModal("Scheda giocatore", "Stagione 2025-2026 · "+p.pres+" partite con referto", schedaGiocatore(p)); } return; }
+    openModal("Scheda giocatore", "Stagione "+S.id+" · "+(p.pres ? nPartite(p.pres)+" con referto" : "nessuna partita con referto"), schedaGiocatore(p)); } return; }
   const mb = e.target.closest("[data-match]");
   if(mb){ apertoOra=null; const m=MBY[mb.dataset.match];
     openModal(m.label+"  "+m.display, m.camp+" · "+dataEstesa(m.d)+(m.luogo?" · "+m.luogo:""), renderArticolo(m.d));
@@ -3566,6 +3846,32 @@ document.addEventListener("click", e=>{
     return;
   }
 });
+
+/* ---------- confronto fra stagioni ----------
+   Lo stesso giocatore nelle stagioni in cui ha giocato. Il nome si confronta
+   senza accenti: "Nicolò" e "Nicoló" sono la stessa persona. */
+function carriera(p){
+  const chiave = senzaAccenti(p.nome);
+  const righe = STAGIONI.filter(st=>st.partite&&st.partite.length).map(st=>{
+    const q = datiDi(st).PLAYERS.find(x=> senzaAccenti(x.nome)===chiave && x.pres>0);
+    return q ? {st,q} : null;
+  }).filter(Boolean);
+  if(!righe.some(r=>r.st!==S)) return "";
+  const ora = righe.find(r=>r.st===S), prima = righe.find(r=>r.st===PRECEDENTE);
+  let frase = "";
+  if(ora && prima){
+    const d = ora.q.ppg - prima.q.ppg;
+    frase = `<p class="tiny muted" style="margin:0 0 12px">Rispetto alla stagione ${esc(PRECEDENTE.etichetta)}: ${dec(ora.q.ppg,1)} punti a partita contro ${dec(prima.q.ppg,1)}`+
+      (Math.abs(d)>=0.05 ? ` (<span class="${d>0?"c-win":"c-red"}">${d>0?"+":"−"}${dec(Math.abs(d),1)}</span>)` : "")+`.</p>`;
+  }
+  return `<h4 class="sub-h" style="margin-bottom:4px">Stagione per stagione</h4>${frase}
+    <div class="tbl-scroll" style="margin-bottom:22px"><table class="t"><thead><tr><th>Stagione</th><th>PG</th><th>Punti</th><th>A partita</th>
+    <th>Muri</th><th>Ace</th><th>Att. %</th><th>Ric. pos.</th></tr></thead><tbody>`+
+    righe.map(({st,q})=>`<tr${st===S?' class="qui"':""}><td class="lead">${esc(st.etichetta)}${st===S?' <span class="tiny muted">(questa)</span>':""}</td>
+      <td>${q.pres}</td><td class="lead">${q.punti}</td><td>${dec(q.ppg,1)}</td><td>${q.muri}</td><td>${q.ace}</td>
+      <td>${q.attTot?Math.round(q.attPtPct)+"%":"—"}</td><td>${q.ricTot?Math.round(q.ricPosPct)+"%":"—"}</td></tr>`).join("")+
+    `</tbody></table></div>`;
+}
 
 /* ---------- scheda giocatore ---------- */
 function schedaGiocatore(p){
@@ -3580,16 +3886,18 @@ function schedaGiocatore(p){
     </div>
     <div class="ply-id">
       <div class="nm">${esc(p.nome)}</div>
-      <div class="rl">${esc(p.ruoloLabel)} · maglia n. ${p.numero} · ${p.pres} ${p.pres===1?"presenza":"presenze"}</div>
-      <div class="kv">
+      <div class="rl">${esc(p.ruoloLabel)} · maglia n. ${p.numero} · ${p.pres ? p.pres+(p.pres===1?" presenza":" presenze") : "ancora nessuna presenza"}</div>
+      ${p.pres?`<div class="kv">
         <div><b>${p.punti}</b><small>Punti</small></div>
         <div><b>${p.muri}</b><small>Muri</small></div>
         <div><b>${p.ace}</b><small>Ace</small></div>
         <div><b class="${p.saldo>0?"c-win":(p.saldo<0?"c-red":"")}">${p.saldo>0?"+":""}${p.saldo}</b><small>Saldo</small></div>
-        <div><b><span class="c-red">${p.camp.PGS}</span><span style="opacity:.3">/</span><span class="c-blue">${p.camp.FIPAV}</span></b><small>PGS / FIPAV</small></div>
-      </div>
+        ${CK.length>=2?`<div><b>${CK.map((k,i)=>`<span class="${ACCENTO[Math.min(i,2)]}">${p.camp[k]||0}</span>`).join('<span style="opacity:.3">/</span>')}</b><small>${CK.map(esc).join(" / ")}</small></div>`:""}
+      </div>`:""}
     </div>
   </div>`;
+  /* ancora nessuna partita in questa stagione: solo intestazione e stagioni passate */
+  if(!p.pres) return h + `<div class="note" style="margin-bottom:20px">Nessuna partita con referto in questa stagione, per ora.</div>` + carriera(p);
   h += `<div class="kv-grid big">
     ${box("Media punti", dec(p.ppg,1), "a partita")}
     ${box("Attacchi", it(p.attTot), p.attTot?Math.round(p.attPtPct)+"% a punto · "+Math.round(p.attErrPct)+"% errori":"nessun attacco")}
@@ -3597,6 +3905,7 @@ function schedaGiocatore(p){
     ${box("Ricezione", p.ricTot?it(p.ricTot):"—", p.ricTot?Math.round(p.ricPosPct)+"% positiva · "+Math.round(p.ricPrfPct)+"% perfetta":"non riceve")}
     ${box("Difese", p.difTot?it(p.difTot):"—", p.difTot?Math.round(p.difPosPct)+"% positive":"non rilevate")}
   </div>`;
+  h += carriera(p);
   h += `<h4 class="sub-h" style="margin-bottom:4px">Il profilo</h4>
     <p class="tiny muted" style="margin:0 0 12px">Quanto ${esc(p.nome.split(" ")[0])} si discosta dalla media di squadra, fondamentale per fondamentale. Passa sopra una barra per vedere i valori reali.</p>
     <div class="legenda">
@@ -3672,7 +3981,7 @@ function segnalaScorrimento(radice){
 function pronto(cv){ const b = cv && cv.closest(".chart-box"); if(b) requestAnimationFrame(()=>b.classList.add("ready")); }
 let plyCharts=[];
 function chartsGiocatore(p){
-  if(!OK) return;
+  if(!OK || !p.pres) return;
   plyCharts.forEach(c=>{try{c.destroy()}catch(e){}}); plyCharts=[];
   /* Barre di scarto rispetto alla media di squadra.
      Il radar precedente metteva sullo stesso cerchio grandezze non confrontabili
@@ -3716,8 +4025,8 @@ function chartsGiocatore(p){
     type:"bar",
     data:{labels:p.match.map(r=>{const m=MBY[r.data];return m?m.opp:r.data;}),
       datasets:[{label:"Punti",data:p.match.map(r=>r.punti),borderRadius:5,
-        backgroundColor:p.match.map(r=>r.camp==="PGS"?"rgba(231,76,80,.72)":"rgba(76,116,176,.78)"),
-        borderColor:p.match.map(r=>r.camp==="PGS"?"#E74C50":"#4C74B0"),borderWidth:1}]},
+        backgroundColor:p.match.map(r=>BAR[campIdx(r.camp)].backgroundColor),
+        borderColor:p.match.map(r=>BAR[campIdx(r.camp)].borderColor),borderWidth:1}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
       tooltip:{callbacks:{afterLabel:ctx=>{const r=p.match[ctx.dataIndex];return "Saldo "+(r.saldo>0?"+":"")+r.saldo+" · "+r.camp;}}}},
       scales:axes({x:{grid:{display:false},border:{display:false},ticks:{maxRotation:60,minRotation:0,font:{size:9.5}}}})}
@@ -3725,13 +4034,19 @@ function chartsGiocatore(p){
 }
 let seasonCharts=[];
 const legenda = {position:"top",labels:{boxWidth:10,boxHeight:10,usePointStyle:true,pointStyle:"circle",padding:14}};
-const barPGS  = {backgroundColor:"rgba(231,76,80,.72)",borderColor:"#E74C50",borderWidth:1,borderRadius:5};
-const barFIP  = {backgroundColor:"rgba(76,116,176,.78)",borderColor:"#4C74B0",borderWidth:1,borderRadius:5};
+/* stile delle barre per campionato: primo rosso, secondo blu, altri grigi */
+const BAR = [
+  {backgroundColor:"rgba(231,76,80,.72)",borderColor:"#E74C50",borderWidth:1,borderRadius:5},
+  {backgroundColor:"rgba(76,116,176,.78)",borderColor:"#4C74B0",borderWidth:1,borderRadius:5},
+  {backgroundColor:"rgba(140,146,160,.6)",borderColor:"#8C92A0",borderWidth:1,borderRadius:5}
+];
+const q100 = (a,b)=> b ? a/b*100 : 0;
 
 function graficiStagione(){
-  if(!OK) return;
+  if(!OK || !MATCHES.length) return;
   seasonCharts.forEach(c=>{try{c.destroy()}catch(e){}}); seasonCharts=[];
-  ["#chSeason","#chRates","#chVolumes"].forEach(s=>pronto($(s)));
+  const confronto = CATTIVI.length>=2;
+  (confronto?["#chSeason","#chRates","#chVolumes"]:["#chSeason"]).forEach(s=>pronto($(s)));
 
   /* --- punti per SET: rende comparabili partite da 3 e da 5 set --- */
   const perSet = MATCHES_CRONO.map(m=>{
@@ -3759,13 +4074,14 @@ function graficiStagione(){
       scales:axes({x:{grid:{display:false},border:{display:false},ticks:{maxRotation:60,font:{size:9.5}}}})}
   }));
 
+  if(!confronto) return;
   /* --- percentuali e volumi separati: sullo stesso asse non erano leggibili --- */
   seasonCharts.push(new Chart($("#chRates"),{
     type:"bar",
     data:{labels:["Conversione\nattacco","Errori\nattacco","Ricezione\npositiva"],
       datasets:[
-        Object.assign({label:"PGS", data:[TPGS.attPt/TPGS.attTot*100, TPGS.attErr/TPGS.attTot*100, TPGS.ricPosN/TPGS.ricTot*100]}, barPGS),
-        Object.assign({label:"FIPAV",data:[TFIP.attPt/TFIP.attTot*100, TFIP.attErr/TFIP.attTot*100, TFIP.ricPosN/TFIP.ricTot*100]}, barFIP)]},
+        ...CATTIVI.map(c=>{ const T=CT[c.k];
+          return Object.assign({label:c.k, data:[q100(T.attPt,T.attTot), q100(T.attErr,T.attTot), q100(T.ricPosN,T.ricTot)]}, BAR[campIdx(c.k)]); })]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:legenda,tooltip:{callbacks:{label:ctx=>ctx.dataset.label+": "+dec(ctx.raw,1)+"%"}}},
       scales:axes({x:{grid:{display:false},border:{display:false},ticks:{font:{size:9.5}}},
@@ -3776,8 +4092,8 @@ function graficiStagione(){
     type:"bar",
     data:{labels:["Attacchi","Muri punto","Ace"],
       datasets:[
-        Object.assign({label:"PGS", data:[TPGS.attTot/BPGS.n, TPGS.muri/BPGS.n, TPGS.ace/BPGS.n]}, barPGS),
-        Object.assign({label:"FIPAV",data:[TFIP.attTot/BFIP.n, TFIP.muri/BFIP.n, TFIP.ace/BFIP.n]}, barFIP)]},
+        ...CATTIVI.map(c=>{ const T=CT[c.k], n=CB[c.k].n;
+          return Object.assign({label:c.k, data:[T.attTot/n, T.muri/n, T.ace/n]}, BAR[campIdx(c.k)]); })]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:legenda,tooltip:{callbacks:{label:ctx=>ctx.dataset.label+": "+dec(ctx.raw,1)+" a partita"}}},
       scales:{x:{grid:{display:false},border:{display:false},ticks:{font:{size:9.5}}},
@@ -3807,7 +4123,7 @@ function applicaLogo(t){
 }
 
 /* foto del giocatore della stagione */
-(function(){ const a=$("#mvpAvatar"), z=PBY["Nicolò Zonta"]; if(!a||!z) return;
+(function(){ const a=$("#mvpAvatar"), z=R.speciale&&PBY[R.speciale.giocatore]; if(!a||!z) return;
   const f=fotoDi(z); if(f) a.insertAdjacentHTML("beforeend",
     `<img src="${esc(f)}" alt="Ritratto di Nicolò Zonta" loading="lazy" onerror="this.remove()">`); })();
 
@@ -3867,7 +4183,7 @@ function apriScheda(id, animato){
     a.classList.toggle("on", on);
     if(on) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
   document.documentElement.setAttribute("data-scheda", id);
-  document.title = TITOLI[id]+" · Ad Astra Pegasus 2025-2026";
+  document.title = TITOLI[id]+" · Ad Astra Pegasus "+S.id;
   /* i grafici vanno creati solo quando il canvas è visibile, altrimenti nasce a dimensione zero */
   if(id==="stagione" && !fatto.stagione){ fatto.stagione = true; graficiStagione(); }
   const el = document.getElementById(id);
@@ -3906,6 +4222,8 @@ apriScheda(location.hash.slice(1), false);
 
 /* ultima partita presente nei dati: dice al visitatore quanto è aggiornato il sito */
 (function(){
+  $("#ftStagione").textContent = S.id;
+  $("#ftPartite").textContent = BTOT.n ? "Statistiche su "+nPartite(BTOT.n)+" con referto · " : "";
   const el=$("#aggiornato"); if(!el||!MATCHES.length) return;
   const ultima = MATCHES.slice().sort((a,b)=>sortKey(b.d).localeCompare(sortKey(a.d)))[0];
   el.textContent = "Dati aggiornati all'ultima partita disputata: "+dataEstesa(ultima.d);
@@ -3932,6 +4250,27 @@ window.__chartPronto = ()=>{
 };
 /* rete lenta o bloccata senza errore esplicito: dopo 8 secondi si mostra l'avviso */
 const attesaGrafici = OK ? 0 : setTimeout(()=>{ if(!OK) document.documentElement.classList.add("no-chart"); }, 8000);
+
+/* ---------- scelta della stagione ----------
+   Cambiare stagione ricarica la pagina con la nuova scelta nell'indirizzo:
+   la sezione aperta resta la stessa. */
+const selS = $("#selStagione");
+selS.innerHTML = STAGIONI.map(st=>`<option value="${esc(st.id)}"${st===S?" selected":""}>${esc(st.etichetta)}</option>`).join("");
+const indirizzo = st => location.pathname + (st===PREDEFINITA ? "" : "?stagione="+encodeURIComponent(st.id)) + location.hash;
+selS.addEventListener("change", ()=>{ const st = STAGIONI.find(x=>x.id===selS.value); if(st) location.href = indirizzo(st); });
+/* i link verso un'altra stagione tengono la sezione aperta */
+document.addEventListener("click", e=>{
+  const a = e.target.closest("a.vai-stagione"); if(!a) return;
+  const st = STAGIONI.find(x=>x.id===a.dataset.stagioneId); if(!st) return;
+  e.preventDefault(); location.href = indirizzo(st);
+});
+/* chi guarda una stagione passata lo vede sempre, anche fuori dalla Stagione */
+if(S!==PREDEFINITA){
+  const av = $("#avvisoArchivio");
+  av.innerHTML = `<p class="archivio">Stai guardando la stagione <b>${esc(S.etichetta)}</b>.
+    <a class="vai-stagione" data-stagione-id="${esc(PREDEFINITA.id)}" href="${esc(location.pathname)}">Vai alla stagione ${esc(PREDEFINITA.etichetta)}</a></p>`;
+  av.hidden = false;
+}
 
 const tt=$("#toTop");
 tt.addEventListener("click",()=>window.scrollTo({top:0,behavior:liscio()}));
