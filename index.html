@@ -42,6 +42,9 @@
   --maxw:1180px;
   /* rosso per gli sfondi con testo bianco sopra: #E74C50 arriva solo a 3,8:1, questo a 5:1 */
   --red-btn:#C4373C;
+  /* rosso e blu del club in RGB, per le trasparenze: rgba(var(--red-rgb),.12) */
+  --red-rgb:231,76,80; --blue-rgb:76,116,176;
+  --tint:rgba(var(--red-rgb),.12); --tint-st:rgba(var(--red-rgb),.32);   /* riquadro in evidenza */
   --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   /* Carattere da titolo: Archivo, incorporato qui sopra. Gli altri nomi servono solo
      se il browser non riesce a leggerlo. */
@@ -62,8 +65,8 @@
   --ink-strong:#FFFFFF;
   /* contrasto: ink-3 e ink-4 alzati sopra la soglia di leggibilità del testo piccolo */
   --ink-2:rgba(237,240,247,.72);
-  --ink-3:rgba(237,240,247,.58);
-  --ink-4:rgba(237,240,247,.56);
+  --ink-3:rgba(237,240,247,.64);
+  --ink-4:rgba(237,240,247,.60);   /* reggono 4,5:1 anche quando dietro passa una macchia colorata */
   --glass:rgba(255,255,255,.06);
   --glass-2:rgba(255,255,255,.045);
   --glass-hi:rgba(255,255,255,.10);
@@ -85,8 +88,8 @@
   --win-bg:rgba(74,222,128,.14);
   --win-st:rgba(74,222,128,.30);
   --loss:#FF8A8D;
-  --loss-bg:rgba(231,76,80,.14);
-  --loss-st:rgba(231,76,80,.32);
+  --loss-bg:rgba(var(--red-rgb),.14);
+  --loss-st:rgba(var(--red-rgb),.32);
   --sh:0 8px 32px rgba(0,0,0,.35);
   --sh-hi:0 16px 48px rgba(0,0,0,.5);
   --grain-op:.30;
@@ -111,8 +114,8 @@
   --ink:#141924;
   --ink-strong:#080C15;
   --ink-2:rgba(20,25,36,.78);
-  --ink-3:rgba(20,25,36,.64);
-  --ink-4:rgba(20,25,36,.62);
+  --ink-3:rgba(20,25,36,.70);
+  --ink-4:rgba(20,25,36,.66);
   --glass:rgba(255,255,255,.34);
   --glass-2:rgba(255,255,255,.22);
   --glass-hi:rgba(255,255,255,.56);
@@ -134,8 +137,8 @@
   --win-bg:rgba(16,185,129,.15);
   --win-st:rgba(16,185,129,.34);
   --loss:#C4373C;
-  --loss-bg:rgba(231,76,80,.13);
-  --loss-st:rgba(231,76,80,.30);
+  --loss-bg:rgba(var(--red-rgb),.13);
+  --loss-st:rgba(var(--red-rgb),.30);
   --sh:0 8px 30px rgba(23,37,84,.11);
   --sh-hi:0 18px 48px rgba(23,37,84,.19);
   --grain-op:.08;
@@ -231,7 +234,6 @@ header.nav{animation:fadeIn .5s ease both}
 .anim>*:nth-child(n+12){animation-delay:.36s}
 
 /* micro-interazioni */
-.glass.link{will-change:transform}
 .glass.link:active{transform:translateY(-1px) scale(.994);transition-duration:.09s}
 .chip{transition:color .2s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .18s var(--ease)}
 .chip:active{transform:scale(.95)}
@@ -244,7 +246,7 @@ table.t tbody tr{transition:background .18s var(--ease)}
 .x{transition:background .22s var(--ease),border-color .22s var(--ease),transform .22s var(--ease)}
 .x:hover{transform:rotate(90deg)}
 .to-top{transition:opacity .35s var(--ease),transform .35s var(--ease),background .25s}
-.to-top:hover{background:rgba(231,76,80,.24)}
+.to-top:hover{background:rgba(var(--red-rgb),.24)}
 
 /* modale */
 dialog.modal[open]{animation:modalIn .42s var(--ease-out) both}
@@ -271,11 +273,18 @@ dialog.modal.closing::backdrop{animation:bdOut .2s ease both}
   .fgroup,.search{-webkit-backdrop-filter:none;backdrop-filter:none}
 }
 
+/* Animazioni ridotte: non si spegne tutto, si tolgono gli spostamenti.
+   Restano brevi dissolvenze, così i cambi di stato (scheda, finestra, filtri) si vedono ancora. */
 @media (prefers-reduced-motion:reduce){
-  #mesh .blob{animation:none!important}
   html{scroll-behavior:auto}
-  *,*::before,*::after,*::backdrop{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important}
-  .chart-box{opacity:1}
+  #mesh .blob{animation:none!important}
+  .hero-card,header.nav,.tabpane:not([hidden]),.tabpane:not([hidden]) .sec-head,.anim>*,
+  .modal-body>.art>*,.modal-body>.ply-hero,.modal-body>div,.modal-body>h4,
+  dialog.modal[open],nav.links.open{animation:fadeIn .18s ease both!important}
+  dialog.modal.closing{animation:bdOut .15s ease both!important}
+  .glass.link:hover,.glass.link:active,.glass.link:hover .avatar,.glass.link:hover .res,
+  .x:hover,.tgl:hover,.tgl:active,.chip:active{transform:none!important}
+  .chart-box{transition-duration:.15s}
 }
 
 /* ---------- Layout ---------- */
@@ -322,7 +331,7 @@ nav.links{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;padding:4px;borde
 nav.links a{text-decoration:none;font-size:12.5px;font-weight:650;color:var(--ink-3);padding:7px 13px;border-radius:99px;
   transition:color .2s,background .2s,box-shadow .2s;white-space:nowrap}
 nav.links a:hover{color:var(--ink);background:var(--ctrl)}
-nav.links a.on{color:#fff;background:var(--red-btn);box-shadow:0 3px 12px rgba(231,76,80,.32)}
+nav.links a.on{color:#fff;background:var(--red-btn)}
 nav.links a:focus-visible{outline:2px solid var(--red-l);outline-offset:2px}
 .tabpane[hidden]{display:none}
 section.tabpane{padding-top:34px}
@@ -369,8 +378,8 @@ html:not([data-scheda="stagione"]) .hero{position:absolute;width:1px;height:1px;
 .hero-sub{margin:26px auto 0;max-width:62ch;color:var(--ink-2);font-size:15px}
 .badges{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:22px}
 .badge{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:99px;font-size:12px;font-weight:700;
-  background:rgba(231,76,80,.15);border:1px solid rgba(231,76,80,.38);color:var(--red-s)}
-.badge.b-blue{background:rgba(76,116,176,.16);border-color:rgba(76,116,176,.42);color:var(--blue-l)}
+  background:rgba(var(--red-rgb),.15);border:1px solid rgba(var(--red-rgb),.38);color:var(--red-s)}
+.badge.b-blue{background:rgba(var(--blue-rgb),.16);border-color:rgba(var(--blue-rgb),.42);color:var(--blue-l)}
 .badge.b-neutral{background:var(--ctrl);border-color:var(--stroke);color:var(--ink-2)}
 
 /* ---------- Stat grid ---------- */
@@ -380,6 +389,25 @@ html:not([data-scheda="stagione"]) .hero{position:absolute;width:1px;height:1px;
 .stat .v{font-size:clamp(24px,3.4vw,31px);font-weight:800;margin-top:5px;letter-spacing:-.025em;line-height:1.05}
 .stat .v .sep{opacity:.32;font-weight:600}
 .stat .d{font-size:11px;color:var(--ink-3);margin-top:3px}
+/* celle di dati dentro una card: niente secondo vetro, solo una riga sottile sopra */
+.kv-grid{display:grid;column-gap:18px;grid-template-columns:repeat(2,1fr)}
+.kv-cell{padding:10px 0 9px;border-top:1px solid var(--stroke-2);min-width:0}
+.kv-cell .kk{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4);font-weight:600}
+.kv-cell .vv{font-size:15px;font-weight:750;margin-top:2px}
+.kv-cell .dd{font-size:11px;color:var(--ink-4);margin-top:1px}
+.kv-grid.big{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-bottom:20px}
+.kv-grid.big .vv{font-size:20px;font-weight:800;letter-spacing:-.01em}
+/* giocatore della stagione (Classifiche) */
+.mvp-card{margin-bottom:13px;background:var(--tint);border-color:var(--tint-st)}
+.mvp-row{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.mvp-row .avatar{width:64px;height:64px;flex:0 0 64px;border-radius:16px}
+.mvp-txt{flex:1;min-width:240px}
+.mvp-nome{font-size:21px;font-weight:800;letter-spacing:-.01em}
+.mvp-txt p{margin:11px 0 0;font-size:14px;line-height:1.65;color:var(--ink-2)}
+.mvp-txt p b,.nota-forte{color:var(--ink)}
+/* sottotitoli dentro la scheda giocatore: stesso aspetto dei titoletti degli articoli */
+.sub-h{margin:0 0 10px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red-s);font-weight:800}
+.camp-bil{font-size:34px;font-weight:850;letter-spacing:-.02em}
 .c-red{color:var(--red-l)} .c-blue{color:var(--blue-l)} .c-win{color:var(--win)}
 
 /* ---------- Utility ---------- */
@@ -387,15 +415,19 @@ html:not([data-scheda="stagione"]) .hero{position:absolute;width:1px;height:1px;
 .g-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
 .g-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .g-4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+/* podi delle classifiche: 2 x 2 su schermi larghi, così i nomi lunghi stanno su una riga */
+.podi{grid-template-columns:1fr}
+@media(min-width:700px){.podi{grid-template-columns:repeat(2,1fr)}}
 .card{padding:var(--s5);border-radius:var(--r-md)}
 .card-title{margin:0 0 14px;font-size:14px;letter-spacing:0;color:var(--ink-2);font-weight:650;line-height:1.3}
 .muted{color:var(--ink-3)}
 .tiny{font-size:11px}
+p.tiny{font-size:12.5px;line-height:1.55}   /* le note da leggere, non le etichette */
 
 /* ---------- Bacheca ---------- */
 .board{display:grid;gap:13px;grid-template-columns:repeat(auto-fill,minmax(268px,1fr))}
 .ev{padding:0;overflow:hidden;border-radius:var(--r-md);display:flex;flex-direction:column}
-.ev-media{aspect-ratio:16/9;background:linear-gradient(140deg,rgba(231,76,80,.22),rgba(76,116,176,.22));display:grid;place-items:center;font-size:38px;position:relative}
+.ev-media{aspect-ratio:16/9;background:linear-gradient(140deg,rgba(var(--red-rgb),.22),rgba(var(--blue-rgb),.22));display:grid;place-items:center;font-size:38px;position:relative}
 .ev-media img{width:100%;height:100%;object-fit:cover}
 .ev-body{padding:15px 17px 17px}
 .ev-date{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
@@ -403,7 +435,7 @@ html:not([data-scheda="stagione"]) .hero{position:absolute;width:1px;height:1px;
 .ev-text{margin:8px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.55}
 .ev-tag{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.06em;
   background:var(--tag-bg);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid var(--stroke)}
-.ev.pinned{border-color:rgba(231,76,80,.42);background:rgba(231,76,80,.08)}
+.ev.pinned{border-color:rgba(var(--red-rgb),.42);background:rgba(var(--red-rgb),.08)}
 .ev-cap{margin:10px 0 0;font-size:11px;color:var(--ink-4);font-style:italic;line-height:1.45}
 /* evento in evidenza con foto: occupa tutta la riga */
 .ev.wide{grid-column:1/-1}
@@ -462,12 +494,12 @@ table.t .lead{font-weight:700}
 @media(max-width:640px){.fgroup{flex-wrap:wrap;max-width:100%;border-radius:var(--r-md)}}
 .chip{padding:6px 13px;border-radius:99px;font-size:12px;font-weight:650;color:var(--ink-3);transition:.2s;white-space:nowrap}
 .chip:hover{color:var(--ink)}
-.chip[aria-pressed="true"]{background:var(--red-btn);color:#fff;box-shadow:0 3px 12px rgba(231,76,80,.3)}
+.chip[aria-pressed="true"]{background:var(--red-btn);color:#fff}
 .chip:focus-visible{outline:2px solid var(--red-l);outline-offset:2px}
 .search{flex:1;min-width:180px;max-width:280px;padding:9px 14px;border-radius:99px;font-size:13px;color:var(--ink);
   background:var(--glass-2);border:1px solid var(--stroke-2);-webkit-backdrop-filter:var(--blur) var(--sat);backdrop-filter:var(--blur) var(--sat)}
 .search::placeholder{color:var(--ink-4)}
-.search:focus{outline:none;border-color:rgba(231,76,80,.5);background:var(--ctrl-hi)}
+.search:focus{outline:none;border-color:rgba(var(--red-rgb),.5);background:var(--ctrl-hi)}
 .count{font-size:11.5px;color:var(--ink-3);margin-left:auto;white-space:nowrap}
 
 /* ---------- Rosa ---------- */
@@ -475,8 +507,8 @@ table.t .lead{font-weight:700}
 .ply{padding:16px;border-radius:var(--r-md);text-align:left;width:100%;display:block}
 .ply-top{display:flex;align-items:center;gap:12px}
 .avatar{position:relative;width:52px;height:52px;flex:0 0 52px;border-radius:14px;overflow:hidden;
-  background:linear-gradient(140deg,rgba(231,76,80,.9),rgba(76,116,176,.9));display:grid;place-items:center;
-  box-shadow:0 4px 16px rgba(231,76,80,.28)}
+  background:linear-gradient(140deg,rgba(var(--red-rgb),.9),rgba(var(--blue-rgb),.9));display:grid;place-items:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.22)}
 .avatar span{font-size:19px;font-weight:850;color:#fff;letter-spacing:-.02em}
 .avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
 .ply-name{font-size:14.5px;font-weight:750;line-height:1.2;letter-spacing:-.01em}
@@ -487,14 +519,16 @@ table.t .lead{font-weight:700}
 .ply-stats small{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4);font-weight:600}
 
 /* ---------- Podio ---------- */
-.podium{display:grid;gap:9px}
-.pod{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:var(--r-sm);
-  background:var(--glass-2);border:1px solid var(--stroke-2)}
+.podium{display:grid;gap:0}
+.pod{display:flex;align-items:center;gap:12px;padding:11px 13px;border-top:1px solid var(--stroke-2)}
+/* il primo è l'unico riquadro: segna il vincitore, gli altri sono righe */
+.pod.p1{border-radius:var(--r-sm);border:1px solid rgba(var(--red-rgb),.34);margin-bottom:4px}
+.pod.p1+.pod{border-top:0}
 .pod .rk{width:26px;flex:0 0 26px;text-align:center;font-size:15px;font-weight:800}
 .pod .nm{font-size:13.5px;font-weight:650;line-height:1.2;min-width:0}
 .pod .nm small{display:block;font-size:11px;color:var(--ink-4);font-weight:500;margin-top:2px}
 .pod .vl{margin-left:auto;font-size:18px;font-weight:850;letter-spacing:-.02em}
-.pod.p1{background:linear-gradient(100deg,rgba(231,76,80,.16),rgba(76,116,176,.10));border-color:rgba(231,76,80,.34)}
+.pod.p1{background:rgba(var(--red-rgb),.12);border-color:rgba(var(--red-rgb),.34)}
 .pod.p1 .vl{color:var(--red-l)}
 
 /* ---------- Legenda dei grafici ---------- */
@@ -503,18 +537,17 @@ table.t .lead{font-weight:700}
   background:var(--glass-2);border:1px solid var(--stroke-2)}
 .legenda span{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-2)}
 .legenda i{width:13px;height:13px;border-radius:4px;flex:0 0 13px;border:1px solid}
-.legenda i.sopra{background:rgba(231,76,80,.70);border-color:#E74C50}
-.legenda i.sotto{background:rgba(76,116,176,.55);border-color:#4C74B0}
+.legenda i.sopra{background:rgba(var(--red-rgb),.70);border-color:#E74C50}
+.legenda i.sotto{background:rgba(var(--blue-rgb),.55);border-color:#4C74B0}
 .legenda .nota{margin-left:auto;font-size:11px;color:var(--ink-4);font-style:italic}
 @media(max-width:640px){.legenda .nota{margin-left:0;flex-basis:100%}}
 
 /* ---------- Intestazione della scheda giocatore ---------- */
 .ply-hero{display:flex;align-items:center;gap:18px;flex-wrap:wrap;
   padding:16px;margin-bottom:18px;border-radius:var(--r-md);
-  background:linear-gradient(115deg,rgba(231,76,80,.13),rgba(76,116,176,.11));
-  border:1px solid rgba(231,76,80,.28)}
+  background:var(--tint);border:1px solid var(--tint-st)}
 .ply-shot{position:relative;width:132px;height:132px;flex:0 0 132px;border-radius:var(--r-md);overflow:hidden;
-  background:linear-gradient(140deg,rgba(231,76,80,.9),rgba(76,116,176,.9));
+  background:linear-gradient(140deg,rgba(var(--red-rgb),.9),rgba(var(--blue-rgb),.9));
   display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.42)}
 .ply-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
 .ply-shot .nn{font-size:46px;font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1}
@@ -583,7 +616,7 @@ table.t tr.riga:focus-visible{outline:2px solid var(--red-l);outline-offset:-2px
 .gz-title{font-size:14.5px;font-weight:700;line-height:1.35;color:var(--ink);letter-spacing:-.01em}
 .gz-mvp{margin-top:auto;padding-top:11px;border-top:1px solid var(--stroke-2);font-size:11.5px;color:var(--ink-3)}
 .gz-mvp b{color:var(--ink);font-weight:650}
-.gz-feature{grid-column:1/-1;background:linear-gradient(115deg,rgba(231,76,80,.13),rgba(76,116,176,.11));border-color:rgba(231,76,80,.32)}
+.gz-feature{grid-column:1/-1;background:var(--tint);border-color:var(--tint-st)}
 
 /* ---------- Articolo lungo, disteso nella pagina ---------- */
 .lettura{padding:clamp(24px,4vw,44px)}
@@ -612,21 +645,21 @@ dialog.modal::backdrop{background:var(--backdrop);-webkit-backdrop-filter:blur(5
 .modal-head p{margin:6px 0 0;font-size:12px;color:var(--ink-3)}
 .x{margin-left:auto;flex:0 0 34px;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
   background:var(--ctrl);border:1px solid var(--stroke-2);font-size:17px;line-height:1;transition:.2s}
-.x:hover{background:rgba(231,76,80,.22);border-color:rgba(231,76,80,.4)}
+.x:hover{background:rgba(var(--red-rgb),.22);border-color:rgba(var(--red-rgb),.4)}
 .modal-body{padding:20px 22px 26px;overflow-y:auto;overflow-x:hidden;max-height:calc(88vh - 84px)}
 .modal-body,.modal-head h3{overflow-wrap:anywhere}
 .modal-body::-webkit-scrollbar{width:9px}
 .modal-body::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:99px}
 
 /* Articolo */
-.art h4{margin:26px 0 10px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red-s);font-weight:800}
-.art h4:first-child{margin-top:0}
+.art h3,.art h4{margin:26px 0 10px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red-s);font-weight:800}
+.art h3:first-child,.art h4:first-child{margin-top:0}
 .art .occhiello{font-size:17px;font-weight:750;line-height:1.35;letter-spacing:-.015em;margin:0 0 14px}
 /* righe di lettura: 68 caratteri, non 95 */
 .art .occhiello,.art p,.art .quote{max-width:68ch}
 .art p{margin:0 0 var(--s3);font-size:15px;line-height:1.72;color:var(--ink-2)}
 .art .quote{margin:18px 0;padding:14px 18px;border-left:3px solid var(--red);border-radius:0 var(--r-sm) var(--r-sm) 0;
-  background:rgba(231,76,80,.09);font-size:14px;font-style:italic;color:var(--ink)}
+  background:rgba(var(--red-rgb),.09);font-size:14px;font-style:italic;color:var(--ink)}
 .art ul.referto{list-style:none;margin:0;padding:0;display:grid;gap:7px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
 .art ul.referto li{padding:10px 13px;border-radius:var(--r-sm);background:var(--glass-2);border:1px solid var(--stroke-2);font-size:12.5px;color:var(--ink-2)}
 .art ul.referto li b{display:block;color:var(--ink);font-size:17px;font-weight:800;margin-top:2px;letter-spacing:-.02em}
@@ -636,7 +669,7 @@ dialog.modal::backdrop{background:var(--backdrop);-webkit-backdrop-filter:blur(5
 .pagella .prl{font-size:11px;color:var(--ink-4)}
 .pagella .pvt{margin-left:auto;font-size:19px;font-weight:850;letter-spacing:-.03em;color:var(--red-l)}
 .pagella p{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-2)}
-.pagella.mvp{background:linear-gradient(110deg,rgba(231,76,80,.14),rgba(76,116,176,.09));border-color:rgba(231,76,80,.34)}
+.pagella.mvp{background:var(--tint);border-color:var(--tint-st)}
 .top-list{list-style:none;margin:0;padding:0;display:grid;gap:7px}
 .top-list li{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r-sm);background:var(--glass-2);border:1px solid var(--stroke-2);font-size:13px}
 .top-list li .m{margin-left:auto;color:var(--ink-3);font-size:11.5px;text-align:right}
@@ -649,7 +682,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 .ft-link:hover{color:var(--ink);border-color:var(--red)}
 
 .empty{padding:34px 20px;text-align:center;color:var(--ink-3);font-size:13.5px}
-.note{padding:13px 16px;border-radius:var(--r-sm);background:rgba(76,116,176,.10);border:1px solid rgba(76,116,176,.28);
+.note{padding:13px 16px;border-radius:var(--r-sm);background:rgba(var(--blue-rgb),.10);border:1px solid rgba(var(--blue-rgb),.28);
   font-size:12.5px;color:var(--ink-2);line-height:1.6}
 .to-top{position:fixed;right:18px;bottom:18px;z-index:50;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
   background:var(--glass-hi);border:1px solid var(--stroke);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
@@ -790,7 +823,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
           </tbody>
         </table>
       </div>
-      <p class="tiny muted" style="margin:14px 0 0">Il muro racconta la differenza meglio di tutto: <b style="color:var(--ink)">2,08 punti diretti per set nel PGS contro 1,47 nel FIPAV</b>. Un fondamentale che si nutre di scambi lunghi e ricezioni avversarie imperfette — cioè esattamente di quello che il PGS offriva e il FIPAV no.</p>
+      <p class="tiny muted" style="margin:14px 0 0">Il muro racconta la differenza meglio di tutto: <b class="nota-forte">2,08 punti diretti per set nel PGS contro 1,47 nel FIPAV</b>. Un fondamentale che si nutre di scambi lunghi e ricezioni avversarie imperfette — cioè esattamente di quello che il PGS offriva e il FIPAV no.</p>
     </div>
 
     <!-- Il Bilancio vive qui, disteso e leggibile, non più dentro una finestrella -->
@@ -858,19 +891,19 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       <p class="sec-lead">Classifiche calcolate sulle 21 partite con referto disponibile.</p>
     </div>
 
-    <div class="glass card" style="margin-bottom:13px;background:linear-gradient(115deg,rgba(231,76,80,.13),rgba(76,116,176,.10));border-color:rgba(231,76,80,.32)">
+    <div class="glass card mvp-card">
       <p class="card-title">Il giocatore della stagione</p>
-      <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
-        <div class="avatar" id="mvpAvatar" style="width:64px;height:64px;flex:0 0 64px;border-radius:16px"><span aria-hidden="true">16</span></div>
-        <div style="flex:1;min-width:240px">
-          <div style="font-size:21px;font-weight:800;letter-spacing:-.02em">Nicolò Zonta</div>
+      <div class="mvp-row">
+        <div class="avatar" id="mvpAvatar"><span aria-hidden="true">16</span></div>
+        <div class="mvp-txt">
+          <div class="mvp-nome">Nicolò Zonta</div>
           <div class="tiny muted" style="margin-top:3px">Centrale · 19 presenze · 182 punti · 30 muri · 13 ace</div>
-          <p style="margin:11px 0 0;font-size:14px;line-height:1.65;color:var(--ink-2)">Moscatelli ha segnato di più e Sciarrone ha murato di più, ma il premio va a Zonta per una ragione che i numeri assoluti non catturano: <b style="color:var(--ink)">in 19 presenze non ha mai chiuso una partita con un rendimento negativo in attacco</b>. Mai. In una squadra che ha oscillato molto, lui è stato la costante.</p>
+          <p>Moscatelli ha segnato di più e Sciarrone ha murato di più, ma il premio va a Zonta per una ragione che i numeri assoluti non catturano: <b class="nota-forte">in 19 presenze non ha mai chiuso una partita con un rendimento negativo in attacco</b>. Mai. In una squadra che ha oscillato molto, lui è stato la costante.</p>
         </div>
       </div>
     </div>
 
-    <div class="grid g-4" style="margin-bottom:13px">
+    <div class="grid podi" style="margin-bottom:13px">
       <div class="glass card"><p class="card-title">Punti</p><div class="podium anim" id="podPunti"></div></div>
       <div class="glass card"><p class="card-title">Muri punto</p><div class="podium anim" id="podMuri"></div></div>
       <div class="glass card"><p class="card-title">Ace</p><div class="podium anim" id="podAce"></div></div>
@@ -965,34 +998,30 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 
     <article class="glass card lettura">
       <div class="art">
-        <div class="note" style="margin-bottom:var(--s5)">
-          <b>DA COMPLETARE PRIMA DI PUBBLICARE.</b> Le voci fra parentesi quadre vanno sostituite con i dati reali della società. Finché restano così, questa pagina non è valida.
-        </div>
-
-        <h4>Chi gestisce il sito</h4>
-        <p>[Denominazione completa della società, es. A.S.D. Ad Astra] — [indirizzo della sede] — codice fiscale / partita IVA [numero]. Contatto per qualsiasi richiesta relativa a questo sito: <b>[indirizzo email]</b>.</p>
+        <h3>Chi gestisce il sito</h3>
+        <p>Il sito è curato dallo staff della squadra: scout di Fabi e Max, analisi di Max Grillo. Per qualsiasi richiesta relativa ai contenuti puoi rivolgerti direttamente a loro.</p>
         <p>Il sito raccoglie e racconta le statistiche della squadra maschile nella stagione 2025-2026. Non vende nulla, non offre servizi a pagamento e non accetta iscrizioni.</p>
 
-        <h4>Dati personali</h4>
+        <h3>Dati personali</h3>
         <p>Il sito <b>non ha moduli</b>: non esistono campi in cui puoi inserire nome, email o altro. I tre campi di ricerca presenti filtrano contenuti già caricati nella pagina e non inviano nulla a nessuno.</p>
         <p>Non c'è alcuna forma di statistica di visita, nessun pixel pubblicitario, nessun profilo utente.</p>
 
-        <h4>Cookie e memoria del browser</h4>
+        <h3>Cookie e memoria del browser</h3>
         <p>Il sito <b>non usa cookie</b>. Usa una sola voce di memoria locale del browser, chiamata <code>pegasus-tema</code>, che ricorda se hai scelto il tema chiaro o scuro. Resta sul tuo dispositivo, non viene letta da nessuno e sparisce se cancelli i dati del sito. Trattandosi di una preferenza di visualizzazione impostata da te, non richiede un banner di consenso.</p>
 
-        <h4>Servizi di terze parti</h4>
+        <h3>Servizi di terze parti</h3>
         <p>Per disegnare i grafici la pagina carica la libreria <b>Chart.js</b> da <b>jsDelivr</b>, una rete di distribuzione pubblica. Per farlo il tuo browser contatta i loro server, che vedono il tuo indirizzo IP e il tipo di browser, come accade per qualunque risorsa esterna. Non riceve altro e non ci sono cookie coinvolti.</p>
         <p>Il sito è ospitato su <b>GitHub Pages</b>, che mantiene registri tecnici di accesso secondo le proprie condizioni.</p>
         <p>Non ci sono altri contenuti incorporati: nessun video, nessuna mappa, nessun bottone social.</p>
 
-        <h4>Immagini e diritti</h4>
-        <p>Le fotografie dei giocatori e della squadra sono di proprietà della società e pubblicate con il consenso delle persone ritratte. Se sei ritratto in una foto e vuoi che venga rimossa, scrivi a <b>[indirizzo email]</b>: sarà tolta senza necessità di motivazione.</p>
+        <h3>Immagini e diritti</h3>
+        <p>Le fotografie dei giocatori e della squadra sono di proprietà della società e pubblicate con il consenso delle persone ritratte. Se sei ritratto in una foto e vuoi che venga rimossa, chiedilo allo staff: sarà tolta senza necessità di motivazione.</p>
         <p>Il logo e le grafiche sono della società. I testi della Gazzetta del Pegasus sono opera della redazione interna e contengono valutazioni tecniche di natura giornalistica.</p>
 
-        <h4>I dati statistici</h4>
+        <h3>I dati statistici</h3>
         <p>Le statistiche coprono le <b>21 partite di cui esiste un referto di scout</b>. Le altre gare disputate nella stagione non hanno rilevazione e restano fuori da ogni conteggio: i totali riportati non sono quindi il rendimento assoluto della stagione, ma quello delle partite documentate. I dati sono raccolti a mano e possono contenere errori.</p>
 
-        <h4>Responsabilità</h4>
+        <h3>Responsabilità</h3>
         <p>I contenuti sono forniti a scopo informativo e sportivo. La società non garantisce che siano privi di errori e non risponde di decisioni prese sulla base di questi dati.</p>
       </div>
     </article>
@@ -1011,8 +1040,6 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
     </p>
     <p class="ft-sub" style="margin-top:var(--s4)">
       <a href="#note" class="ft-link">Note legali e privacy</a>
-      <span aria-hidden="true" style="opacity:.4;margin:0 8px">·</span>
-      <span>[A.S.D. Ad Astra] · [indirizzo] · [email]</span>
     </p>
   </div>
 </footer>
@@ -3137,18 +3164,16 @@ function campCard(el, titolo, sub, B, T, accent){
   el.innerHTML = `
     <p class="card-title">${titolo}</p>
     <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
-      <span style="font-size:34px;font-weight:850;letter-spacing:-.03em" class="${accent}">${B.v}–${B.s}</span>
+      <span class="camp-bil ${accent}">${B.v}–${B.s}</span>
       <span class="tiny muted">${B.n} partite · set ${B.sv}–${B.sp}</span>
     </div>
     <p class="tiny muted" style="margin:4px 0 14px">${sub}</p>
-    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:7px">
+    <div class="kv-grid">
       ${[["Punti",it(T.punti)],["Attacchi vincenti",it(T.attPt)+" / "+it(T.attTot)],
          ["Conversione attacco",pct(T.attPt,T.attTot)],["Errori in attacco",pct(T.attErr,T.attTot)],
          ["Ace",T.ace+" ("+dec(T.ace/B.n,1)+" a partita)"],["Muri punto",T.muri+" ("+dec(T.muri/B.n,1)+" a partita)"],
          ["Ricezione positività",pct(T.ricPosN,T.ricTot)],["Palloni ricevuti",it(T.ricTot)]]
-        .map(x=>`<div style="padding:9px 11px;border-radius:10px;background:var(--glass-2);border:1px solid var(--stroke-2)">
-          <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4);font-weight:600">${x[0]}</div>
-          <div style="font-size:15px;font-weight:750;margin-top:2px">${x[1]}</div></div>`).join("")}
+        .map(x=>`<div class="kv-cell"><div class="kk">${x[0]}</div><div class="vv">${x[1]}</div></div>`).join("")}
     </div>`;
 }
 campCard($("#cardPGS"),  '<span class="pip pgs"></span>Campionato PGS', "Invernale OPEN maschile + Girone Finale", BPGS, TPGS, "c-red");
@@ -3537,17 +3562,15 @@ document.addEventListener("click", e=>{
   const bb = e.target.closest("[data-vai-bilancio]");
   if(bb){
     e.preventDefault(); vaiA("stagione"); apriScheda("stagione", false);
-    setTimeout(()=>{ const t=$("#bilancio"); if(t) t.scrollIntoView({behavior:"smooth",block:"start"}); }, 60);
+    setTimeout(()=>{ const t=$("#bilancio"); if(t) t.scrollIntoView({behavior:liscio(),block:"start"}); }, 60);
     return;
   }
 });
 
 /* ---------- scheda giocatore ---------- */
 function schedaGiocatore(p){
-  const box = (k,v,d)=>`<div style="padding:11px 13px;border-radius:11px;background:var(--glass-2);border:1px solid var(--stroke-2)">
-    <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4);font-weight:600">${k}</div>
-    <div style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin-top:2px">${v}</div>
-    ${d?`<div style="font-size:11px;color:var(--ink-4);margin-top:1px">${d}</div>`:""}</div>`;
+  const box = (k,v,d)=>`<div class="kv-cell"><div class="kk">${k}</div><div class="vv">${v}</div>
+    ${d?`<div class="dd">${d}</div>`:""}</div>`;
   const f = fotoDi(p);
   let h = `<div class="ply-hero">
     <div class="ply-shot">
@@ -3567,14 +3590,14 @@ function schedaGiocatore(p){
       </div>
     </div>
   </div>`;
-  h += `<div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));margin-bottom:20px">
+  h += `<div class="kv-grid big">
     ${box("Media punti", dec(p.ppg,1), "a partita")}
     ${box("Attacchi", it(p.attTot), p.attTot?Math.round(p.attPtPct)+"% a punto · "+Math.round(p.attErrPct)+"% errori":"nessun attacco")}
     ${box("Battute", it(p.servTot), p.servTot?p.ace+" ace · "+p.servErr+" errori":"nessuna battuta")}
     ${box("Ricezione", p.ricTot?it(p.ricTot):"—", p.ricTot?Math.round(p.ricPosPct)+"% positiva · "+Math.round(p.ricPrfPct)+"% perfetta":"non riceve")}
     ${box("Difese", p.difTot?it(p.difTot):"—", p.difTot?Math.round(p.difPosPct)+"% positive":"non rilevate")}
   </div>`;
-  h += `<h4 style="margin:0 0 4px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red-s);font-weight:800">Il profilo</h4>
+  h += `<h4 class="sub-h" style="margin-bottom:4px">Il profilo</h4>
     <p class="tiny muted" style="margin:0 0 12px">Quanto ${esc(p.nome.split(" ")[0])} si discosta dalla media di squadra, fondamentale per fondamentale. Passa sopra una barra per vedere i valori reali.</p>
     <div class="legenda">
       <span><i class="sopra"></i>Sopra la media</span>
@@ -3583,10 +3606,10 @@ function schedaGiocatore(p){
     </div>
     <div class="chart-box sq" style="margin-bottom:22px"><canvas id="chPly" role="img"
       aria-label="Barre orizzontali dello scarto di ${esc(p.nome)} rispetto alla media di squadra. I valori esatti sono nella tabella delle partite qui sotto."></canvas></div>`;
-  h += `<h4 style="margin:0 0 10px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red-s);font-weight:800">Punti partita per partita</h4>
+  h += `<h4 class="sub-h">Punti partita per partita</h4>
     <div class="chart-box" style="margin-bottom:22px"><canvas id="chPlyTrend" role="img"
       aria-label="Istogramma dei punti realizzati da ${esc(p.nome)} in ogni partita. Gli stessi dati sono nella tabella qui sotto."></canvas></div>`;
-  h += `<h4 style="margin:0 0 10px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red-s);font-weight:800">Tutte le partite</h4>`;
+  h += `<h4 class="sub-h">Tutte le partite</h4>`;
   h += `<div class="tbl-scroll"><table class="t"><thead><tr>
     <th>Partita</th><th>Pt</th><th>Saldo</th><th>Att.</th><th>Att. %</th><th>Ace</th><th>Muri</th><th>Ric. pos.</th><th>Dif.</th>
     </tr></thead><tbody>` + p.match.map(r=>{
@@ -3600,6 +3623,9 @@ function schedaGiocatore(p){
   return h;
 }
 
+/* scorrimento morbido solo se chi visita non ha chiesto animazioni ridotte */
+const liscio = ()=> matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+
 /* ============================================================
    12 · GRAFICI
    ============================================================ */
@@ -3612,6 +3638,8 @@ function chartTheme(){
   GRID = cvar("--stroke-2"); TICK = cvar("--ink-3");
   Chart.defaults.font.family="ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif";
   Chart.defaults.font.size=11;
+  /* animazioni ridotte: i grafici compaiono già disegnati */
+  Chart.defaults.animation = matchMedia("(prefers-reduced-motion: reduce)").matches ? false : Chart.defaults.animation;
   Chart.defaults.color=TICK;
   Chart.defaults.plugins.tooltip.backgroundColor=cvar("--panel-head");
   Chart.defaults.plugins.tooltip.borderColor=cvar("--stroke");
@@ -3827,8 +3855,13 @@ const TITOLI = {stagione:"La stagione",bacheca:"Bacheca",rosa:"La rosa",
                 classifiche:"Classifiche",partite:"Le partite",gazzetta:"La Gazzetta",
                 note:"Note legali e privacy"};
 const navA  = $$("nav.links a");
+/* avanti/indietro del browser fanno scattare sia hashchange sia popstate:
+   la seconda chiamata sulla stessa scheda non deve rifare nulla */
+let schedaAperta = null;
 function apriScheda(id, animato){
   if(PANES.indexOf(id)<0) id = PANES[0];
+  if(id===schedaAperta){ if(animato) window.scrollTo({top:0,behavior:liscio()}); return; }
+  schedaAperta = id;
   PANES.forEach(p=>{ const el=document.getElementById(p); if(el) el.hidden = (p!==id); });
   navA.forEach(a=>{ const on = a.getAttribute("href")==="#"+id;
     a.classList.toggle("on", on);
@@ -3840,7 +3873,7 @@ function apriScheda(id, animato){
   const el = document.getElementById(id);
   if(el){ if(fatto[id]) el.classList.add("seen"); fatto[id] = true; }
   segnalaScorrimento();
-  if(animato) window.scrollTo({top:0,behavior:"smooth"});
+  if(animato) window.scrollTo({top:0,behavior:liscio()});
 }
 collegaSchede();
 /* su file:// alcuni browser rifiutano pushState: in quel caso si ripiega su location.hash */
@@ -3901,7 +3934,7 @@ window.__chartPronto = ()=>{
 const attesaGrafici = OK ? 0 : setTimeout(()=>{ if(!OK) document.documentElement.classList.add("no-chart"); }, 8000);
 
 const tt=$("#toTop");
-tt.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+tt.addEventListener("click",()=>window.scrollTo({top:0,behavior:liscio()}));
 addEventListener("scroll",()=>tt.classList.toggle("show", scrollY>700), {passive:true});
 })();
 </script>
