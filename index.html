@@ -386,12 +386,16 @@ section.tabpane{padding-top:34px}
 .archivio a{margin-left:4px}
 /* calendario */
 .cal{list-style:none;margin:0;padding:0}
-.cal li{display:grid;grid-template-columns:minmax(140px,1fr) 2fr minmax(120px,1fr);gap:4px 14px;align-items:baseline;
+.cal li{display:grid;grid-template-columns:minmax(150px,1fr) 1.6fr minmax(190px,1.5fr);gap:4px 14px;align-items:baseline;
   padding:11px 0;border-top:1px solid var(--stroke-2)}
 .cal li:first-child{border-top:0;padding-top:2px}
 .cal-d{font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
 .cal-m{font-weight:700}
 .cal-x{font-size:12.5px;color:var(--ink-3);text-align:right}
+.cal-d b{font-weight:650;color:var(--ink-2);text-transform:capitalize}
+.cal-m small,.cal-x small{display:block;margin-top:3px;font-size:11.5px;font-weight:500;color:var(--ink-4)}
+.cal-mappa{color:var(--red-l);text-decoration:none;border-bottom:1px solid currentColor;font-weight:650}
+.cal-attesa .cal-m{font-weight:600;color:var(--ink-2)}
 @media(max-width:640px){.cal li{grid-template-columns:1fr}.cal-x{text-align:left}}
 /* la riga della stagione aperta nel confronto fra stagioni */
 table.t tr.qui td{background:var(--tint)}
@@ -992,8 +996,6 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       <h2 class="sec-title" id="pt-h">Le <em>partite</em></h2>
       <p class="sec-lead">Il tabellone della stagione, ordinabile per qualsiasi colonna. Clicca una riga per il referto statistico completo. Per il racconto e le pagelle vai alla <a href="#gazzetta" style="color:var(--red-l);text-decoration:none;border-bottom:1px solid currentColor">Gazzetta</a>.</p>
     </div>
-    <div class="glass card" id="calendario" style="margin-bottom:var(--s3)" hidden></div>
-    <div class="glass empty" id="ptVuoto" hidden></div>
     <div id="ptDati">
     <div class="filters">
       <div class="fgroup" role="group" aria-label="Filtra per campionato" id="mCamp"></div>
@@ -1003,6 +1005,8 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       <button class="chip reset" id="mReset" hidden>Azzera</button>
       <span class="count" id="matchCount"></span>
     </div>
+    <!-- partite in calendario: seguono gli stessi filtri della tabella -->
+    <div class="glass card" id="calendario" style="margin-bottom:var(--s3)" hidden></div>
     <div class="glass card">
       <div class="tbl-wrap"><div class="tbl-scroll">
         <table class="t sortable" id="tblMatches">
@@ -1067,7 +1071,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
         <h3>Servizi di terze parti</h3>
         <p>Per disegnare i grafici la pagina carica la libreria <b>Chart.js</b> dalla rete di distribuzione pubblica <b>jsDelivr</b>. Durante il caricamento il browser contatta i server di jsDelivr, che ricevono l'indirizzo IP e il tipo di browser, come accade per qualunque risorsa esterna. Non vengono usati cookie.</p>
         <p>Il sito è ospitato su <b>GitHub Pages</b>, che conserva registri tecnici di accesso secondo le proprie condizioni di servizio.</p>
-        <p>Non sono presenti altri contenuti esterni incorporati: né video, né mappe, né pulsanti dei social network.</p>
+        <p>Non sono presenti altri contenuti esterni incorporati: né video, né mappe, né pulsanti dei social network. I link «Mappa» del calendario aprono Google Maps in una nuova scheda solo quando vengono cliccati.</p>
 
         <h3>Immagini e diritti</h3>
         <p>Le fotografie dei giocatori e della squadra appartengono alla società e sono pubblicate con il consenso delle persone ritratte. Chi è ritratto in una foto e ne desidera la rimozione può chiederla allo staff: la foto verrà tolta senza necessità di motivazione.</p>
@@ -2943,7 +2947,10 @@ Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
    · partite     le partite giocate con referto (stesso formato del 2025-26)
    · calendario  le partite da giocare. Quando la stessa data entra in
                  "partite", sparisce da sola dal calendario.
-                   {d:"gg/mm/aaaa", ora:"21:00", opp:"Avversario", camp:"PGS", casa:true, luogo:"Pero"}
+                   {g:1, n:"0561", d:"gg/mm/aaaa", ora:"21:00", camp:"PGS", casa:true, opp:"Avversario",
+                    luogo:"Città", palestra:"Nome palestra", indirizzo:"Via, numero, città"}
+                 g = giornata, n = numero gara: facoltativi. Con palestra e
+                 indirizzo il sito mostra anche il link alla mappa.
    · eventi      la bacheca della stagione. Campi: data, titolo, testo,
                  icona (emoji), tag, foto (percorso), didascalia, alt, pin (true = in evidenza)
    · gazzetta    cartella degli articoli e nome del file per ogni data
@@ -2960,7 +2967,7 @@ const STAGIONI = [
     id: "2026-2027",
     etichetta: "2026-27",
     campionati: [
-      {k:"PGS",   nome:"Campionato PGS",   sotto:"Invernale OPEN maschile"},
+      {k:"PGS",   nome:"Campionato PGS",   sotto:"Libera maschile, girone 5"},
       {k:"FIPAV", nome:"Campionato FIPAV", sotto:"2ª Divisione Regionale"}
     ],
     /* la rosa del 2025-26 (foglio presenze): aggiungi qui i nuovi arrivi */
@@ -2982,7 +2989,26 @@ const STAGIONI = [
       {nome:"Mattia Paola",          numero:19, ruolo:"L"}
     ],
     partite: [],
-    calendario: [],
+    calendario: [
+      /* PGS Libera maschile girone 5: dal calendario ufficiale PGS Milano (file Calendario-LibM-5).
+         Non compaiono la 3ª e l'8ª giornata: turni di riposo. */
+      {g:1,  n:"0561", d:"09/10/2026", ora:"21:00", camp:"PGS", casa:true , opp:"Gate Navy",
+       luogo:"Cinisello Balsamo", palestra:"Palestra Falck", indirizzo:"Via G. Di Vittorio 1, Cinisello Balsamo"},
+      {g:2,  n:"0564", d:"16/10/2026", ora:"21:30", camp:"PGS", casa:false, opp:"ACLI Cinisello Voltage",
+       luogo:"Cinisello Balsamo", palestra:"Scuola Zandonai", indirizzo:"Via Zandonai 17, Cinisello Balsamo"},
+      {g:4,  n:"0567", d:"30/10/2026", ora:"21:00", camp:"PGS", casa:true , opp:"MI3 Volley 2DM",
+       luogo:"Cinisello Balsamo", palestra:"Palestra Falck", indirizzo:"Via G. Di Vittorio 1, Cinisello Balsamo"},
+      {g:5,  n:"0570", d:"08/11/2026", ora:"18:00", camp:"PGS", casa:false, opp:"Majestic Volley",
+       luogo:"Seregno", palestra:"Palestra 8 Marzo (gialla)", indirizzo:"Via Papini 31, Seregno"},
+      {g:6,  n:"0571", d:"17/11/2026", ora:"21:30", camp:"PGS", casa:false, opp:"Gate Navy",
+       luogo:"Milano", palestra:"Centro Pavesi (palazzetto)", indirizzo:"Via Francesco De Lemene 3, Milano"},
+      {g:7,  n:"0574", d:"20/11/2026", ora:"21:00", camp:"PGS", casa:true , opp:"ACLI Cinisello Voltage",
+       luogo:"Cinisello Balsamo", palestra:"Palestra Falck", indirizzo:"Via G. Di Vittorio 1, Cinisello Balsamo"},
+      {g:9,  n:"0577", d:"12/12/2026", ora:"21:30", camp:"PGS", casa:false, opp:"MI3 Volley 2DM",
+       luogo:"Basiglio", palestra:"Scuola media", indirizzo:"Piazza Leonardo da Vinci 1, Basiglio"},
+      {g:10,  n:"0580", d:"18/12/2026", ora:"21:00", camp:"PGS", casa:true , opp:"Majestic Volley",
+       luogo:"Cinisello Balsamo", palestra:"Palestra Falck", indirizzo:"Via G. Di Vittorio 1, Cinisello Balsamo"}
+    ],
     eventi: [],
     gazzetta: { cartella: "Gazzetta/2026-2027/", file: {} }
   },
@@ -3127,6 +3153,10 @@ const pct = (a,b)=> b>0 ? Math.round(a/b*100)+"%" : "—";
 const it  = n => Number(n).toLocaleString("it-IT");
 const dec = (n,d)=> Number(n).toLocaleString("it-IT",{minimumFractionDigits:d,maximumFractionDigits:d});
 const MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
+const GIORNI = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+function giornoSett(d){ const p=d.split("/"); return GIORNI[new Date(+p[2], +p[1]-1, +p[0]).getDay()]; }
+/* "venerdì 9 ottobre": per le frasi, senza l'anno */
+function giornoBreve(d){ const p=d.split("/"); return giornoSett(d)+" "+parseInt(p[0],10)+" "+MESI[parseInt(p[1],10)-1]; }
 function dataEstesa(d){ const p=d.split("/"); return parseInt(p[0],10)+" "+MESI[parseInt(p[1],10)-1]+" "+p[2]; }
 function sortKey(d){ const p=d.split("/"); return p[2]+p[1]+p[0]; }
 
@@ -3317,7 +3347,12 @@ const CATTIVI = CAMPI.filter(c=>CB[c.k].n>0);          /* campionati con almeno 
 const CACHE = {[S.id]:D};
 const datiDi = st => CACHE[st.id] || (CACHE[st.id] = calcola(st));
 /* partite in calendario non ancora giocate, dalla più vicina */
-const PROSSIME = (S.calendario||[]).filter(c=>c && c.d && !MBY[c.d])
+/* "oggi" nel formato di sortKey: aaaammgg */
+const OGGI = (d=>""+d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0"))(new Date());
+/* giocate ma senza referto: la data è passata e la partita non è ancora in "partite" */
+const ATTESA = (S.calendario||[]).filter(c=>c && c.d && !MBY[c.d] && sortKey(c.d)<OGGI)
+  .sort((a,b)=> sortKey(a.d).localeCompare(sortKey(b.d)));
+const PROSSIME = (S.calendario||[]).filter(c=>c && c.d && !MBY[c.d] && sortKey(c.d)>=OGGI)
   .sort((a,b)=> sortKey(a.d).localeCompare(sortKey(b.d)));
 
 /* ============================================================
@@ -3326,9 +3361,16 @@ const PROSSIME = (S.calendario||[]).filter(c=>c && c.d && !MBY[c.d])
 $("#heroSub").innerHTML = R.presentazione ||
   ("Stagione <b>"+esc(S.id)+"</b>: "+(BTOT.n
     ? nPartite(BTOT.n)+(BTOT.n===1?" documentata":" documentate")+(CATTIVI.length?" fra "+esc(elenco(CATTIVI.map(c=>c.nome))):"")
-    : "la stagione sta per iniziare")+".");
+    /* nessun referto ancora: se si è già giocato la stagione è in corso, altrimenti deve iniziare */
+    : ATTESA.length
+      ? "in corso"+(PROSSIME.length ? ", la prossima partita è "+giornoBreve(PROSSIME[0].d)+", "+(PROSSIME[0].casa?"in casa":"in trasferta")+" contro "+esc(PROSSIME[0].opp) : ", i referti sono in arrivo")
+      : PROSSIME.length
+        ? "si comincia "+giornoBreve(PROSSIME[0].d)+", "+(PROSSIME[0].casa?"in casa":"in trasferta")+" contro "+esc(PROSSIME[0].opp)
+        : "la stagione sta per iniziare")+".");
 $("#heroBadges").innerHTML = (R.riconoscimenti||[]).map(t=>`<span class="badge">${esc(t)}</span>`).join("")
-  + (BTOT.n ? `<span class="badge b-neutral" id="heroRecord">${BTOT.v} ${BTOT.v===1?"vittoria":"vittorie"} su ${BTOT.n}</span>` : "");
+  + (BTOT.n ? `<span class="badge b-neutral" id="heroRecord">${BTOT.v} ${BTOT.v===1?"vittoria":"vittorie"} su ${BTOT.n}</span>` : "")
+  /* a stagione iniziata, la prossima partita resta in vista */
+  + (BTOT.n && PROSSIME.length ? `<span class="badge b-neutral">Prossima: ${esc(giornoBreve(PROSSIME[0].d))}, ${esc(PROSSIME[0].opp)}</span>` : "");
 /* i numeri della stagione vivono nella sezione Stagione, non ripetuti anche qui */
 if(BTOT.n) $("#seasonStats").innerHTML = [
   ["Bilancio", BTOT.v+'<span class="sep">–</span>'+BTOT.s, Math.round(BTOT.v/BTOT.n*100)+"% di vittorie", ""],
@@ -3379,7 +3421,13 @@ function campCard(el, titolo, sub, B, T, accent){
 $("#stagione-h").innerHTML = R.titolo || ("La stagione <em>"+esc(S.etichetta)+"</em>");
 $("#stagioneLead").innerHTML = R.sintesi || (BTOT.n
   ? esc(nPartite(BTOT.n)+" con referto finora: "+BTOT.v+(BTOT.v===1?" vinta":" vinte")+" e "+BTOT.s+(BTOT.s===1?" persa.":" perse."))
-  : "La stagione non è ancora iniziata. I numeri compariranno qui dopo la prima partita con referto.");
+  : ATTESA.length
+    ? esc("La stagione è iniziata: "+(ATTESA.length===1?"una partita giocata":ATTESA.length+" partite giocate")+", in attesa di referto. ")
+      + "I numeri compariranno qui appena arriva il primo."
+  : PROSSIME.length
+    ? esc("La stagione non è ancora iniziata: "+nPartite(PROSSIME.length)+" in calendario, la prima "+giornoBreve(PROSSIME[0].d)+". ")
+      + "I numeri compariranno qui dopo la prima partita con referto."
+    : "La stagione non è ancora iniziata. I numeri compariranno qui dopo la prima partita con referto.");
 $("#stagioneDati").hidden = !BTOT.n;
 
 /* una card per campionato giocato */
@@ -3442,17 +3490,26 @@ if(PRECEDENTE && BTOT.n){
 }
 
 /* calendario delle prossime partite */
-function calendarioHTML(){
-  return `<p class="card-title">${PROSSIME.length===1?"La prossima partita":"Le prossime partite"}</p><ul class="cal">`+
-    PROSSIME.map(c=>`<li><span class="cal-d">${dataEstesa(c.d)}${c.ora?" · "+esc(c.ora):""}</span>
-      <span class="cal-m">${c.casa?"Pegasus – "+esc(c.opp):esc(c.opp)+" – Pegasus"}</span>
-      <span class="cal-x">${c.camp?`<span class="pip k${campIdx(c.camp)}"></span>${esc(c.camp)}`:""}${c.luogo?(c.camp?" · ":"")+esc(c.luogo):""}</span></li>`).join("")+`</ul>`;
+function partitaCal(c){
+  const dove = c.palestra || c.luogo || "";
+  const mappa = c.indirizzo
+    ? ` · <a class="cal-mappa" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((c.palestra?c.palestra+", ":"")+c.indirizzo)}" target="_blank" rel="noopener">Mappa</a>` : "";
+  return `<li><span class="cal-d"><b>${esc(giornoSett(c.d))}</b> ${dataEstesa(c.d)}${c.ora?" · "+esc(c.ora):""}</span>
+      <span class="cal-m">${c.casa?"Pegasus – "+esc(c.opp):esc(c.opp)+" – Pegasus"}
+        <small>${c.casa?"In casa":"In trasferta"}${c.g?" · "+c.g+"ª giornata":""}${c.n?" · gara "+esc(c.n):""}</small></span>
+      <span class="cal-x">${c.camp?`<span class="pip k${campIdx(c.camp)}"></span>${esc(c.camp)}`:""}${dove?(c.camp?" · ":"")+esc(dove):""}
+        ${c.indirizzo?`<small>${esc(c.indirizzo)}${mappa}</small>`:""}</span></li>`;
 }
-if(PROSSIME.length){ $("#calendario").innerHTML = calendarioHTML(); $("#calendario").hidden = false; }
+function calendarioHTML(P=PROSSIME, A=ATTESA){
+  return (P.length ? `<p class="card-title">${P.length===1?"La prossima partita":"Le prossime partite"}</p><ul class="cal">`+
+      P.map(partitaCal).join("")+`</ul>` : "")
+    + (A.length ? `<p class="card-title"${P.length?' style="margin-top:22px"':""}>Giocate, referto in arrivo</p><ul class="cal cal-attesa">`+
+      A.map(partitaCal).join("")+`</ul>` : "");
+}
 /* stagione non ancora iniziata: al posto dei numeri, il calendario */
 if(!BTOT.n){
   const el = $("#stagioneVuota");
-  el.innerHTML = `<div class="glass card">${PROSSIME.length ? calendarioHTML()
+  el.innerHTML = `<div class="glass card">${PROSSIME.length || ATTESA.length ? calendarioHTML()
       : `<p class="card-title">Calendario</p><p class="muted" style="margin:0">Il calendario della stagione non è ancora stato inserito.</p>`}
     ${PRECEDENTE?`<p class="tiny muted" style="margin:16px 0 0">Nel frattempo puoi rivedere la <a class="vai-stagione" data-stagione-id="${esc(PRECEDENTE.id)}" href="?stagione=${encodeURIComponent(PRECEDENTE.id)}">stagione ${esc(PRECEDENTE.etichetta)}</a>.</p>`:""}</div>`;
   el.hidden = false;
@@ -3606,7 +3663,19 @@ function renderMatches(){
 
   const attivo = mCamp!=="all"||mCampo!=="all"||mEsito!=="all"||mQ;
   $("#mReset").hidden = !attivo;
-  $("#matchCount").textContent = list.length+(list.length===1?" partita":" partite");
+  /* il calendario segue campionato, campo e ricerca; con un filtro sull'esito
+     non c'entra (le partite da giocare non hanno ancora un risultato) */
+  const passa = c => (mCamp==="all"||c.camp===mCamp) && (mCampo==="all"||(mCampo==="casa")===!!c.casa)
+                  && (!mQ || String(c.opp).toLowerCase().indexOf(mQ)>=0);
+  const calP = mEsito==="all" ? PROSSIME.filter(passa) : [], calA = mEsito==="all" ? ATTESA.filter(passa) : [];
+  const conCal = PROSSIME.length || ATTESA.length;
+  $("#calendario").hidden = !conCal;
+  if(conCal) $("#calendario").innerHTML = calP.length || calA.length ? calendarioHTML(calP, calA)
+    : `<p class="card-title">Calendario</p><p class="muted" style="margin:0">Nessuna partita in calendario corrisponde ai filtri.</p>`;
+  /* senza partite giocate il contatore dice quante ne restano in calendario */
+  $("#matchCount").textContent = MATCHES.length || !conCal
+    ? list.length+(list.length===1?" partita":" partite")
+    : (calP.length+calA.length)+" in calendario";
   $("#tblMatches tbody").innerHTML = list.length ? list.map(m=>`
     <tr class="riga" data-match="${esc(m.d)}" tabindex="0" role="button" aria-label="Referto di ${esc(m.label)}">
       <td class="lead">${m.d}</td>
@@ -3620,7 +3689,7 @@ function renderMatches(){
       <td>${m.muri||"—"}</td>
       <td>${m.ace||"—"}</td>
     </tr>`).join("")
-    : `<tr><td colspan="10" class="empty">Nessuna partita corrisponde ai filtri.</td></tr>`;
+    : `<tr><td colspan="10" class="empty">${MATCHES.length?"Nessuna partita corrisponde ai filtri.":"Nessuna partita giocata finora."}</td></tr>`;
   $$("#tblMatches thead th").forEach(th=> th.dataset.k===mSortK
     ? th.setAttribute("aria-sort", mSortDir<0?"descending":"ascending") : th.removeAttribute("aria-sort"));
   segnalaScorrimento();
@@ -3637,9 +3706,7 @@ intestazioniOrdinabili($("#tblMatches"));
 if(CK.length>=2) chips($("#mCamp"), [["all","Tutti"]].concat(CK.map(k=>[k,k])), ()=>mCamp, v=>{mCamp=v;renderMatches();});
 else $("#mCamp").hidden = true;
 $("#pt-h").innerHTML = BTOT.n>1 ? "Tutte le <em>"+BTOT.n+" partite</em>" : BTOT.n===1 ? "La prima <em>partita</em>" : "Le <em>partite</em>";
-$("#ptDati").hidden = !MATCHES.length;
-$("#ptVuoto").hidden = !!MATCHES.length;
-$("#ptVuoto").textContent = "Nessuna partita giocata finora."+(PROSSIME.length?" Il calendario è qui sopra.":"");
+
 chips($("#mCampo"),[["all","Ovunque"],["casa","In casa"],["fuori","Trasferta"]], ()=>mCampo, v=>{mCampo=v;renderMatches();});
 chips($("#mEsito"),[["all","Tutte"],["w","Vittorie"],["l","Sconfitte"]], ()=>mEsito, v=>{mEsito=v;renderMatches();});
 $("#mSearch").addEventListener("input", e=>{ mQ=e.target.value.trim().toLowerCase(); renderMatches(); });
@@ -3792,7 +3859,7 @@ function renderGazzetta(){
 }
 if(CK.length>=2) chips($("#gCamp"), [["all","Tutti"]].concat(CK.map(k=>[k,k])), ()=>gCamp, v=>{gCamp=v;renderGazzetta();});
 else $("#gCamp").hidden = true;
-$("#gazzetta .filters").hidden = !MATCHES.length;
+
 $("#gSearch").addEventListener("input", e=>{ gQ=e.target.value.trim().toLowerCase(); renderGazzetta(); });
 $("#gReset").addEventListener("click", ()=>{
   gCamp="all"; gQ=""; $("#gSearch").value="";
