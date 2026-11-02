@@ -1464,6 +1464,37 @@ Il dato chiave è il cambio palla: 37 punti in CP, 1,1 punti per ricezione, con 
 Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
 </script>
 
+<script data-stagione="2026-2027" data-gz="23/10/2026" type="text/plain">
+🦅 LA GAZZETTA DEL PEGASUS 🦅
+Campionato Provinciale · PGS Invernale · Libera maschile, girone 5
+━━━━━━━━━━━━━━━━━━━
+🏐 Ad Astra Pegasus 3 – 0 Gate Navy
+📊 Set: 25-16 | 25-18 | 25-15
+In casa · Palestra Falck, Cinisello Balsamo · 23/10/2026
+━━━━━━━━━━━━━━━━━━━
+✍️ Prima alla Falck, secondo 3-0: il Pegasus è a punteggio pieno
+
+Dopo il debutto di Seregno arriva la prima gara in casa della stagione, e il copione non cambia: 3-0 al Gate Navy e due vittorie su due in campionato, con sei set vinti e nessuno perso. Il bilancio dopo due giornate dice 150 punti fatti e 88 subiti. L'anno scorso il Pegasus aveva battuto le versioni Orange e Lime del Gate tre volte su tre: stavolta tocca alla Navy.
+
+I parziali raccontano una partita sempre sotto controllo. Il primo set si chiude 25-16, nove punti di scarto. Il secondo è il più combattuto, con il Gate che arriva a quota 18 (25-18). Il terzo è il più netto: 25-15, dieci lunghezze di vantaggio. Scarto medio di 8,7 punti a set, 75 punti a 49 sul totale, e gli ospiti non hanno mai superato i 18 in un set.
+
+Del referto di questa gara abbiamo solo punteggio, parziali e analisi per rotazione: mancano le statistiche individuali, quindi niente pagelle e niente top performer. Quello che si legge nelle rotazioni è nel focus tattico qui sotto, e dice che il Pegasus ha vinto con una distribuzione dei break molto più equilibrata rispetto a Seregno.
+
+"Due su due, sei set a zero. Va bene così, ma P4 è il punto da sistemare: poco in battuta e tanto subito in cambio palla." — Max Grillo®
+━━━━━━━━━━━━━━━━━━━
+📋 IL REFERTO
+* Punti nei set: 75 – 49
+* Scarto medio: +8,7 a set
+* Break point realizzati: 25
+* Punti subiti in cambio palla: 30
+━━━━━━━━━━━━━━━━━━━
+📊 FOCUS TATTICO
+In battuta il Pegasus firma 25 punti di break, distribuiti in modo più omogeneo rispetto al debutto: P3 è la rotazione più prolifica con 6 punti (24%), poi P2 con 5 (20%) e tre rotazioni a quota 4 (P1, P5 e P6, il 16% ciascuna). Il dato più evidente è il confronto con Seregno: P1, che là produceva da sola il 45% dei break, scende al 16%; P2 passa dal 3% al 20%; P6, che non ne aveva firmato nemmeno uno, ne mette 4. Il tasto debole è P4, ferma a 2 punti (8%). Sul fronte cambio palla i punti subiti sono 30, e più della metà arriva da due sole rotazioni: P2 con 9 (30%) e P4 con 7 (23%), seguite da P3 (6), P6 (5) e P5 (3), mentre P1 non ne ha concesso nemmeno uno. P4 è quindi la rotazione a due facce: la meno produttiva al servizio e la seconda più colpita in cambio palla.
+━━━━━━━━━━━━━━━━━━━
+✦ Ad Astra ✦
+Scout: Fabi · Analisi: Max Grillo® · La Gazzetta del Pegasus
+</script>
+
 <script data-stagione="2025-2026" data-gz="24/10/2025" type="text/plain">
 🦅 LA GAZZETTA DEL PEGASUS 🦅
 Campionato Provinciale · PGS Invernale · OPEN maschile
@@ -3092,7 +3123,8 @@ const STAGIONI = [
       {nome:"Mattia Paola",          numero:19, ruolo:"L"}
     ],
     partite: [
-      {d:"18/10/2026", key:"Majestic vs ADA",    camp:"PGS",   casa:false, opp:"Majestic Volley", score:"0-3", sets:"", luogo:"Seregno"}
+      {d:"18/10/2026", key:"Majestic vs ADA",    camp:"PGS",   casa:false, opp:"Majestic Volley", score:"0-3", sets:"", luogo:"Seregno"},
+      {d:"23/10/2026", key:"ADA vs Gate Navy",   camp:"PGS",   casa:true,  opp:"Gate Navy",       score:"3-0", sets:"", luogo:"Cinisello Balsamo"}
     ],
     calendario: [
       /* PGS Libera maschile girone 5: dal calendario ufficiale PGS Milano (file Calendario-LibM-5).
@@ -3116,6 +3148,12 @@ const STAGIONI = [
     ],
     eventi: [
       {
+      data: "23 ottobre 2026",
+      titolo: "Prima alla Falck, secondo 3-0",
+      testo: "Il Gate Navy cade 25-16, 25-18, 25-15 nella prima gara in casa: due vittorie su due e sei set a zero. Per questa partita il referto è parziale: solo punteggio e rotazioni.",
+      icona: "🏐", tag: "Partita"
+      },
+      {
       data: "18 ottobre 2026",
       titolo: "Si riparte con un 3-0",
       testo: "Prima di campionato PGS a Seregno contro il Majestic Volley: 25-13, 25-10, 25-16. Esordio in maglia Pegasus per Marcello Bernardini e Alessandro Scarfò.",
@@ -3123,6 +3161,7 @@ const STAGIONI = [
       }
     ],
     gazzetta: { cartella: "Gazzetta/2026-2027/", file: {
+      "23/10/2026":"2026-10-23 Pegasus - Gate Navy.md",
       "18/10/2026":"2026-10-18 Majestic - Pegasus.md"
     }}
   },
@@ -3373,11 +3412,14 @@ const top = o => Object.keys(o).sort((a,b)=>o[b]-o[a])[0];
 /* vinte, perse e set di un insieme di partite (di un solo campionato, se indicato) */
 function bilancio(matches, camp){
   const ms = matches.filter(m=>!camp||m.camp===camp);
-  let v=0,s=0,sv=0,sp=0;
+  let v=0,s=0,sv=0,sp=0, nStat=0, setStat=0;
   ms.forEach(m=>{ const [a,b]=m.score.split("-").map(Number);
     const mine = m.casa?a:b, his = m.casa?b:a;
-    if(mine>his) v++; else s++; sv+=mine; sp+=his; });
-  return {n:ms.length, v, s, sv, sp};
+    if(mine>his) v++; else s++; sv+=mine; sp+=his;
+    /* nStat: partite con le statistiche individuali (le medie si dividono per queste);
+       un referto parziale, con solo punteggio e rotazioni, conta nel bilancio ma non qui */
+    if(m.stat){ nStat++; setStat+=mine+his; } });
+  return {n:ms.length, v, s, sv, sp, nStat, setStat};
 }
 function calcola(st){
   const ck = (st.campionati||[]).map(c=>c.k);
@@ -3388,6 +3430,7 @@ function calcola(st){
   MATCHES.sort((a,b)=> sortKey(b.d).localeCompare(sortKey(a.d)));   /* più recenti in cima */
   const MATCHES_CRONO = MATCHES.slice().reverse();
   ROWS.forEach(r=>{ const m=MBY[r.data]; r.camp = m?m.camp:"—"; });
+  MATCHES.forEach(m=>{ m.stat = ROWS.some(r=>r.data===m.d); });
 
   /* aggregazione per giocatore */
   const PMAP = {};
@@ -3490,7 +3533,7 @@ if(BTOT.n) $("#seasonStats").innerHTML = [
   ["Bilancio", BTOT.v+'<span class="sep">–</span>'+BTOT.s, Math.round(BTOT.v/BTOT.n*100)+"% di vittorie", ""],
   ["Set",      BTOT.sv+'<span class="sep">–</span>'+BTOT.sp, dec((BTOT.sv+BTOT.sp)/BTOT.n,1)+" set a partita", ""],
   ["Punti realizzati", it(TOT.punti), it(TOT.attPt)+" attacchi vincenti", ""],
-  ["Muri e ace", TOT.muri+'<span class="sep">/</span>'+TOT.ace, dec(TOT.muri/BTOT.n,1)+" muri a partita", ""]
+  ["Muri e ace", TOT.muri+'<span class="sep">/</span>'+TOT.ace, dec(BTOT.nStat?TOT.muri/BTOT.nStat:0,1)+" muri a partita", ""]
 ].map(s=>`<div class="glass stat"><div class="k">${s[0]}</div><div class="v ${s[3]}">${s[1]}</div><div class="d">${s[2]}</div></div>`).join("");
 
 /* ============================================================
@@ -3534,7 +3577,8 @@ function campCard(el, titolo, sub, B, T, accent){
 }
 $("#stagione-h").innerHTML = R.titolo || ("La stagione <em>"+esc(S.etichetta)+"</em>");
 $("#stagioneLead").innerHTML = R.sintesi || (BTOT.n
-  ? esc(nPartite(BTOT.n)+" con referto finora: "+BTOT.v+(BTOT.v===1?" vinta":" vinte")+" e "+BTOT.s+(BTOT.s===1?" persa.":" perse."))
+  ? esc(nPartite(BTOT.n)+" con referto finora: "+BTOT.v+(BTOT.v===1?" vinta":" vinte")+" e "+BTOT.s+(BTOT.s===1?" persa.":" perse.")
+      +(BTOT.nStat<BTOT.n ? " Statistiche individuali su "+nPartite(BTOT.nStat)+"." : ""))
   : ATTESA.length
     ? esc("La stagione è iniziata: "+(ATTESA.length===1?"una partita giocata":ATTESA.length+" partite giocate")+", in attesa di referto. ")
       + "I numeri compariranno qui appena arriva il primo."
@@ -3562,11 +3606,11 @@ if(CATTIVI.length>=2 && !$("#confronto .cmp-tbl")){
     ["Bilancio",              k=>q(CB[k].v,CB[k].n), 1, (v,k)=>CB[k].v+"–"+CB[k].s],
     ["Set",                   k=>q(CB[k].sv,CB[k].sv+CB[k].sp), 1, (v,k)=>CB[k].sv+"–"+CB[k].sp],
     ["Set per partita",       k=>q(CB[k].sv+CB[k].sp,CB[k].n), 0, v=>dec(v,1)],
-    ["Attacchi per partita",  k=>q(CT[k].attTot,CB[k].n), 1, v=>it(Math.round(v))],
+    ["Attacchi per partita",  k=>q(CT[k].attTot,CB[k].nStat), 1, v=>it(Math.round(v))],
     ["Conversione attacco",   k=>q(CT[k].attPt,CT[k].attTot)*100, 1, v=>dec(v,1)+"%"],
     ["Errori in attacco",     k=>q(CT[k].attErr,CT[k].attTot)*100, -1, v=>dec(v,1)+"%"],
-    ["Muri per partita",      k=>q(CT[k].muri,CB[k].n), 1, v=>dec(v,1)],
-    ["Ace per partita",       k=>q(CT[k].ace,CB[k].n), 1, v=>dec(v,1)],
+    ["Muri per partita",      k=>q(CT[k].muri,CB[k].nStat), 1, v=>dec(v,1)],
+    ["Ace per partita",       k=>q(CT[k].ace,CB[k].nStat), 1, v=>dec(v,1)],
     ["Ricezione positività",  k=>q(CT[k].ricPosN,CT[k].ricTot)*100, 1, v=>Math.round(v)+"%"]
   ];
   $("#cmpAuto").innerHTML = `<table class="t cmp-tbl"><thead><tr><th>Indicatore</th>${ks.map(k=>`<th>${esc(k)}</th>`).join("")}</tr></thead><tbody>`+
@@ -3582,9 +3626,9 @@ if(CATTIVI.length>=2 && !$("#confronto .cmp-tbl")){
 /* confronto con la stagione precedente: numeri per partita o in percentuale,
    così stagioni di lunghezza diversa restano confrontabili */
 function perPartita(d){
-  const B = bilancio(d.MATCHES), T = d.TOT, set = B.sv+B.sp;
+  const B = bilancio(d.MATCHES), T = d.TOT, set = B.setStat;
   return {n:B.n, vitt:B.n?B.v/B.n*100:0, ppset:set?T.punti/set:0, conv:T.attTot?T.attPt/T.attTot*100:0,
-    err:T.attTot?T.attErr/T.attTot*100:0, ace:B.n?T.ace/B.n:0, muri:B.n?T.muri/B.n:0, ric:T.ricTot?T.ricPosN/T.ricTot*100:0};
+    err:T.attTot?T.attErr/T.attTot*100:0, ace:B.nStat?T.ace/B.nStat:0, muri:B.nStat?T.muri/B.nStat:0, ric:T.ricTot?T.ricPosN/T.ricTot*100:0};
 }
 if(PRECEDENTE && BTOT.n){
   const a = perPartita(D), b = perPartita(datiDi(PRECEDENTE));
@@ -3705,13 +3749,13 @@ function podio(el, key, fmt){
 }
 /* sotto le tre partite una classifica direbbe poco */
 const SOGLIA = 3;
-const conClassifiche = BTOT.n >= SOGLIA;
+const conClassifiche = BTOT.nStat >= SOGLIA;
 $("#clLead").textContent = conClassifiche
-  ? "Classifiche calcolate sulle "+BTOT.n+" partite con referto disponibile."
+  ? "Classifiche calcolate sulle "+BTOT.nStat+" partite con statistiche disponibili."
   : "Punti, muri, ace e saldo: le classifiche compaiono dalla terza partita con referto.";
 $("#clDati").hidden = !conClassifiche;
 $("#clVuoto").hidden = conClassifiche;
-$("#clVuoto").textContent = BTOT.n ? "Per ora "+(BTOT.n===1?"c'è una sola partita":"ci sono "+BTOT.n+" partite")+" con referto." : "Nessuna partita con referto finora.";
+$("#clVuoto").textContent = BTOT.nStat ? "Per ora "+(BTOT.nStat===1?"c'è una sola partita":"ci sono "+BTOT.nStat+" partite")+" con statistiche individuali." : "Nessuna partita con statistiche finora.";
 podio("#podPunti","punti");
 podio("#podMuri","muri");
 podio("#podAce","ace");
@@ -3924,7 +3968,7 @@ function renderArticolo(d){
 }
 function tabellaPartita(d){
   const rows = ROWS.filter(r=>r.data===d).sort((a,b)=> b.punti-a.punti || a.numero-b.numero);
-  if(!rows.length) return `<div class="note">Nessuna statistica disponibile.</div>`;
+  if(!rows.length) return `<div class="note">Per questa partita non ci sono statistiche individuali: solo punteggio, parziali e analisi per rotazione.</div>`;
   return `<div class="tbl-scroll"><table class="t"><thead><tr>
     <th>Giocatore</th><th>N.</th><th>Pt</th><th>Saldo</th><th>Att.</th><th>Att. pt</th><th>Att. %</th>
     <th>Ace</th><th>Muri</th><th>Ric.</th><th>Ric. pos.</th><th>Dif.</th></tr></thead><tbody>` +
@@ -4234,12 +4278,12 @@ function graficiStagione(){
   const perSet = MATCHES_CRONO.map(m=>{
     const t = totali(ROWS.filter(r=>r.data===m.d));
     const set = m.mySets + m.hisSets;
-    return set ? t.punti/set : 0;
+    return set && m.stat ? t.punti/set : null;   /* referto parziale: niente punto sul grafico */
   });
   seasonCharts.push(new Chart($("#chSeason"),{
     type:"line",
     data:{labels:MATCHES_CRONO.map(m=>m.opp),
-      datasets:[{label:"Punti per set",data:perSet,
+      datasets:[{label:"Punti per set",data:perSet,spanGaps:true,
         borderColor:"#E74C50",borderWidth:2.5,tension:.35,fill:true,
         backgroundColor:(c)=>{const {ctx,chartArea}=c.chart; if(!chartArea) return "rgba(231,76,80,.15)";
           const g=ctx.createLinearGradient(0,chartArea.top,0,chartArea.bottom);
@@ -4406,7 +4450,7 @@ apriScheda(location.hash.slice(1), false);
 (function(){
   $("#ftStagione").textContent = S.id;
   if(BTOT.n){ $("#noteConteggio").textContent = "Stagione "+S.id+": "+nPartite(BTOT.n)+(BTOT.n===1?" documentata.":" documentate."); $("#noteConteggio").hidden = false; }
-  $("#ftPartite").textContent = BTOT.n ? "Statistiche su "+nPartite(BTOT.n)+" con referto · " : "";
+  $("#ftPartite").textContent = BTOT.n ? "Statistiche su "+nPartite(BTOT.nStat)+" con referto · " : "";
   const el=$("#aggiornato"); if(!el||!MATCHES.length) return;
   const ultima = MATCHES.slice().sort((a,b)=>sortKey(b.d).localeCompare(sortKey(a.d)))[0];
   el.textContent = "Dati aggiornati all'ultima partita disputata: "+dataEstesa(ultima.d);
