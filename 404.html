@@ -93,7 +93,8 @@ try{
     var logo = new Image();
     logo.className = "peg"; logo.alt = "";
     logo.onload = function(){ var m = document.querySelector("main"); m.insertBefore(logo, m.firstChild); };
-    logo.src = base + encodeURI(chiaro ? "logo 1 bianco.png" : "logo 1.png");
+    logo.width = logo.height = 96;
+    logo.src = base + (chiaro ? "img/logo-giorno.webp" : "img/logo-notte.webp");
   }
   if (!seg || !window.fetch) { usa("/"); return; }
   fetch("/" + seg + "/index.html", {method:"HEAD"})

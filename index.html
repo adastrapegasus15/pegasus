@@ -8,14 +8,16 @@
 <meta property="og:title" content="Ad Astra Pegasus">
 <meta property="og:description" content="Statistiche, rosa, partite e La Gazzetta del Pegasus, stagione per stagione.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="logo%201.png">
+<meta property="og:image" content="img/og-logo.jpg">
 <meta property="og:locale" content="it_IT">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0B0D14">
-<link rel="icon" id="favicon" href="logo%201.png">
+<link rel="icon" id="favicon" type="image/png" href="img/favicon-notte.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <!-- Chart.js si carica in parallelo: la pagina non lo aspetta più.
      Se arriva dopo lo script principale, __chartPronto disegna i grafici;
      se non arriva, .no-chart mostra un avviso al posto dei riquadri vuoti. -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <script async src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
         onload="window.__chartPronto && window.__chartPronto()"
         onerror="document.documentElement.classList.add('no-chart')"></script>
@@ -148,7 +150,8 @@
 /* Logo del club — immagine, usata così com'è */
 .peg{display:block;object-fit:contain;border-radius:var(--r-md)}
 .peg-nav{width:38px;height:38px;flex:0 0 38px;border-radius:11px}
-.peg-hero{width:clamp(112px,17vw,196px);height:clamp(112px,17vw,196px);
+/* hero compatto: logo e titolo occupano meno di metà schermo, i numeri della stagione restano in vista */
+.peg-hero{width:clamp(84px,10vw,128px);height:clamp(84px,10vw,128px);
   border-radius:var(--r-lg);box-shadow:0 14px 42px rgba(0,0,0,.5)}
 /* il logo del tema giorno è trasparente: niente riquadro, l'ombra segue la sagoma */
 :root[data-theme="light"] .peg{box-shadow:none;border-radius:0;background:transparent}
@@ -168,6 +171,10 @@ table.t,.stat .v,.stat .d,.ply-stats b,.pod .vl,.ply-id .kv b,.res,.gz-score,
   font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;
 }
 img{max-width:100%;display:block}
+/* titoli senza parole orfane; sui touch niente ritardo da doppio tocco né lampo grigio */
+h1,h2,h3,h4,.card-title,.ev-title,.gz-title,.evp-title{text-wrap:balance}
+p,.ev-text,.evp-text{text-wrap:pretty}
+a,button,select,input,summary,[role="button"],.riga{touch-action:manipulation;-webkit-tap-highlight-color:rgba(var(--red-rgb),.18)}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 a{color:inherit}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -293,11 +300,11 @@ dialog.modal.closing::backdrop{animation:bdOut .2s ease both}
 section{padding:var(--s16) 0;scroll-margin-top:78px}
 .sec-head{margin:0 0 26px}
 .eyebrow{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px;font-weight:600}
-h2.sec-title{margin:0;font-family:var(--font-display);font-stretch:88%;word-spacing:.06em;font-size:clamp(28px,4.3vw,42px);
+h2.sec-title{text-wrap:balance;margin:0;font-family:var(--font-display);font-stretch:88%;word-spacing:.06em;font-size:clamp(28px,4.3vw,42px);
   font-weight:700;letter-spacing:.005em;line-height:1.06}
 /* il carattere da titolo governa marchio, titoli e tutti i numeri in evidenza */
 .wordmark .w1,.wordmark .w2,.stat .v,.ply-id .nm,.ply-stats b,.pod .vl,.ply-id .kv b,
-.res,.gz-score,.modal-head h3,.ply-shot .nn,.avatar span,.ev.wide .ev-title,.art .occhiello,
+.res,.gz-score,.modal-head h2,.ply-shot .nn,.avatar span,.ev.wide .ev-title,.art .occhiello,
 .art ul.referto li b,.pagella .pvt,.pagella .pnm,.hero-sub b{font-family:var(--font-display);font-stretch:88%;word-spacing:.06em}
 .stat .v,.pod .vl,.ply-id .kv b,.ply-stats b{font-weight:700;letter-spacing:0}
 .sec-title em{font-style:normal;color:var(--red-t)}
@@ -401,21 +408,21 @@ section.tabpane{padding-top:34px}
 table.t tr.qui td{background:var(--tint)}
 
 /* ---------- Hero ---------- */
-.hero{padding:56px 0 34px}
+.hero{padding:28px 0 22px}
 /* l'hero accoglie chi arriva sulla Stagione; nelle altre schede sparisce alla vista
    ma resta leggibile dagli screen reader, perché contiene l'unico h1 della pagina */
 html:not([data-scheda="stagione"]) .hero{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.hero-card{padding:clamp(26px,4.4vw,50px);text-align:center;border-radius:var(--r-lg)}
+.hero-card{padding:clamp(22px,3vw,34px) clamp(22px,4vw,44px);text-align:center;border-radius:var(--r-lg)}
 .hero-lock{display:flex;align-items:center;justify-content:center;gap:clamp(16px,3.4vw,34px);flex-wrap:wrap}
 .wordmark{display:inline-block;position:relative;text-align:left}
-.wordmark .w1{display:block;font-size:clamp(40px,8.4vw,86px);font-weight:700;letter-spacing:.04em;line-height:.94;color:var(--ink-strong)}
+.wordmark .w1{display:block;font-size:clamp(36px,6.2vw,64px);font-weight:700;letter-spacing:.04em;line-height:.94;color:var(--ink-strong)}
 /* PEGASUS staccato da AD ASTRA con aria sopra e una linea sottile di separazione */
-.wordmark .w2{display:block;font-size:clamp(14px,2.6vw,26px);font-weight:700;letter-spacing:.44em;
-  margin-top:20px;padding-top:16px;text-indent:.44em;
+.wordmark .w2{display:block;font-size:clamp(13px,1.9vw,19px);font-weight:700;letter-spacing:.44em;
+  margin-top:12px;padding-top:10px;text-indent:.44em;
   border-top:1px solid var(--hair);color:var(--red-t)}
 @media(max-width:560px){.wordmark{text-align:center}}
-.hero-sub{margin:26px auto 0;max-width:62ch;color:var(--ink-2);font-size:15px}
+.hero-sub{margin:18px auto 0;max-width:62ch;color:var(--ink-2);font-size:15px}
 .badges{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:22px}
 .badge{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:99px;font-size:12px;font-weight:700;
   background:rgba(var(--red-rgb),.15);border:1px solid rgba(var(--red-rgb),.38);color:var(--red-s)}
@@ -424,6 +431,8 @@ html:not([data-scheda="stagione"]) .hero{position:absolute;width:1px;height:1px;
 
 /* ---------- Stat grid ---------- */
 .stat-grid{display:grid;gap:12px;margin-top:16px;grid-template-columns:repeat(auto-fit,minmax(168px,1fr))}
+/* telefono: i quattro numeri della stagione in una griglia 2×2, visibili insieme */
+@media(max-width:560px){.stat-grid{grid-template-columns:1fr 1fr;gap:10px}.stat-grid .stat{padding:14px}}
 .stat{padding:16px 17px;border-radius:var(--r-md)}
 .stat .k{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
 .stat .v{font-size:clamp(24px,3.4vw,31px);font-weight:800;margin-top:5px;letter-spacing:-.025em;line-height:1.05}
@@ -448,6 +457,17 @@ html:not([data-scheda="stagione"]) .hero{position:absolute;width:1px;height:1px;
 /* sottotitoli dentro la scheda giocatore: stesso aspetto dei titoletti degli articoli */
 .sub-h{margin:0 0 10px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red-s);font-weight:800}
 .camp-bil{font-size:34px;font-weight:850;letter-spacing:-.02em}
+.provvisorie .podi .card-title::after{content:" · provvisoria";color:var(--ink-4);font-weight:600}
+.camp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px 24px;flex-wrap:wrap;margin-bottom:14px}
+.camp-forma{display:flex;flex-direction:column;align-items:flex-end;gap:7px;text-align:right}
+.cf-k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);font-weight:700}
+.cf-res{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.cf-res .res{cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.cf-res .res:hover{transform:translateY(-1px);box-shadow:0 0 0 2px var(--win-st)}
+.cf-res .res.l:hover{box-shadow:0 0 0 2px var(--loss-st)}
+.cf-next{font-size:12.5px;color:var(--ink-2)}
+.cf-next .cf-k{margin-right:4px}
+@media(max-width:560px){.camp-forma{align-items:flex-start;text-align:left}.cf-res{justify-content:flex-start}}
 .c-red{color:var(--red-l)} .c-blue{color:var(--blue-l)} .c-win{color:var(--win)}
 
 /* ---------- Utility ---------- */
@@ -479,6 +499,25 @@ p.tiny{font-size:12.5px;line-height:1.55}   /* le note da leggere, non le etiche
 .ev-cap{margin:10px 0 0;font-size:11px;color:var(--ink-4);font-style:italic;line-height:1.45}
 /* evento in evidenza con foto: occupa tutta la riga */
 .ev.wide{grid-column:1/-1}
+/* evento senza foto: niente riquadro vuoto con l'emoji, solo testo con l'etichetta in riga */
+.ev.no-foto .ev-body{padding:18px 19px 19px}
+.ev-tag-in{display:inline-block;margin-right:9px;padding:2px 8px;border-radius:99px;font-size:10.5px;letter-spacing:.06em;
+  color:var(--red-l);background:var(--tint);border:1px solid var(--tint-st)}
+/* elenco compatto degli eventi di partita: ogni riga apre la cronaca */
+.evp-box{grid-column:1/-1;padding:18px 20px}
+.evp-list{display:grid}
+.evp{display:grid;grid-template-columns:130px 1fr auto;gap:4px 18px;align-items:center;width:100%;text-align:left;
+  padding:13px 4px;border-top:1px solid var(--stroke-2);border-radius:0}
+.evp:first-child{border-top:0}
+.evp.link{transition:background .18s var(--ease)}
+.evp.link:hover{background:var(--ctrl)}
+.evp-date{font-size:12px;color:var(--ink-3);font-weight:600}
+.evp-main{min-width:0;display:flex;flex-direction:column;gap:3px}
+.evp-title{font-size:14.5px;font-weight:750;letter-spacing:-.01em}
+.evp-text{font-size:13px;color:var(--ink-2);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.evp-more{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:var(--red-l);text-decoration:none}
+.evp-more:hover{text-decoration:underline}
+@media(max-width:600px){.evp{grid-template-columns:1fr auto}.evp-date{grid-column:1/-1}}
 .ev.wide .ev-media{aspect-ratio:16/10}
 @media(min-width:760px){
   .ev.wide{flex-direction:row}
@@ -532,7 +571,7 @@ table.t .lead{font-weight:700}
   -webkit-backdrop-filter:var(--blur) var(--sat);backdrop-filter:var(--blur) var(--sat)}
 /* su schermi stretti i gruppi vanno a capo: prima "Opposto" e "Libero" finivano fuori schermo, irraggiungibili */
 @media(max-width:640px){.fgroup{flex-wrap:wrap;max-width:100%;border-radius:var(--r-md)}}
-.chip{padding:6px 13px;border-radius:99px;font-size:12px;font-weight:650;color:var(--ink-3);transition:.2s;white-space:nowrap}
+.chip{padding:6px 13px;border-radius:99px;font-size:12px;font-weight:650;color:var(--ink-3);transition:color .2s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .18s var(--ease);white-space:nowrap}
 .chip:hover{color:var(--ink)}
 .chip[aria-pressed="true"]{background:var(--red-btn);color:#fff}
 .chip:focus-visible{outline:2px solid var(--red-l);outline-offset:2px}
@@ -540,19 +579,36 @@ table.t .lead{font-weight:700}
   background:var(--glass-2);border:1px solid var(--stroke-2);-webkit-backdrop-filter:var(--blur) var(--sat);backdrop-filter:var(--blur) var(--sat)}
 .search::placeholder{color:var(--ink-4)}
 .search:focus{outline:none;border-color:rgba(var(--red-rgb),.5);background:var(--ctrl-hi)}
+.search:focus-visible{outline:2px solid var(--red-l);outline-offset:2px}
 .count{font-size:11.5px;color:var(--ink-3);margin-left:auto;white-space:nowrap}
+
+/* ---------- Parziali (tabella partite) ---------- */
+.parz{display:inline-flex;gap:10px;white-space:nowrap}
+.parz .pz-w{color:var(--ink);font-weight:700}
+.parz .pz-l{color:var(--ink-4)}
 
 /* ---------- Rosa ---------- */
 .roster{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(212px,1fr))}
 .ply{padding:16px;border-radius:var(--r-md);text-align:left;width:100%;display:block}
-.ply-top{display:flex;align-items:center;gap:12px}
+/* altezza fissa del blocco nome: nomi su una o due righe non spostano più le statistiche */
+.ply-top{display:flex;align-items:center;gap:12px;min-height:66px}
+.ply-txt{min-width:0}
+/* Avatar: stesso fondo grigio "da studio" delle foto ufficiali, così chi ha la foto e chi
+   non ce l'ha ancora stanno nella stessa famiglia. Senza foto: numero di maglia nel blu
+   della divisa. Con la foto: il numero resta in un piccolo badge in basso a destra. */
 .avatar{position:relative;width:52px;height:52px;flex:0 0 52px;border-radius:14px;overflow:hidden;
-  background:linear-gradient(140deg,rgba(var(--red-rgb),.9),rgba(var(--blue-rgb),.9));display:grid;place-items:center;
-  box-shadow:0 4px 14px rgba(0,0,0,.22)}
-.avatar span{font-size:19px;font-weight:850;color:#fff;letter-spacing:-.02em}
-.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
-.ply-name{font-size:14.5px;font-weight:750;line-height:1.2;letter-spacing:-.01em}
-.ply-role{font-size:11px;color:var(--ink-3);margin-top:3px}
+  background:linear-gradient(160deg,#E4E6EA,#C3C7CF);display:grid;place-items:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.22),inset 0 0 0 1px rgba(255,255,255,.35)}
+.avatar span{font-size:21px;font-weight:850;color:#1B2440;letter-spacing:-.02em}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 8%}
+.avatar.has-img span{position:absolute;right:0;bottom:0;z-index:1;min-width:19px;height:17px;padding:0 4px;
+  border-top-left-radius:7px;background:var(--red-btn);color:#fff;font-size:10.5px;font-weight:800;
+  display:grid;place-items:center;letter-spacing:0;line-height:1}
+.ply-name{font-size:14.5px;font-weight:750;line-height:1.2;letter-spacing:-.01em;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.ply-role{font-size:11px;color:var(--ink-3);margin-top:3px;line-height:1.35;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ply-role+.ply-role{margin-top:0;color:var(--ink-4)}
 .ply-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px;padding-top:13px;border-top:1px solid var(--stroke-2)}
 .ply-stats div{text-align:center}
 .ply-stats b{display:block;font-size:17px;font-weight:800;letter-spacing:-.02em}
@@ -587,10 +643,10 @@ table.t .lead{font-weight:700}
   padding:16px;margin-bottom:18px;border-radius:var(--r-md);
   background:var(--tint);border:1px solid var(--tint-st)}
 .ply-shot{position:relative;width:132px;height:132px;flex:0 0 132px;border-radius:var(--r-md);overflow:hidden;
-  background:linear-gradient(140deg,rgba(var(--red-rgb),.9),rgba(var(--blue-rgb),.9));
+  background:linear-gradient(160deg,#E4E6EA,#C3C7CF);
   display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.42)}
 .ply-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
-.ply-shot .nn{font-size:46px;font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1}
+.ply-shot .nn{font-size:46px;font-weight:900;color:#1B2440;letter-spacing:-.04em;line-height:1}
 .ply-shot .tag{position:absolute;left:0;bottom:0;right:0;padding:5px 9px;font-size:11px;font-weight:800;letter-spacing:.04em;
   background:linear-gradient(0deg,rgba(11,13,20,.86),rgba(11,13,20,0));text-align:left;color:#fff}
 .ply-id{min-width:190px;flex:1}
@@ -604,7 +660,8 @@ table.t .lead{font-weight:700}
 
 /* ---------- Modale su schermi piccoli ---------- */
 @media(max-width:640px){
-  dialog.modal{
+  /* "html" in più: la regola generale della finestra viene dopo nel file e altrimenti vincerebbe */
+  html dialog.modal{
     width:100vw;max-width:100vw;
     margin:auto 0 0;                      /* pannello ancorato in basso */
     max-height:92dvh;
@@ -613,11 +670,9 @@ table.t .lead{font-weight:700}
   dialog.modal[open]{animation:sheetIn .38s var(--ease-out) both}
   dialog.modal.closing{animation:sheetOut .22s ease both}
   .modal-head{padding:20px 16px 13px}
-  .modal-head h3{font-size:17px}
+  .modal-head h2{font-size:17px}
   .modal-body{padding:16px 16px 30px;max-height:calc(92dvh - 76px)}
-  /* la maniglia suggerisce che si chiude trascinando lo sguardo verso il basso */
-  .modal-head::before{content:"";position:absolute;top:6px;left:50%;transform:translateX(-50%);
-    width:36px;height:4px;border-radius:99px;background:var(--hair)}
+  /* niente maniglia: suggerirebbe un trascinamento che la finestra non ha */
   .ply-hero{gap:14px;padding:13px}
   .ply-id{min-width:140px}
   .ply-id .kv{gap:12px}
@@ -682,13 +737,19 @@ dialog.modal{
 dialog.modal::backdrop{background:var(--backdrop);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
 .modal-head{position:sticky;top:0;z-index:3;display:flex;align-items:flex-start;gap:14px;padding:20px 22px 16px;
   background:var(--panel-head);-webkit-backdrop-filter:var(--blur) var(--sat);backdrop-filter:var(--blur) var(--sat);border-bottom:1px solid var(--stroke-2)}
-.modal-head h3{margin:0;font-size:20px;font-weight:800;letter-spacing:0;line-height:1.2}
+.modal-head h2{margin:0;font-size:20px;font-weight:800;letter-spacing:0;line-height:1.2}
 .modal-head p{margin:6px 0 0;font-size:12px;color:var(--ink-3)}
+.share{margin-left:auto;flex:0 0 auto;height:34px;padding:0 12px;border-radius:10px;font-size:12.5px;font-weight:700;
+  background:var(--ctrl);border:1px solid var(--stroke-2);color:var(--ink-2);white-space:nowrap;
+  transition:background .2s var(--ease),border-color .2s var(--ease),color .2s var(--ease)}
+.share:hover{background:var(--ctrl-hi);color:var(--ink)}
+.share.ok{color:var(--win);border-color:var(--win-st)}
+.share+.x{margin-left:8px}
 .x{margin-left:auto;flex:0 0 34px;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
-  background:var(--ctrl);border:1px solid var(--stroke-2);font-size:17px;line-height:1;transition:.2s}
+  background:var(--ctrl);border:1px solid var(--stroke-2);font-size:17px;line-height:1;transition:background .2s var(--ease),border-color .2s var(--ease),transform .2s var(--ease)}
 .x:hover{background:rgba(var(--red-rgb),.22);border-color:rgba(var(--red-rgb),.4)}
-.modal-body{padding:20px 22px 26px;overflow-y:auto;overflow-x:hidden;max-height:calc(88vh - 84px)}
-.modal-body,.modal-head h3{overflow-wrap:anywhere}
+.modal-body{padding:20px 22px 26px;overflow-y:auto;overflow-x:hidden;max-height:calc(88vh - 84px);overscroll-behavior:contain}
+.modal-body,.modal-head h2{overflow-wrap:anywhere}
 .modal-body::-webkit-scrollbar{width:9px}
 .modal-body::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:99px}
 
@@ -759,9 +820,9 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 
 <header class="nav">
   <div class="nav-in">
-    <a class="brand" href="#stagione"><img class="peg peg-nav" src="logo%201.png" alt="" aria-hidden="true"
+    <a class="brand" href="#stagione"><img class="peg peg-nav" src="img/logo-notte.webp" width="38" height="38" alt="" aria-hidden="true"
        onerror="document.documentElement.classList.add('no-peg')">
-      <span class="txt"><span class="t1">AD ASTRA</span><span class="t2">Pegasus</span></span>
+      <span class="txt" translate="no"><span class="t1">AD ASTRA</span><span class="t2">Pegasus</span></span>
     </a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="navlinks" aria-label="Apri il menu">☰</button>
     <nav class="links" id="navlinks" aria-label="Sezioni del sito">
@@ -787,9 +848,9 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
   <div class="wrap">
     <div class="glass hero-card">
       <div class="hero-lock">
-        <img class="peg peg-hero" src="logo%201.png" alt="Logo Ad Astra Pegasus"
+        <img class="peg peg-hero" src="img/logo-notte.webp" width="196" height="196" fetchpriority="high" alt="Logo Ad Astra Pegasus"
              onerror="document.documentElement.classList.add('no-peg')">
-        <h1 id="hero-h" class="wordmark" style="margin:0">
+        <h1 id="hero-h" class="wordmark" style="margin:0" translate="no">
           <span class="w1">AD ASTRA</span>
           <span class="w2">PEGASUS</span>
         </h1>
@@ -891,25 +952,25 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
         <p>Il dato più interessante della stagione non è il bilancio complessivo — 19 vittorie e 2 sconfitte, numeri da squadra forte — ma il fatto che il Pegasus abbia giocato due pallavolo completamente diverse nei due campionati.</p>
         <p>Nel PGS ha vinto lottando: partite lunghe, muri a raffica, cinquanta palloni attaccati per set. Nel FIPAV ha vinto controllando: match corti, selezione chirurgica, pochissimi errori. Stessi giocatori, stesso allenatore, due identità.</p>
 
-        <h4>🏐 Campionato PGS · 9 vittorie – 1 sconfitta</h4>
+        <h4><span aria-hidden="true">🏐</span> Campionato PGS · 9 vittorie – 1 sconfitta</h4>
         <p>Il PGS è stato il campionato della fatica e del muro. Tre partite su dieci sono finite al quinto set, quattro al quarto: 3,9 set di media, con un volume offensivo enorme — 143 attacchi a partita, con il picco assurdo dei 215 contro la Martesana.</p>
         <p>La conversione si è fermata al 31,9%, il valore più basso delle due competizioni, e gli errori hanno pesato: uno ogni sette palloni attaccati. Ma dove il Pegasus ha vinto il campionato è sopra la rete: 81 muri punto in dieci partite, con tre gare da almeno dieci — 10 contro l'ACLI, 15 contro i Black Bulls, 15 contro il Melzo.</p>
         <p>L'unica sconfitta arriva l'11 gennaio contro la Martesana, al tie-break in casa. È una partita che riassume tutti i limiti: 215 attacchi per soli 62 punti, 32 errori sotto rete, 15 battute sbagliate contro 6 ace, e per la prima volta un break point in rosso. Curiosamente, quella stessa sera la ricezione fu la migliore di tutta la stagione: 87% di positività su 101 palloni.</p>
 
-        <h4>🏐 Campionato FIPAV · 10 vittorie – 1 sconfitta</h4>
+        <h4><span aria-hidden="true">🏐</span> Campionato FIPAV · 10 vittorie – 1 sconfitta</h4>
         <p>Il FIPAV è stato il campionato del controllo. 3,3 set di media, sette 3-0 su undici partite, e soprattutto una selezione del pallone di un altro livello: 36,9% di conversione in attacco con appena l'11,1% di errori.</p>
         <p>I due estremi della stagione stanno entrambi qui. Il 7 febbraio a Quarto Oggiaro il Pegasus chiude con 3 attacchi sbagliati su 70 tentativi — uno ogni ventitré — e concede 25 punti in tre set. L'8 aprile contro la Speranza registra il saldo di squadra più alto dell'anno, +39, con 8 errori in tutta la partita.</p>
         <p>L'unica sconfitta è l'8 maggio a Rho, 0-3 contro il Lucernate, ed è la più istruttiva della stagione. Il Pegasus attacca al 40% di conversione con soli 13 errori — uno dei suoi dati offensivi migliori — e riceve all'80%. Ma segna un solo ace su 66 battute, il minimo assoluto dell'anno. Senza pressione al servizio, il Lucernate riceve comodo e produce 41 punti in break point contro 25. Si perde senza sbagliare quasi nulla.</p>
 
-        <h4>⭐ Il giocatore della stagione</h4>
+        <h4><span aria-hidden="true">⭐</span> Il giocatore della stagione</h4>
         <p><b>Nicolò Zonta (Centrale).</b> Moscatelli ha segnato di più e Sciarrone ha murato di più, ma il premio va a Zonta per una ragione che i numeri assoluti non catturano: in 19 presenze non ha mai chiuso una partita con un rendimento negativo in attacco. Mai. 182 punti, 30 muri, 13 ace, e una serie di partite — Gate Lime 30/01 con saldo +11, Lucernate 27/02 con +12 e 4 ace, Bresso 15/04 con +10 e il 100% di efficienza — in cui è stato semplicemente il migliore in campo. In una squadra che ha oscillato molto, lui è stato la costante.</p>
 
-        <h4>🔍 I tre temi della stagione</h4>
+        <h4><span aria-hidden="true">🔍</span> I tre temi della stagione</h4>
         <p><b>1. Il gioco troppo sbilanciato su posto 4.</b> La distribuzione ha sistematicamente premiato la banda: 45% contro la Martesana, 47% contro la Martesana di novembre, fino al 50,7% contro il Lucernate il 27 febbraio, con il centro sceso al 17,6%. Funziona quando la banda è in giornata — quel giorno Panzani chiuse al 90% di efficienza — ma è un gioco leggibile. Le partite migliori dell'anno sono state quelle con la distribuzione più equilibrata: contro il Bresso a gennaio e contro l'ACLI a dicembre, con posto 3 al 29% e dieci muri punto come conseguenza diretta.</p>
         <p><b>2. La rotazione P1 e il buco in cambio palla.</b> Per gran parte della stagione la rotazione d'apertura è stata sterile in break point: 2% contro l'ACLI, 2% contro il Gate, 0% contro il Bresso, 5% contro la Martesana. Si è sbloccata solo dal 30 gennaio in avanti. Sul fronte opposto, il cambio palla ha avuto buchi ricorrenti in P5 — 40% dei punti concessi contro l'ACLI a ottobre, 42% contro il Bresso a gennaio — e in P6, fino al 50% contro il Gate a dicembre.</p>
         <p><b>3. Il servizio come interruttore.</b> È il fondamentale che ha deciso le due sconfitte e le vittorie più larghe. Contro la Martesana: 15 errori e 6 ace, sconfitta. A Rho: 1 ace in tutta la partita, sconfitta. A Quarto Oggiaro: 9 ace e break point a 0,8 punti per battuta, 25 punti concessi in tre set. Contro la Speranza: 8 ace e 5 errori, saldo +39. Quando il Pegasus ha servito con aggressività e giudizio insieme, non ha mai perso.</p>
 
-        <h4>📈 In sintesi</h4>
+        <h4><span aria-hidden="true">📈</span> In sintesi</h4>
         <p>Una stagione da 19 vittorie su 21 partite documentate, con 59 set vinti e 16 persi. Due sconfitte, entrambe spiegabili con la stessa causa: il servizio che smette di fare male. Due campionati affrontati con due identità diverse e vinti entrambi con ampio margine.</p>
         <p>Il margine di crescita è tutto in una riga: nel PGS la squadra ha sbagliato un attacco ogni sette palloni, nel FIPAV uno ogni nove. Quando ha giocato come a Quarto Oggiaro — uno ogni ventitré — non c'è stata partita.</p>
       </div>
@@ -927,7 +988,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
     <div class="filters">
       <div class="fgroup" role="group" aria-label="Filtra per ruolo" id="fRuolo"></div>
       <div class="fgroup" role="group" aria-label="Filtra per campionato" id="fCamp"></div>
-      <input class="search" id="fSearch" type="search" placeholder="Cerca un giocatore…" aria-label="Cerca un giocatore">
+      <input class="search" id="fSearch" name="search" type="search" autocomplete="off" spellcheck="false" placeholder="Cerca un giocatore…" aria-label="Cerca un giocatore">
       <button class="chip reset" id="fReset" hidden>Azzera</button>
       <span class="count" id="rosterCount"></span>
     </div>
@@ -1001,7 +1062,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
       <div class="fgroup" role="group" aria-label="Filtra per campionato" id="mCamp"></div>
       <div class="fgroup" role="group" aria-label="Filtra per campo" id="mCampo"></div>
       <div class="fgroup" role="group" aria-label="Filtra per esito" id="mEsito"></div>
-      <input class="search" id="mSearch" type="search" placeholder="Cerca un avversario…" aria-label="Cerca un avversario">
+      <input class="search" id="mSearch" name="search" type="search" autocomplete="off" spellcheck="false" placeholder="Cerca un avversario…" aria-label="Cerca un avversario">
       <button class="chip reset" id="mReset" hidden>Azzera</button>
       <span class="count" id="matchCount"></span>
     </div>
@@ -1039,7 +1100,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
     </div>
     <div class="filters">
       <div class="fgroup" role="group" aria-label="Filtra per campionato" id="gCamp"></div>
-      <input class="search" id="gSearch" type="search" placeholder="Cerca avversario o giocatore…" aria-label="Cerca negli articoli">
+      <input class="search" id="gSearch" name="search" type="search" autocomplete="off" spellcheck="false" placeholder="Cerca avversario o giocatore…" aria-label="Cerca negli articoli">
       <button class="chip reset" id="gReset" hidden>Azzera</button>
       <span class="count" id="gzCount"></span>
     </div>
@@ -1092,7 +1153,7 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 
 <footer class="ft">
   <div class="wrap">
-    <div class="ft-mark">✦ Ad Astra ✦</div>
+    <div class="ft-mark" translate="no">✦ Ad Astra ✦</div>
     <p class="ft-sub">
       Ad Astra Pegasus · Stagione <span id="ftStagione"></span><br>
       <span id="ftPartite"></span>Scout: Fabi, Max · Analisi: Max Grillo®<br>
@@ -1109,10 +1170,12 @@ footer.ft{padding:44px 0 54px;border-top:1px solid var(--stroke-2);margin-top:36
 <dialog class="modal" id="modal" aria-labelledby="modalTitle">
   <div class="modal-head">
     <div style="min-width:0">
-      <h3 id="modalTitle"></h3>
+      <h2 id="modalTitle"></h2>
       <p id="modalSub"></p>
     </div>
-    <button class="x" id="modalClose" aria-label="Chiudi">✕</button>
+    <button class="share" id="modalShare" type="button">Copia link</button>
+    <button class="x" id="modalClose" aria-label="Chiudi" autofocus>✕</button>
+    <span class="sr-only" id="shareEsito" role="status" aria-live="polite"></span>
   </div>
   <div class="modal-body" id="modalBody"></div>
 </dialog>
@@ -3242,6 +3305,15 @@ const STAGIONI = [
     ],
     eventi: [
       {
+      data: "Ottobre 2026",
+      titolo: "Si riparte dai campioni",
+      testo: "La squadra che a maggio ha vinto il Campionato PGS Invernale OPEN riparte dal girone 5 della Libera maschile, con due volti nuovi: Marcello Bernardini e Alessandro Scarfò.",
+      tag: "Squadra", pin: true,
+      foto: "foto/squadra-campioni-pgs.jpg",
+      didascalia: "La squadra con la coppa al termine del Girone Finale PGS 2025-26.",
+      alt: "La squadra dell'Ad Astra Pegasus in posa al centro del campo con la coppa e le medaglie al collo, al termine del Girone Finale PGS."
+      },
+      {
       data: "30 ottobre 2026",
       titolo: "Tre su tre, con il record di ace",
       testo: "Il MI3 Volley cade 25-11, 25-8, 25-15: nove set vinti e nessuno perso. Contro il MI3 arrivano 11 ace, il massimo in una singola partita fra tutti i referti, e il 96% di positività in ricezione.",
@@ -3371,18 +3443,18 @@ const STAGIONI = [
    Chiave = nome esatto come compare nel CSV. Valore = percorso del file.
    Se un giocatore non è in elenco (o la foto non si carica) resta il
    badge con il numero di maglia. Per aggiungerne una:
-     "Lorenzo Sciarrone": "Giocatori PNG/Lorenzo Sciarrone.png",
+     "Lorenzo Sciarrone": "Giocatori WEBP/Lorenzo Sciarrone.webp",
    ============================================================ */
 const FOTO = {
-  "Andrea Panzani":     "Giocatori PNG/Andrea Panzani.png",
-  "Antonio Zarzana":    "Giocatori PNG/Antonio Zarzana.png",
-  "Giuseppe Di Bella":  "Giocatori PNG/Giuseppe Di Bella.png",
-  "Lorenzo Longo":      "Giocatori PNG/Lorenzo Longo.png",
-  "Marco Farano":       "Giocatori PNG/Marco Farano.png",
-  "Michele Muggia":     "Giocatori PNG/Michele Muggia.png",
-  "Nicolò Zonta":       "Giocatori PNG/Nicoló Zonta.png",
-  "Stefano Birolini":   "Giocatori PNG/Stefano Birolini.png",
-  "Tommaso Moscatelli": "Giocatori PNG/Tommaso Moscatelli.png"
+  "Andrea Panzani":     "Giocatori WEBP/Andrea Panzani.webp",
+  "Antonio Zarzana":    "Giocatori WEBP/Antonio Zarzana.webp",
+  "Giuseppe Di Bella":  "Giocatori WEBP/Giuseppe Di Bella.webp",
+  "Lorenzo Longo":      "Giocatori WEBP/Lorenzo Longo.webp",
+  "Marco Farano":       "Giocatori WEBP/Marco Farano.webp",
+  "Michele Muggia":     "Giocatori WEBP/Michele Muggia.webp",
+  "Nicolò Zonta":       "Giocatori WEBP/Nicoló Zonta.webp",
+  "Stefano Birolini":   "Giocatori WEBP/Stefano Birolini.webp",
+  "Tommaso Moscatelli": "Giocatori WEBP/Tommaso Moscatelli.webp"
 };
 
 /* Etichette dei ruoli usati nel CSV */
@@ -3408,10 +3480,14 @@ const it  = n => Number(n).toLocaleString("it-IT");
 const dec = (n,d)=> Number(n).toLocaleString("it-IT",{minimumFractionDigits:d,maximumFractionDigits:d});
 const MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
 const GIORNI = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
-function giornoSett(d){ const p=d.split("/"); return GIORNI[new Date(+p[2], +p[1]-1, +p[0]).getDay()]; }
-/* "venerdì 9 ottobre": per le frasi, senza l'anno */
-function giornoBreve(d){ const p=d.split("/"); return giornoSett(d)+" "+parseInt(p[0],10)+" "+MESI[parseInt(p[1],10)-1]; }
-function dataEstesa(d){ const p=d.split("/"); return parseInt(p[0],10)+" "+MESI[parseInt(p[1],10)-1]+" "+p[2]; }
+/* date in italiano con Intl.DateTimeFormat invece di comporle a mano */
+const dataJS = d=>{ const p=d.split("/"); return new Date(+p[2], +p[1]-1, +p[0]); };
+const F_SETT  = new Intl.DateTimeFormat("it-IT",{weekday:"long"});
+const F_BREVE = new Intl.DateTimeFormat("it-IT",{weekday:"long",day:"numeric",month:"long"});
+const F_ESTESA= new Intl.DateTimeFormat("it-IT",{day:"numeric",month:"long",year:"numeric"});
+function giornoSett(d){ return F_SETT.format(dataJS(d)); }
+function giornoBreve(d){ return F_BREVE.format(dataJS(d)); }
+function dataEstesa(d){ return F_ESTESA.format(dataJS(d)); }
 function sortKey(d){ const p=d.split("/"); return p[2]+p[1]+p[0]; }
 
 /* ============================================================
@@ -3613,12 +3689,25 @@ const ATTESA = (S.calendario||[]).filter(c=>c && c.d && !MBY[c.d] && sortKey(c.d
 const PROSSIME = (S.calendario||[]).filter(c=>c && c.d && !MBY[c.d] && sortKey(c.d)>=OGGI)
   .sort((a,b)=> sortKey(a.d).localeCompare(sortKey(b.d)));
 
+/* data di una partita in calendario detta come la direbbe una persona:
+   "stasera alle 21:30", "domani alle 21:30", altrimenti "venerdì 20 novembre" */
+function quando(c){
+  const p=c.d.split("/"), g=new Date(+p[2],+p[1]-1,+p[0]), o=new Date(); o.setHours(0,0,0,0);
+  const diff=Math.round((g-o)/864e5), ora=c.ora?" alle "+c.ora:"";
+  if(diff===0) return (c.ora && parseInt(c.ora,10)>=18 ? "stasera" : "oggi")+ora;
+  if(diff===1) return "domani"+ora;
+  return giornoBreve(c.d);
+}
+/* campionati che in questa stagione hanno almeno una partita, giocata o in calendario:
+   i filtri per campionato mostrano solo questi */
+const CK_F = CK.filter(k=> MATCHES.some(m=>m.camp===k) || (S.calendario||[]).some(c=>c&&c.camp===k));
+
 /* ============================================================
    4 · HERO
    ============================================================ */
 $("#heroSub").innerHTML = R.presentazione ||
   ("Stagione <b>"+esc(S.id)+"</b>: "+(BTOT.n
-    ? nPartite(BTOT.n)+(BTOT.n===1?" documentata":" documentate")+(CATTIVI.length?" fra "+esc(elenco(CATTIVI.map(c=>c.nome))):"")
+    ? nPartite(BTOT.n)+" con referto"+(CATTIVI.length?" "+esc(elenco(CATTIVI.map(c=>"nel "+c.nome))):"")
     /* nessun referto ancora: se si è già giocato la stagione è in corso, altrimenti deve iniziare */
     : ATTESA.length
       ? "in corso"+(PROSSIME.length ? ", la prossima partita è "+giornoBreve(PROSSIME[0].d)+", "+(PROSSIME[0].casa?"in casa":"in trasferta")+" contro "+esc(PROSSIME[0].opp) : ", i referti sono in arrivo")
@@ -3628,7 +3717,7 @@ $("#heroSub").innerHTML = R.presentazione ||
 $("#heroBadges").innerHTML = (R.riconoscimenti||[]).map(t=>`<span class="badge">${esc(t)}</span>`).join("")
   + (BTOT.n ? `<span class="badge b-neutral" id="heroRecord">${BTOT.v} ${BTOT.v===1?"vittoria":"vittorie"} su ${BTOT.n}</span>` : "")
   /* a stagione iniziata, la prossima partita resta in vista */
-  + (BTOT.n && PROSSIME.length ? `<span class="badge b-neutral">Prossima: ${esc(giornoBreve(PROSSIME[0].d))}, ${esc(PROSSIME[0].opp)}</span>` : "");
+  + (BTOT.n && PROSSIME.length ? `<span class="badge b-neutral">Prossima: ${esc(quando(PROSSIME[0]))}, ${esc(PROSSIME[0].opp)}</span>` : "");
 /* i numeri della stagione vivono nella sezione Stagione, non ripetuti anche qui */
 if(BTOT.n) $("#seasonStats").innerHTML = [
   ["Bilancio", BTOT.v+'<span class="sep">–</span>'+BTOT.s, Math.round(BTOT.v/BTOT.n*100)+"% di vittorie", ""],
@@ -3641,33 +3730,77 @@ if(BTOT.n) $("#seasonStats").innerHTML = [
    5 · BACHECA
    ============================================================ */
 const EVENTI = S.eventi || [];
-$("#board").innerHTML = EVENTI.length ? EVENTI.map(e=>`
-  <article class="glass ev ${e.pin?"pinned":""} ${e.foto&&e.pin?"wide":""}">
-    <div class="ev-media">
-      ${e.foto ? `<img src="${esc(e.foto)}" alt="${esc(e.alt || e.didascalia || e.titolo)}" loading="lazy" onerror="this.remove()">` : ""}
-      ${e.foto ? "" : `<span aria-hidden="true">${esc(e.icona||"🏐")}</span>`}
+/* La Bacheca racconta quello che la Gazzetta non copre: titoli, record, squadra.
+   Gli eventi legati a una partita (tag "Partita" o campo partita:"gg/mm/aaaa")
+   diventano righe compatte che aprono la cronaca, invece di card che la ripetono. */
+function dataEvento(e){
+  if(e.partita) return e.partita;
+  const m = String(e.data||"").toLowerCase().match(/^(\d{1,2})\s+([a-zà]+)\s+(\d{4})$/);
+  if(!m) return null; const mi = MESI.indexOf(m[2]); if(mi<0) return null;
+  return String(m[1]).padStart(2,"0")+"/"+String(mi+1).padStart(2,"0")+"/"+m[3];
+}
+const EV_PARTITE = EVENTI.filter(e=> e.partita || /^partita$/i.test(e.tag||""));
+const EV_ALTRI = EVENTI.filter(e=> !EV_PARTITE.includes(e)).sort((a,b)=> (b.pin?1:0)-(a.pin?1:0));
+const evCard = e=>`
+  <article class="glass ev ${e.pin?"pinned":""} ${e.foto?"has-foto":"no-foto"} ${e.foto&&e.pin?"wide":""}">
+    ${e.foto ? `<div class="ev-media">
+      <img src="${esc(e.foto)}" alt="${esc(e.alt || e.didascalia || e.titolo)}" width="1200" height="800" loading="lazy" decoding="async" onerror="this.parentNode.remove()">
       ${e.tag ? `<span class="ev-tag">${esc(e.tag)}</span>` : ""}
-    </div>
+    </div>` : ""}
     <div class="ev-body">
-      <div class="ev-date">${esc(e.data||"")}</div>
+      <div class="ev-date">${e.tag && !e.foto ? `<span class="ev-tag-in">${esc(e.tag)}</span>` : ""}${esc(e.data||"")}</div>
       <h3 class="ev-title">${esc(e.titolo||"")}</h3>
       ${e.testo?`<p class="ev-text">${esc(e.testo)}</p>`:""}
       ${e.didascalia?`<p class="ev-cap">${esc(e.didascalia)}</p>`:""}
     </div>
-  </article>`).join("")
+  </article>`;
+const evRiga = e=>{
+  const d = dataEvento(e), m = d && MBY[d];
+  const tag = m ? "button" : "div";
+  return `<${tag} class="evp${m?" link":""}"${m?` data-match="${esc(d)}" aria-label="Cronaca di ${esc(m.label)}"`:""}>
+    <span class="evp-date">${esc(e.data||"")}</span>
+    <span class="evp-main"><span class="evp-title">${esc(e.titolo||"")}</span>
+      ${e.testo?`<span class="evp-text">${esc(e.testo)}</span>`:""}</span>
+    ${m?`<span class="res sm ${m.win?"w":"l"}">${m.display}</span>`:""}
+  </${tag}>`;
+};
+$("#board").innerHTML = EVENTI.length
+  ? EV_ALTRI.map(evCard).join("")
+    + (EV_PARTITE.length ? `<section class="glass card evp-box" aria-labelledby="evp-h">
+        <h3 class="card-title" id="evp-h">Dalle partite</h3>
+        <div class="evp-list">${EV_PARTITE.map(evRiga).join("")}</div>
+        <a class="evp-more" href="#gazzetta">Tutte le cronache nella Gazzetta →</a>
+      </section>` : "")
   : `<div class="glass empty" style="grid-column:1/-1">Nessun evento in bacheca per questa stagione, per ora.</div>`;
 
 /* ============================================================
    6 · STAGIONE
    ============================================================ */
-function campCard(el, titolo, sub, B, T, accent){
+/* lato destro del riquadro: le ultime cinque partite del campionato e la prossima */
+function formaCamp(k){
+  const ult = MATCHES.filter(m=>m.camp===k).sort((a,b)=>sortKey(a.d).localeCompare(sortKey(b.d))).slice(-5);
+  const pr = PROSSIME.find(c=>c.camp===k);
+  if(!ult.length && !pr) return "";
+  return `<div class="camp-forma">
+    ${ult.length?`<div class="cf-k">${ult.length===1?"L'ultima partita":"Le ultime "+ult.length}</div>
+    <div class="cf-res">${ult.map(m=>`<button class="res sm ${m.win?"w":"l"}" data-match="${esc(m.d)}"
+      title="${esc(m.label)}, ${esc(dataEstesa(m.d))}" aria-label="${esc(m.label)} ${m.display}, ${esc(dataEstesa(m.d))}">${m.display}</button>`).join("")}</div>`:""}
+    ${pr?`<div class="cf-next"><span class="cf-k">Prossima</span> ${esc(quando(pr))} · ${esc(pr.opp)}, ${pr.casa?"in casa":"in trasferta"}</div>`:""}
+  </div>`;
+}
+function campCard(el, titolo, sub, B, T, accent, k){
   el.innerHTML = `
     <p class="card-title">${titolo}</p>
-    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
-      <span class="camp-bil ${accent}">${B.v}–${B.s}</span>
-      <span class="tiny muted">${B.n} partite · set ${B.sv}–${B.sp}</span>
+    <div class="camp-head">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+          <span class="camp-bil ${accent}">${B.v}–${B.s}</span>
+          <span class="tiny muted">${B.n} partite · set ${B.sv}–${B.sp}</span>
+        </div>
+        <p class="tiny muted" style="margin:4px 0 0">${sub}</p>
+      </div>
+      ${k?formaCamp(k):""}
     </div>
-    <p class="tiny muted" style="margin:4px 0 14px">${sub}</p>
     <div class="kv-grid">
       ${[["Punti",it(T.punti)],["Attacchi vincenti",it(T.attPt)+" / "+it(T.attTot)],
          ["Conversione attacco",pct(T.attPt,T.attTot)],["Errori in attacco",pct(T.attErr,T.attTot)],
@@ -3692,7 +3825,7 @@ $("#stagioneDati").hidden = !BTOT.n;
 /* una card per campionato giocato */
 $("#campCards").innerHTML = CATTIVI.map(c=>`<div class="glass card" id="card${esc(c.k)}"></div>`).join("");
 CATTIVI.forEach(c=> campCard(document.getElementById("card"+c.k), `<span class="pip k${campIdx(c.k)}"></span>${esc(c.nome)}`,
-  esc(c.sotto||""), CB[c.k], CT[c.k], ACCENTO[campIdx(c.k)]));
+  esc(c.sotto||""), CB[c.k], CT[c.k], ACCENTO[campIdx(c.k)], c.k));
 
 /* confronto fra campionati: solo se ce ne sono almeno due.
    Una stagione può avere la sua tabella scritta a mano (data-stagione); altrimenti la si calcola. */
@@ -3790,8 +3923,9 @@ function avatar(p,size){
   const f = fotoDi(p);
   /* alt vuoto di proposito: il nome del giocatore è già nel testo accanto,
      ripeterlo farebbe leggere due volte la stessa cosa allo screen reader */
-  return `<div class="avatar" style="${style}"><span aria-hidden="true">${p.numero}</span>${
-    f?`<img src="${esc(f)}" alt="" loading="lazy" onerror="this.remove()">`:""}</div>`;
+  /* se la foto non si carica, l'avatar torna alla versione col numero grande */
+  return `<div class="avatar${f?" has-img":""}" style="${style}">${
+    f?`<img src="${esc(f)}" alt="" width="320" height="480" loading="lazy" decoding="async" onerror="this.parentNode.classList.remove('has-img');this.remove()">`:""}<span aria-hidden="true">${p.numero}</span></div>`;
 }
 function renderRoster(){
   const list = PLAYERS.filter(p=>{
@@ -3805,8 +3939,9 @@ function renderRoster(){
   $("#roster").innerHTML = list.length ? list.map(p=>`
     <button class="glass link ply" data-ply="${esc(p.nome)}" aria-label="Scheda di ${esc(p.nome)}">
       <div class="ply-top">${avatar(p)}
-        <div style="min-width:0"><div class="ply-name">${esc(p.nome)}</div>
-          <div class="ply-role">${esc(p.ruoloLabel)} · ${p.pres ? p.pres+(p.pres===1?" presenza":" presenze") : "ancora nessuna presenza"}</div></div>
+        <div class="ply-txt"><div class="ply-name">${esc(p.nome)}</div>
+          <div class="ply-role">${esc(p.ruoloLabel)}</div>
+          <div class="ply-role">${p.pres ? p.pres+(p.pres===1?" presenza":" presenze") : "nessuna presenza"}</div></div>
       </div>
       <div class="ply-stats">
         <div><b>${p.pres?p.punti:"—"}</b><small>Punti</small></div>
@@ -3824,7 +3959,7 @@ function chips(el, opts, get, set){
 chips($("#fRuolo"), [["all","Tutti"]].concat(RUOLI_ORD.filter(r=>PLAYERS.some(p=>p.ruolo===r)).map(r=>[r,RUOLI[r]])),
   ()=>fRuolo, v=>{fRuolo=v; renderRoster();});
 /* il filtro per campionato serve solo se i campionati sono almeno due */
-if(CK.length>=2) chips($("#fCamp"), [["all", CK.length===2?"Entrambi":"Tutti"]].concat(CK.map(k=>[k,k])), ()=>fCamp, v=>{fCamp=v; renderRoster();});
+if(CK_F.length>=2) chips($("#fCamp"), [["all", CK_F.length===2?"Entrambi":"Tutti"]].concat(CK_F.map(k=>[k,k])), ()=>fCamp, v=>{fCamp=v; renderRoster();});
 else $("#fCamp").hidden = true;
 $("#rosa .filters").hidden = !PLAYERS.length;
 $("#fSearch").addEventListener("input", e=>{ fQ=e.target.value.trim().toLowerCase(); renderRoster(); });
@@ -3850,13 +3985,18 @@ function podio(el, key, fmt){
 }
 /* sotto le tre partite una classifica direbbe poco */
 const SOGLIA = 3;
-const conClassifiche = BTOT.nStat >= SOGLIA;
-$("#clLead").textContent = conClassifiche
-  ? "Classifiche calcolate sulle "+BTOT.nStat+" partite con statistiche disponibili."
-  : "Punti, muri, ace e saldo: le classifiche compaiono dalla terza partita con referto.";
+/* sotto soglia le classifiche si vedono lo stesso, segnate come provvisorie */
+const conClassifiche = BTOT.nStat >= 1;
+const provvisorie = BTOT.nStat < SOGLIA;
+$("#clLead").textContent = !conClassifiche
+  ? "Punti, muri, ace e saldo: le classifiche compaiono dopo la prima partita con referto."
+  : provvisorie
+    ? "Classifiche provvisorie: "+(BTOT.nStat===1?"una sola partita":BTOT.nStat+" partite")+" con statistiche individuali. Diventano ufficiali dalla "+(SOGLIA===3?"terza":SOGLIA+"ª")+"."
+    : "Classifiche calcolate sulle "+BTOT.nStat+" partite con statistiche disponibili.";
 $("#clDati").hidden = !conClassifiche;
 $("#clVuoto").hidden = conClassifiche;
-$("#clVuoto").textContent = BTOT.nStat ? "Per ora "+(BTOT.nStat===1?"c'è una sola partita":"ci sono "+BTOT.nStat+" partite")+" con statistiche individuali." : "Nessuna partita con statistiche finora.";
+$("#clVuoto").textContent = "Nessuna partita con statistiche finora.";
+$("#classifiche").classList.toggle("provvisorie", conClassifiche && provvisorie);
 podio("#podPunti","punti");
 podio("#podMuri","muri");
 podio("#podAce","ace");
@@ -3904,6 +4044,29 @@ MATCHES.forEach(m=>{
   m.parziali = "";     /* riempito dagli articoli, se presenti */
 });
 
+/* Parziali sempre dal punto di vista del Pegasus: prima i nostri punti, poi quelli
+   degli avversari, set vinti in evidenza. Gli articoli li scrivono con la squadra di
+   casa per prima; il verso giusto si ricava confrontando i set vinti con il risultato,
+   così funziona qualunque sia la convenzione usata nel testo. */
+function setsPegasus(str, m){
+  if(!str) return null;
+  const sets = str.split(/\s*·\s*/).map(x=>x.match(/^(\d+)\s*-\s*(\d+)$/)).filter(Boolean)
+                  .map(x=>[+x[1], +x[2]]);
+  if(!sets.length) return null;
+  const vintiSx = sets.filter(([a,b])=>a>b).length;
+  const giro = vintiSx!==m.mySets && sets.length-vintiSx===m.mySets;
+  return sets.map(([a,b])=> giro ? [b,a] : [a,b]);
+}
+function parzialiHTML(m){
+  const sets = setsPegasus(m.parziali, m);
+  if(!sets) return esc(m.parziali||"—");
+  return `<span class="parz">${sets.map(([a,b])=>
+    `<span class="${a>b?"pz-w":"pz-l"}">${a}-${b}</span>`).join("")}</span>`;
+}
+function parzialiTesto(m){
+  const sets = setsPegasus(m.parziali, m);
+  return sets ? sets.map(([a,b])=>a+"-"+b).join(" · ") : (m.parziali||"");
+}
 function renderMatches(){
   MATCHES.forEach(m=>{ const a=GZ[m.d]; if(a&&a.sets) m.parziali = a.sets; });
   const list = MATCHES.filter(m=>{
@@ -3942,7 +4105,7 @@ function renderMatches(){
       <td><span class="pip k${campIdx(m.camp)}"></span>${esc(m.camp)}</td>
       <td>${esc(m.dove)}</td>
       <td><span class="res sm ${m.win?"w":"l"}">${m.display}</span></td>
-      <td class="tiny muted" style="text-align:left">${esc(m.parziali||"—")}</td>
+      <td class="tiny" style="text-align:left">${parzialiHTML(m)}</td>
       <td>${m.punti||"—"}</td>
       <td>${m.attPtPct?Math.round(m.attPtPct)+"%":"—"}</td>
       <td>${m.muri||"—"}</td>
@@ -3962,7 +4125,7 @@ $("#tblMatches tbody").addEventListener("keydown", e=>{
   if(e.key==="Enter"||e.key===" "){ const r=e.target.closest("[data-match]"); if(r){ e.preventDefault(); r.click(); } }
 });
 intestazioniOrdinabili($("#tblMatches"));
-if(CK.length>=2) chips($("#mCamp"), [["all","Tutti"]].concat(CK.map(k=>[k,k])), ()=>mCamp, v=>{mCamp=v;renderMatches();});
+if(CK_F.length>=2) chips($("#mCamp"), [["all","Tutti"]].concat(CK_F.map(k=>[k,k])), ()=>mCamp, v=>{mCamp=v;renderMatches();});
 else $("#mCamp").hidden = true;
 $("#pt-h").innerHTML = BTOT.n>1 ? "Tutte le <em>"+BTOT.n+" partite</em>" : BTOT.n===1 ? "La prima <em>partita</em>" : "Le <em>partite</em>";
 
@@ -4021,15 +4184,23 @@ $$('script[data-gz]').forEach(s=>{
    "Gazzetta" si trova accanto a index.html. In locale (file://) il
    browser blocca la lettura e il sito mostra comunque il referto. */
 const GZ_FILES = S.gazzetta && S.gazzetta.file ? S.gazzetta.file : {};
+const GZ_IN_CARICO = new Set();   /* articoli ancora in arrivo dalla rete */
+let partitaAperta = null;         /* data della partita mostrata nella finestra */
 function caricaArticoli(){
   if(location.protocol==="file:" || typeof fetch!=="function") return;
   const da = Object.keys(GZ_FILES).filter(d=>!GZ[d]);
   if(!da.length) return;
+  da.forEach(d=> GZ_IN_CARICO.add(d));
   Promise.all(da.map(d=>
     fetch(((S.gazzetta&&S.gazzetta.cartella)||"Gazzetta/")+encodeURIComponent(GZ_FILES[d]))
       .then(r=> r.ok ? r.text() : null)
       .then(t=>{ if(t && t.indexOf("GAZZETTA")>-1) GZ[d]=parseGazzetta(t); })
       .catch(()=>{})
+      .finally(()=>{
+        GZ_IN_CARICO.delete(d);
+        /* se la cronaca era già aperta mentre arrivava, la si mostra subito */
+        if(modal.open && partitaAperta===d) mBody.innerHTML = renderArticolo(d);
+      })
   )).then(()=>{ renderGazzetta(); renderMatches(); });
 }
 
@@ -4038,33 +4209,35 @@ const rt = s => esc(s).replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
 
 function renderArticolo(d){
   const a = GZ[d], m = MBY[d];
-  if(!a) return `<div class="note">L'articolo di questa partita non è ancora stato pubblicato.</div>`;
+  if(!a) return GZ_IN_CARICO.has(d)
+    ? `<div class="note" role="status" aria-live="polite">Caricamento della cronaca…</div>`
+    : `<div class="note">L'articolo di questa partita non è ancora stato pubblicato.</div>`;
   let h = "";
   if(a.occhiello) h += `<p class="occhiello">${rt(a.occhiello)}</p>`;
   a.corpo.forEach(p=> h += `<p>${rt(p)}</p>`);
   if(a.quote) h += `<div class="quote">${rt(a.quote)}</div>`;
   if(a.referto.length){
-    h += `<h4>📋 Il referto</h4><ul class="referto">` + a.referto.map(r=>{
+    h += `<h4><span aria-hidden="true">📋</span> Il referto</h4><ul class="referto">` + a.referto.map(r=>{
       const i=r.indexOf(":");
       return i>0 ? `<li>${esc(r.slice(0,i))}<b>${esc(r.slice(i+1).trim())}</b></li>` : `<li>${esc(r)}</li>`;
     }).join("") + `</ul>`;
   }
   if(a.topper.length){
-    h += `<h4>⚡ Top performer</h4><ul class="top-list">` + a.topper.map(t=>{
+    h += `<h4><span aria-hidden="true">⚡</span> Top performer</h4><ul class="top-list">` + a.topper.map(t=>{
       const i = t.search(/\s[—–]\s/);
       return i>0 ? `<li><span>${esc(t.slice(0,i))}</span><span class="m">${esc(t.slice(i+3))}</span></li>` : `<li>${esc(t)}</li>`;
     }).join("") + `</ul>`;
   }
   if(a.pagelle.length){
-    h += `<h4>⭐ Le pagelle</h4>` + a.pagelle.map(p=>`
+    h += `<h4><span aria-hidden="true">⭐</span> Le pagelle</h4>` + a.pagelle.map(p=>`
       <div class="pagella ${p.mvp?"mvp":""}">
         <div class="ph"><span class="pnm">${esc(p.nome)}</span><span class="prl">${esc(p.ruolo)}</span>
           <span class="pvt">${esc(p.voto)}${p.mvp?' <span style="font-size:11px;letter-spacing:.1em">MVP</span>':""}</span></div>
         ${p.testo?`<p>${rt(p.testo)}</p>`:""}
       </div>`).join("");
   }
-  if(a.focus) h += `<h4>📊 Focus tattico</h4><p>${rt(a.focus)}</p>`;
-  h += `<h4>📈 Il referto statistico</h4>` + tabellaPartita(d);
+  if(a.focus) h += `<h4><span aria-hidden="true">📊</span> Focus tattico</h4><p>${rt(a.focus)}</p>`;
+  h += `<h4><span aria-hidden="true">📈</span> Il referto statistico</h4>` + tabellaPartita(d);
   return `<div class="art">${h}</div>`;
 }
 function tabellaPartita(d){
@@ -4103,7 +4276,7 @@ function renderGazzetta(){
       <span class="gz-score">${esc(m.label)} <span class="${m.win?"c-win":"c-red"}">${m.display}</span></span>
       ${a&&a.occhiello?`<span class="gz-title">${esc(a.occhiello)}</span>`:`<span class="gz-title muted">Referto statistico disponibile</span>`}
       ${mvp?`<span class="gz-mvp">⭐ MVP <b>${esc(mvp.nome)}</b> · voto ${esc(mvp.voto)}</span>`
-           :`<span class="gz-mvp">${a&&a.sets?esc(a.sets):"Apri il referto"}</span>`}
+           :`<span class="gz-mvp">${a&&a.sets?esc(parzialiTesto(Object.assign({},m,{parziali:a.sets}))):"Apri il referto"}</span>`}
     </button>`;
   }).join("");
   /* lo speciale di fine stagione, se è stato scritto */
@@ -4116,7 +4289,7 @@ function renderGazzetta(){
       ${sp.giocatore?`<span class="gz-mvp">⭐ Giocatore della stagione: <b>${esc(sp.giocatore)}</b> →</span>`:""}
     </a>` : "") + (cards || `<div class="glass empty" style="grid-column:1/-1">${MATCHES.length?"Nessun articolo corrisponde ai filtri.":"Nessun articolo ancora pubblicato per questa stagione."}</div>`);
 }
-if(CK.length>=2) chips($("#gCamp"), [["all","Tutti"]].concat(CK.map(k=>[k,k])), ()=>gCamp, v=>{gCamp=v;renderGazzetta();});
+if(CK_F.length>=2) chips($("#gCamp"), [["all","Tutti"]].concat(CK_F.map(k=>[k,k])), ()=>gCamp, v=>{gCamp=v;renderGazzetta();});
 else $("#gCamp").hidden = true;
 
 $("#gSearch").addEventListener("input", e=>{ gQ=e.target.value.trim().toLowerCase(); renderGazzetta(); });
@@ -4139,32 +4312,82 @@ function openModal(title, sub, html){
 }
 /* la chiusura aspetta la fine dell'animazione invece di far sparire di colpo la finestra */
 let inChiusura=false;
-function chiudiModal(){
+function chiudiModal(daIndirizzo){
   if(!modal.open || inChiusura) return;
   inChiusura = true;
+  /* chiusa dal pulsante o da Esc: l'indirizzo torna alla sola scheda */
+  if(!daIndirizzo && location.hash.indexOf("/")>-1){
+    if(finestraInCronologia){ finestraInCronologia=false; history.back(); }
+    else { try{ history.replaceState(null,"","#"+(schedaAperta||PANES[0])); }catch(err){} }
+  }
+  if(daIndirizzo) finestraInCronologia=false;
   modal.classList.add("closing");
   const fine = ()=>{
     if(!inChiusura) return;
     inChiusura = false;
     modal.classList.remove("closing");
-    apertoOra = null;
+    apertoOra = null; partitaAperta = null;
     modal.close ? modal.close() : modal.removeAttribute("open");
   };
   modal.addEventListener("animationend", fine, {once:true});
   setTimeout(fine, 320);   /* rete di sicurezza se l'animazione non parte */
 }
-$("#modalClose").addEventListener("click", chiudiModal);
+$("#modalClose").addEventListener("click", ()=>chiudiModal());
 modal.addEventListener("click", e=>{ if(e.target===modal) chiudiModal(); });
 modal.addEventListener("cancel", e=>{ e.preventDefault(); chiudiModal(); });   /* tasto Esc */
 
+/* ---------- finestre con indirizzo condivisibile ----------
+   La finestra aperta finisce nell'indirizzo dopo la scheda:
+     #gazzetta/partita-2026-10-30   ·   #rosa/giocatore-nicolo-zonta
+   Il link si può incollare su WhatsApp e riapre la stessa cronaca o scheda.
+   Il tasto Indietro del telefono chiude la finestra invece di uscire dal sito. */
+const slug = t => senzaAccenti(t).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const chiavePartita = d => { const p=d.split("/"); return "partita-"+p[2]+"-"+p[1]+"-"+p[0]; };
+const chiaveGiocatore = p => "giocatore-"+slug(p.nome);
+let finestraInCronologia = false;
+function apriPartita(d){
+  const m=MBY[d]; if(!m) return false;
+  apertoOra=null; partitaAperta=d;
+  openModal(m.label+"  "+m.display, m.camp+" · "+dataEstesa(m.d)+(m.luogo?" · "+m.luogo:""), renderArticolo(m.d));
+  return true;
+}
+function apriGiocatore(p){
+  apertoOra=p; partitaAperta=null;
+  openModal("Scheda giocatore", "Stagione "+S.id+" · "+(p.pres ? nPartite(p.pres)+" con referto" : "nessuna partita con referto"), schedaGiocatore(p));
+  return true;
+}
+function segnaFinestra(chiave){
+  const h = "#"+(schedaAperta||PANES[0])+"/"+chiave;
+  if(location.hash===h) return;
+  try{ history.pushState({finestra:1}, "", h); finestraInCronologia = true; }catch(err){}
+}
+/* apre la finestra indicata dall'indirizzo, o la chiude se l'indirizzo non ne indica una */
+function finestraDaIndirizzo(){
+  const extra = location.hash.slice(1).split("/")[1] || "";
+  if(!extra){ if(modal.open) chiudiModal(true); return; }
+  if(extra.indexOf("partita-")===0){
+    const x=extra.slice(8).split("-"); const d=x[2]+"/"+x[1]+"/"+x[0];
+    if(!(modal.open && partitaAperta===d)) apriPartita(d);
+  } else if(extra.indexOf("giocatore-")===0){
+    const p = PLAYERS.find(q=> chiaveGiocatore(q)===extra);
+    if(p && !(modal.open && apertoOra===p)) apriGiocatore(p);
+  }
+}
+$("#modalShare").addEventListener("click", async ()=>{
+  const b=$("#modalShare"), url=location.href, esito=$("#shareEsito");
+  try{
+    if(navigator.share && matchMedia("(pointer:coarse)").matches){ await navigator.share({title:mTitle.textContent, url}); return; }
+    await navigator.clipboard.writeText(url);
+    b.textContent="Link copiato"; b.classList.add("ok"); esito.textContent="Link copiato negli appunti";
+  }catch(err){ if(err && err.name==="AbortError") return; b.textContent="Copia dalla barra"; esito.textContent="Copia il link dalla barra degli indirizzi"; }
+  setTimeout(()=>{ b.textContent="Copia link"; b.classList.remove("ok"); esito.textContent=""; }, 2200);
+});
+
 document.addEventListener("click", e=>{
   const pb = e.target.closest("[data-ply]");
-  if(pb){ const p=PBY[pb.dataset.ply]; if(p){ apertoOra=p;
-    openModal("Scheda giocatore", "Stagione "+S.id+" · "+(p.pres ? nPartite(p.pres)+" con referto" : "nessuna partita con referto"), schedaGiocatore(p)); } return; }
+  if(pb){ const p=PBY[pb.dataset.ply]; if(p){ apriGiocatore(p); segnaFinestra(chiaveGiocatore(p)); } return; }
   const mb = e.target.closest("[data-match]");
-  if(mb){ apertoOra=null; const m=MBY[mb.dataset.match];
-    openModal(m.label+"  "+m.display, m.camp+" · "+dataEstesa(m.d)+(m.luogo?" · "+m.luogo:""), renderArticolo(m.d));
-    setTimeout(()=>{},0); return; }
+  if(mb){ if(apriPartita(mb.dataset.match)) segnaFinestra(chiavePartita(mb.dataset.match)); return; }
   /* il Bilancio non è più una finestra: si va alla sezione Stagione e lo si raggiunge */
   const bb = e.target.closest("[data-vai-bilancio]");
   if(bb){
@@ -4208,7 +4431,7 @@ function schedaGiocatore(p){
   let h = `<div class="ply-hero">
     <div class="ply-shot">
       <span class="nn" aria-hidden="true">${p.numero}</span>
-      ${f?`<img src="${esc(f)}" alt="Ritratto di ${esc(p.nome)}, ${esc(p.ruoloLabel.toLowerCase())} dell'Ad Astra Pegasus" onerror="this.remove()">
+      ${f?`<img src="${esc(f)}" alt="Ritratto di ${esc(p.nome)}, ${esc(p.ruoloLabel.toLowerCase())} dell'Ad Astra Pegasus" width="320" height="480" decoding="async" onerror="this.remove()">
            <span class="tag" aria-hidden="true">#${p.numero}</span>`:""}
     </div>
     <div class="ply-id">
@@ -4219,7 +4442,7 @@ function schedaGiocatore(p){
         <div><b>${p.muri}</b><small>Muri</small></div>
         <div><b>${p.ace}</b><small>Ace</small></div>
         <div><b class="${p.saldo>0?"c-win":(p.saldo<0?"c-red":"")}">${p.saldo>0?"+":""}${p.saldo}</b><small>Saldo</small></div>
-        ${CK.length>=2?`<div><b>${CK.map((k,i)=>`<span class="${ACCENTO[Math.min(i,2)]}">${p.camp[k]||0}</span>`).join('<span style="opacity:.3">/</span>')}</b><small>${CK.map(esc).join(" / ")}</small></div>`:""}
+        ${CK_F.length>=2?`<div><b>${CK_F.map(k=>`<span class="${ACCENTO[campIdx(k)]}">${p.camp[k]||0}</span>`).join('<span style="opacity:.3">/</span>')}</b><small>${CK_F.map(esc).join(" / ")}</small></div>`:""}
       </div>`:""}
     </div>
   </div>`;
@@ -4439,20 +4662,22 @@ renderMatches(); renderGazzetta(); caricaArticoli();
    MODIFICA QUI se vuoi usare file diversi.
    Il tema notte vuole un logo chiaro, quello giorno un logo scuro. */
 const LOGO = {
-  dark:  "logo 1.png",         /* pegaso scuro con luci, fondo nero */
-  light: "logo 1 bianco.png"   /* pegaso chiaro, fondo trasparente */
+  dark:  "img/logo-notte.webp",   /* da "logo 1.png", ridotto a 400 px (41 KB invece di 1,5 MB) */
+  light: "img/logo-giorno.webp"   /* da "logo 1 bianco.png", ridotto a 400 px */
 };
+/* icona della scheda del browser: versione da 64 px, non il logo intero */
+const FAVICON = { dark:"img/favicon-notte.png", light:"img/favicon-giorno.png" };
 function applicaLogo(t){
   const src = encodeURI(LOGO[t] || LOGO.dark);
   document.documentElement.classList.remove("no-peg");   /* nuovo file, nuova possibilità */
   $$(".peg").forEach(i=>{ i.src = src; });
-  const fav = $("#favicon"); if(fav) fav.href = src;
+  const fav = $("#favicon"); if(fav) fav.href = FAVICON[t] || FAVICON.dark;
 }
 
 /* foto del giocatore della stagione */
 (function(){ const a=$("#mvpAvatar"), z=R.speciale&&PBY[R.speciale.giocatore]; if(!a||!z) return;
-  const f=fotoDi(z); if(f) a.insertAdjacentHTML("beforeend",
-    `<img src="${esc(f)}" alt="Ritratto di Nicolò Zonta" loading="lazy" onerror="this.remove()">`); })();
+  const f=fotoDi(z); if(f){ a.classList.add("has-img"); a.insertAdjacentHTML("afterbegin",
+    `<img src="${esc(f)}" alt="Ritratto di Nicolò Zonta" width="320" height="480" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.remove()">`); } })();
 
 /* ---------- tema giorno / notte ---------- */
 const fatto = {};        /* schede i cui grafici sono già stati costruiti */
@@ -4502,6 +4727,7 @@ const navA  = $$("nav.links a");
    la seconda chiamata sulla stessa scheda non deve rifare nulla */
 let schedaAperta = null;
 function apriScheda(id, animato){
+  id = String(id||"").split("/")[0];
   if(PANES.indexOf(id)<0) id = PANES[0];
   if(id===schedaAperta){ if(animato) window.scrollTo({top:0,behavior:liscio()}); return; }
   schedaAperta = id;
@@ -4535,7 +4761,7 @@ $("nav.links").addEventListener("click", e=>{
 $(".brand").addEventListener("click", e=>{
   e.preventDefault(); vaiA(PANES[0]); apriScheda(PANES[0], true);
 });
-addEventListener("hashchange", ()=> apriScheda(location.hash.slice(1), false));
+addEventListener("hashchange", ()=>{ apriScheda(location.hash.slice(1), false); finestraDaIndirizzo(); });
 /* qualsiasi link interno a una scheda (footer, rimandi nel testo) apre la scheda giusta */
 document.addEventListener("click", e=>{
   const a = e.target.closest('a[href^="#"]');
@@ -4544,8 +4770,9 @@ document.addEventListener("click", e=>{
   if(PANES.indexOf(id)<0) return;
   e.preventDefault(); vaiA(id); apriScheda(id, true);
 });
-addEventListener("popstate", ()=> apriScheda(location.hash.slice(1), false));
+addEventListener("popstate", ()=>{ apriScheda(location.hash.slice(1), false); finestraDaIndirizzo(); });
 apriScheda(location.hash.slice(1), false);
+finestraDaIndirizzo();
 
 /* ultima partita presente nei dati: dice al visitatore quanto è aggiornato il sito */
 (function(){
